@@ -2,6 +2,8 @@ package org.example.parser;
 
 import org.example.ast.expression.Expression;
 import org.example.ast.expression.Identifier;
+import org.example.ast.expression.IntegerLiteral;
+import org.example.ast.expression.PrefixExpression;
 import org.example.ast.node.Program;
 import org.example.ast.statement.ExpressionStatement;
 import org.example.ast.statement.ReturnStatement;
@@ -31,8 +33,27 @@ public class Parser
         this.errors = new ArrayList<>();
 
         this.prefixParseFns = new HashMap<>();
+        /* register prefix parsing functions */
         this.registerPrefix(TokenType.IDENTIFIER, () -> new Identifier(this.currentToken, currentToken.getLiteral()));
-
+        this.registerPrefix(TokenType.INTEGER, () -> {
+            IntegerLiteral literal = new IntegerLiteral(this.currentToken);
+            try {
+                int value = Integer.parseInt(this.currentToken.getLiteral());
+                literal.setValue(value);
+                return literal;
+            } catch (NumberFormatException ex) {
+                this.errors.add(ex.getMessage());
+                return null;
+            }
+        });
+        Prefix parsePrefixExpressionFn = () -> {
+            PrefixExpression prefixExpression = new PrefixExpression(this.currentToken, this.currentToken.getLiteral());
+            this.readToken();
+            prefixExpression.setRight(this.parseExpression(Precedence.PREFIX));
+            return prefixExpression;
+        };
+        this.registerPrefix(TokenType.BANG, parsePrefixExpressionFn);
+        this.registerPrefix(TokenType.MINUS, parsePrefixExpressionFn);
 
         this.infixParseFns = new HashMap<>();
 
@@ -127,6 +148,7 @@ public class Parser
         return leftExpression;
 
     }
+
 
 
     private boolean expectPeek(TokenType tokenType) {

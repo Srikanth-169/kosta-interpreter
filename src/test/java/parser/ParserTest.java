@@ -2,6 +2,8 @@ package parser;
 
 import org.example.ast.expression.Expression;
 import org.example.ast.expression.Identifier;
+import org.example.ast.expression.IntegerLiteral;
+import org.example.ast.expression.PrefixExpression;
 import org.example.ast.node.Program;
 import org.example.ast.statement.ExpressionStatement;
 import org.example.ast.statement.ReturnStatement;
@@ -117,7 +119,7 @@ class ParserTest {
 
         assertEquals(identifier.getValue(), "foobar", "identifier.getValue() is not foobar. got=" + identifier.getValue());
 
-        assertEquals(identifier.tokenLiteral(), "foobar", "identifier.tokenLiteral() is not foobar. got=" + identifier.getValue());
+        assertEquals(identifier.tokenLiteral(), "foobar", "identifier.tokenLiteral() is not foobar. got=" + identifier.tokenLiteral());
 
     }
 
@@ -141,15 +143,54 @@ class ParserTest {
         ExpressionStatement expressionStatement = (ExpressionStatement) statement;
 
         Expression expression = expressionStatement.getExpression();
-        assertInstanceOf(IntegerLiteral.class, expression, "expression is not Identifier. got=" + expression.getClass());
-        Identifier identifier = (Identifier) expression;
+        assertInstanceOf(IntegerLiteral.class, expression, "expression is not IntegerLiteral. got=" + expression.getClass());
+        IntegerLiteral literal = (IntegerLiteral) expression;
 
-        assertEquals(identifier.getValue(), "foobar", "identifier.getValue() is not foobar. got=" + identifier.getValue());
+        assertEquals(literal.getValue(), 5, "literal.getValue() is not 5. got=" + literal.getValue());
 
-        assertEquals(identifier.tokenLiteral(), "foobar", "identifier.tokenLiteral() is not foobar. got=" + identifier.getValue());
+        assertEquals(literal.tokenLiteral(), "5", "literal.tokenLiteral() is not '5'. got=" + literal.getValue());
 
     }
 
+    @Test
+    void testParsingPrefixExpressions() {
+        Object[][] prefixTests = new Object[][] {
+                new Object[] { "!5;", "!", 5 },
+                new Object[] { "-15;", "-", 15 },
+        };
+        for (Object[] prefixTest : prefixTests) {
+            Lexer l = new Lexer((String) prefixTest[0]);
+            Parser p = new Parser(l);
+            Program program = p.parseProgram();
+            checkParserErrors(p);
+
+
+            assertEquals(program.getStatements().size(), 1, String.format("program.getStatements does not contain %d statements. got=%d\n", 1, program.getStatements().size()));
+
+            Statement statement = program.getStatements().getFirst();
+            assertInstanceOf(ExpressionStatement.class, statement, "program.getStatements().get(0) is not ExpressionStatement. got=" + statement.getClass());
+            ExpressionStatement expressionStatement = (ExpressionStatement) statement;
+
+            assertInstanceOf(PrefixExpression.class, expressionStatement.getExpression(), String.format("expressionStatement is not PrefixExpression. got=" + expressionStatement.getExpression().getClass()));
+            PrefixExpression prefixExpression = (PrefixExpression) expressionStatement.getExpression();
+
+            assertEquals(prefixExpression.getOperator(), prefixTest[1], String.format("prefixExpression.getOperator is not %s, got=%s", prefixTest[1], prefixExpression.getOperator()));
+
+
+            testIntegerLiteral(prefixExpression.getRight(), (int) prefixTest[2]);
+
+        }
+    }
+
+    public void testIntegerLiteral(Expression prefixExpression, int value) {
+
+        assertInstanceOf(IntegerLiteral.class, prefixExpression, "prefixExpression is not IntegerLiteral. got=" + prefixExpression.getClass());
+        IntegerLiteral integerLiteral = (IntegerLiteral) prefixExpression;
+
+        assertEquals(integerLiteral.getValue(), value, String.format("value is not %d. got=%d", value, integerLiteral.getValue()));
+
+        assertEquals(integerLiteral.tokenLiteral(), String.valueOf(value), String.format("integerLiteral.tokenLiteral() is not %d. got=%s", value, integerLiteral.tokenLiteral()));
+    }
 
 
 }
