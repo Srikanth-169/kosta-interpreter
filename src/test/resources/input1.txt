@@ -1,0 +1,85 @@
+var age = 1;
+
+var name = "Monkey";
+
+var result = 10 * (20 / 2);
+
+var myArray = [1, 2, 3, 4, 5];
+
+var thorsten = {"name": "Thorsten", "age": 28};
+
+myArray[0] // => 1
+
+thorsten["name"] // => "Thorsten"
+
+var add = fn(a, b) { return a + b; };
+
+var add = fn(a, b) { a + b; };
+
+add(1, 2);
+
+var fibonacci = fn(x) {
+   if (x == 0) {
+       0
+   } else {
+       if (x == 1) {
+           1
+       } else {
+           fibonacci(x- 1) + fibonacci(x- 2);
+       }
+   }
+};
+
+var twice = fn(f, x) {
+                return f(f(x));
+            };
+            
+var addTwo = fn(x) {
+                return x + 2;
+            };
+            
+twice(addTwo, 2); // => 6
+
+var five = 5;
+
+var ten = 10;
+
+var add = fn(x, y) {
+            x + y;
+          };
+          
+var result = add(five, ten);
+
+var five = 5;
+
+var ten = 10;
+
+var add = fn(x, y) {
+            x + y;
+          };
+          
+var result = add(five, ten);
+
+!-/*5;
+
+5 < 10 > 5;
+
+var five = 5;
+
+var ten = 10;
+
+var add = fn(x, y) {
+            x + y;
+          };
+          
+var result = add(five, ten);
+
+!-/*5;
+
+5 < 10 > 5;
+
+if (5 < 10) {
+    return true;
+} else {
+    return false;
+}

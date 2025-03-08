@@ -1,10 +1,8 @@
-import org.junit.jupiter.api.Test;
-
+/**
+ * @author Konstantine Vashalomidze
+ */
 public class MainTest
 {
-
-    @Test
-    void
 
 
 

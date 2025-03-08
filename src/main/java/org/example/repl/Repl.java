@@ -22,7 +22,7 @@ public class Repl {
             """;
 
     /**
-     * Starts read eval print loop. which continuously reads user input, evaluates it and prints the output.
+     * Starts readWholeStringStartingFromCurrentCharacter eval print loop. which continuously reads user input, evaluates it and prints the output.
      * @param input user provided input
      * @param output evaluation result
      */

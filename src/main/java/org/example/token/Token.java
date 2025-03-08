@@ -4,10 +4,15 @@ import org.example.parser.Precedence;
 
 import static org.example.parser.Precedence.*;
 
+/**
+ * Is token that lexer uses to tokenize user's code.
+ *
+ * @author Konstantine Vashalomidze
+ */
 public class Token
 {
     private TokenType tokenType;
-    private String literal;
+    private String literal; // actual value of the token, meaning how is it written in initial code.
 
     public Token(TokenType tokenType, String literal) {
         this.tokenType = tokenType;
@@ -26,9 +31,14 @@ public class Token
                 '}';
     }
 
-    /* Determines priority of the expression operation */
+    /**
+     *  Determines priority of the expression operation, for example in this expression (a + b) / 3
+     *  highest priority has LP
+     * @return returns precedence of token
+     */
     public Precedence getPrecedence() {
         return switch (tokenType) {
+            // TokenType -> Precedence
             case EQ -> EQUEALS;
             case NOT_EQ -> EQUEALS;
             case LT -> LESSG_REATER;

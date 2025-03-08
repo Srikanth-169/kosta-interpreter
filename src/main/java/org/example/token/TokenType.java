@@ -41,7 +41,7 @@ public enum TokenType
     RETURN("RETURN"),
     ;
 
-    private String val;
+    private final String val;
 
     TokenType(String val) {
         this.val = val;

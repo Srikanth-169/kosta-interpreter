@@ -57,8 +57,8 @@ public class Parser
            This approach allows for easy extension of the parser's capabilities */
         initializeParsingStrategies();
 
-        this.readToken(); // sets peek token
-        this.readToken(); // sets current token to peek token and advances peek token
+        this.readAndMoveOnNextToken(); // sets peek token
+        this.readAndMoveOnNextToken(); // sets current token to peek token and advances peek token
 
     }
 
@@ -87,7 +87,7 @@ public class Parser
         // Shared prefix expression handler for unary operators
         Prefix parsePrefixExpressionFn = () -> {
             PrefixExpression prefixExpression = new PrefixExpression(this.currentToken, this.currentToken.getLiteral());
-            this.readToken();
+            this.readAndMoveOnNextToken();
             prefixExpression.setRight(this.parseExpression(Precedence.PREFIX));
             return prefixExpression;
         };
@@ -96,7 +96,7 @@ public class Parser
         this.registerPrefix(TokenType.TRUE, () -> new Boolean(this.currentToken, currentTokenIs(TokenType.TRUE)));
         this.registerPrefix(TokenType.FALSE, () -> new Boolean(this.currentToken, currentTokenIs(TokenType.FALSE)));
         this.registerPrefix(TokenType.LP, () -> {
-           this.readToken();
+           this.readAndMoveOnNextToken();
 
            Expression expression = this.parseExpression(Precedence.LOWEST);
 
@@ -113,7 +113,7 @@ public class Parser
                 return null;
             }
 
-            this.readToken();
+            this.readAndMoveOnNextToken();
             expression.setCondition(this.parseExpression(Precedence.LOWEST));
 
             if (!this.expectPeek(TokenType.RP))
@@ -139,18 +139,18 @@ public class Parser
             /* can be extracted as fucntion */
             /* start */
             if (this.peekTokenIs(TokenType.RP)) {
-                this.readToken();
+                this.readAndMoveOnNextToken();
             }
             else
             {
-                this.readToken();
+                this.readAndMoveOnNextToken();
 
                 Identifier identifier = new Identifier(this.currentToken, this.currentToken.getLiteral());
                 identifiers.add(identifier);
 
                 while (peekTokenIs(TokenType.COMMA)) {
-                    this.readToken();
-                    this.readToken();
+                    this.readAndMoveOnNextToken();
+                    this.readAndMoveOnNextToken();
                     identifier = new Identifier(this.currentToken, this.currentToken.getLiteral());
                     identifiers.add(identifier);
                 }
@@ -178,7 +178,7 @@ public class Parser
             InfixExpression infixExpression = new InfixExpression(this.currentToken, this.currentToken.getLiteral(), left);
 
             Precedence precedence = this.curPrecedence();
-            this.readToken();
+            this.readAndMoveOnNextToken();
             infixExpression.setRight(this.parseExpression(precedence));
             return infixExpression;
         };
@@ -194,16 +194,16 @@ public class Parser
             CallExpression callExpression = new CallExpression(this.currentToken, function);
 
             if (peekTokenIs(TokenType.RP)) {
-                this.readToken();
+                this.readAndMoveOnNextToken();
                 return callExpression;
             }
 
-            this.readToken();
+            this.readAndMoveOnNextToken();
             callExpression.getArguments().add(this.parseExpression(Precedence.LOWEST));
 
             while (this.peekTokenIs(TokenType.COMMA)) {
-                this.readToken();
-                this.readToken();
+                this.readAndMoveOnNextToken();
+                this.readAndMoveOnNextToken();
 
                 callExpression.getArguments().add(this.parseExpression(Precedence.LOWEST));
             }
@@ -225,9 +225,9 @@ public class Parser
     }
 
 
-    public void readToken() {
+    public void readAndMoveOnNextToken() {
         this.currentToken = this.peekToken;
-        this.peekToken = this.lexer.readToken();
+        this.peekToken = this.lexer.readAndMoveOnNextToken();
     }
 
     /**
@@ -249,7 +249,7 @@ public class Parser
             if (statement != null) {
                 program.getStatements().add(statement);
             }
-            this.readToken();
+            this.readAndMoveOnNextToken();
         }
 
         return program;
@@ -272,11 +272,11 @@ public class Parser
         varStatement.setName(new Identifier(currentToken, currentToken.getLiteral()));
         if (!this.expectPeek(TokenType.ASSIGN))
             return null;
-        this.readToken();
+        this.readAndMoveOnNextToken();
         varStatement.setValue(this.parseExpression(Precedence.LOWEST));
 
         if (this.peekTokenIs(TokenType.SEMICOLON)) {
-            this.readToken();
+            this.readAndMoveOnNextToken();
         }
         return varStatement;
     }
@@ -284,12 +284,12 @@ public class Parser
     private ReturnStatement pareseReturnStatement() {
         ReturnStatement returnStatement = new ReturnStatement();
         returnStatement.setToken(this.currentToken);
-        this.readToken();
+        this.readAndMoveOnNextToken();
 
         returnStatement.setValue(this.parseExpression(Precedence.LOWEST));
 
         if (this.peekTokenIs(TokenType.SEMICOLON))
-            this.readToken();
+            this.readAndMoveOnNextToken();
 
         return returnStatement;
     }
@@ -299,7 +299,7 @@ public class Parser
         ExpressionStatement expressionStatement = new ExpressionStatement(this.currentToken, this.parseExpression(Precedence.LOWEST));
 
         if (this.peekTokenIs(TokenType.SEMICOLON)) {
-            this.readToken();
+            this.readAndMoveOnNextToken();
         }
 
         return expressionStatement;
@@ -308,7 +308,7 @@ public class Parser
     private BlockStatement parseBlockStatement() {
         BlockStatement blockStatement = new BlockStatement(this.currentToken);
 
-        this.readToken();
+        this.readAndMoveOnNextToken();
 
         while (!this.currentTokenIs(TokenType.RB) && !this.currentTokenIs(TokenType.EOF))
         {
@@ -317,7 +317,7 @@ public class Parser
                 blockStatement.getStatements().add(statement);
             }
 
-            this.readToken();
+            this.readAndMoveOnNextToken();
         }
 
         return blockStatement;
@@ -348,7 +348,7 @@ public class Parser
             if (infix == null)
                 return leftExpression;
 
-            this.readToken();
+            this.readAndMoveOnNextToken();
 
             leftExpression = infix.parseFn(leftExpression);
         }
@@ -360,7 +360,7 @@ public class Parser
 
     private boolean expectPeek(TokenType tokenType) {
         if (this.peekTokenIs(tokenType)) {
-            this.readToken();
+            this.readAndMoveOnNextToken();
             return true;
         } else {
             this.peekError(tokenType);
