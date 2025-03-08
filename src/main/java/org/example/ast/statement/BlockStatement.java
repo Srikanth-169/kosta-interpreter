@@ -29,6 +29,9 @@ public class BlockStatement
 
     @Override
     public String toString() {
+        if (statements.isEmpty())
+            return "{ } ";
+
         StringBuilder sb = new StringBuilder();
         for (Statement statement : statements)
         {

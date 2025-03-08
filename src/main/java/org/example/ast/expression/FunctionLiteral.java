@@ -5,7 +5,6 @@ import org.example.token.Token;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class FunctionLiteral
     implements Expression
@@ -16,6 +15,10 @@ public class FunctionLiteral
 
     private BlockStatement body;
 
+
+    public FunctionLiteral(Token token) {
+        this.token = token;
+    }
 
 
     @Override
@@ -41,5 +44,29 @@ public class FunctionLiteral
 
         sb.append(token.getLiteral()).append("(").append(String.join(", ", params)).append(") ").append(body.toString());
         return sb.toString();
+    }
+
+    public Token getToken() {
+        return token;
+    }
+
+    public void setToken(Token token) {
+        this.token = token;
+    }
+
+    public List<Identifier> getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(List<Identifier> parameters) {
+        this.parameters = parameters;
+    }
+
+    public BlockStatement getBody() {
+        return body;
+    }
+
+    public void setBody(BlockStatement body) {
+        this.body = body;
     }
 }

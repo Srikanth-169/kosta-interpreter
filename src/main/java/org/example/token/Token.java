@@ -37,6 +37,7 @@ public class Token
             case MINUS -> SUM;
             case SLASH -> PRODUCT;
             case ASTERISK -> PRODUCT;
+            case LP -> CALL;
             default -> LOWEST;
         };
     }

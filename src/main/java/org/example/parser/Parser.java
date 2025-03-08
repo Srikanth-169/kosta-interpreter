@@ -128,6 +128,51 @@ public class Parser
         });
 
 
+        this.registerPrefix(TokenType.FUNCTION, () -> {
+            FunctionLiteral functionLiteral = new FunctionLiteral(this.currentToken);
+
+            if (!this.expectPeek(TokenType.LP))
+                return null;
+
+            List<Identifier> identifiers = new ArrayList<>();
+
+            /* can be extracted as fucntion */
+            /* start */
+            if (this.peekTokenIs(TokenType.RP)) {
+                this.readToken();
+            }
+            else
+            {
+                this.readToken();
+
+                Identifier identifier = new Identifier(this.currentToken, this.currentToken.getLiteral());
+                identifiers.add(identifier);
+
+                while (peekTokenIs(TokenType.COMMA)) {
+                    this.readToken();
+                    this.readToken();
+                    identifier = new Identifier(this.currentToken, this.currentToken.getLiteral());
+                    identifiers.add(identifier);
+                }
+
+                if (!expectPeek(TokenType.RP)) {
+                    return null;
+                }
+            }
+            /* end */
+
+            functionLiteral.setParameters(identifiers);
+
+            if (!expectPeek(TokenType.LB))
+                return null;
+
+
+            functionLiteral.setBody(parseBlockStatement());
+
+            return functionLiteral;
+        });
+
+
         // Infix parsing registrations (handle operators between expressions)
         Infix parseInfixExpressionFn = (left) -> {
             InfixExpression infixExpression = new InfixExpression(this.currentToken, this.currentToken.getLiteral(), left);
@@ -145,6 +190,31 @@ public class Parser
         this.registerInfix(TokenType.NOT_EQ, parseInfixExpressionFn);
         this.registerInfix(TokenType.LT, parseInfixExpressionFn);
         this.registerInfix(TokenType.GT, parseInfixExpressionFn);
+        this.registerInfix(TokenType.LP, (Expression function) -> {
+            CallExpression callExpression = new CallExpression(this.currentToken, function);
+
+            if (peekTokenIs(TokenType.RP)) {
+                this.readToken();
+                return callExpression;
+            }
+
+            this.readToken();
+            callExpression.getArguments().add(this.parseExpression(Precedence.LOWEST));
+
+            while (this.peekTokenIs(TokenType.COMMA)) {
+                this.readToken();
+                this.readToken();
+
+                callExpression.getArguments().add(this.parseExpression(Precedence.LOWEST));
+            }
+
+
+            if (!this.expectPeek(TokenType.RP))
+                return null;
+
+            return callExpression;
+
+        });
 
     }
 
@@ -202,8 +272,12 @@ public class Parser
         varStatement.setName(new Identifier(currentToken, currentToken.getLiteral()));
         if (!this.expectPeek(TokenType.ASSIGN))
             return null;
-        while (!this.currentTokenIs(TokenType.SEMICOLON))
+        this.readToken();
+        varStatement.setValue(this.parseExpression(Precedence.LOWEST));
+
+        if (this.peekTokenIs(TokenType.SEMICOLON)) {
             this.readToken();
+        }
         return varStatement;
     }
 
@@ -212,8 +286,11 @@ public class Parser
         returnStatement.setToken(this.currentToken);
         this.readToken();
 
-        while (!this.currentTokenIs(TokenType.SEMICOLON))
+        returnStatement.setValue(this.parseExpression(Precedence.LOWEST));
+
+        if (this.peekTokenIs(TokenType.SEMICOLON))
             this.readToken();
+
         return returnStatement;
     }
 

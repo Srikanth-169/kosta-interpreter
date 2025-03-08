@@ -7,9 +7,19 @@ import org.example.token.Token;
 import org.example.token.TokenType;
 
 import java.io.*;
+import java.util.List;
 
 public class Repl {
     private static final String PROMPT = ">> ";
+
+    private static final String KOSTA =
+            """
+                    ("`-''-/").___..--''"`-._\s
+                     `6_ 6  )   `-.  (     ).`-.__.`)\s
+                     (_Y_.)'  ._   )  `._ `. ``-..-'\s
+                       _..`--'_..-_/  /--'_.'
+                      ((((.-''  ((((.'  (((.-'\s
+            """;
 
     /**
      * Starts read eval print loop. which continuously reads user input, evaluates it and prints the output.
@@ -30,16 +40,32 @@ public class Repl {
                 }
 
                 Lexer lexer = new Lexer(line);
-                Token token;
+                Parser parser = new Parser(lexer);
 
-                // Read next token while it's not end of the file
-                while ((token = lexer.readToken()).getTokenType() != TokenType.EOF) {
-                    System.out.printf("%s%n", token);
+                Program program = parser.parseProgram();
+                if (!parser.getErrors().isEmpty())
+                {
+                    printParseErrors(writer, parser.getErrors());
+                    continue;
                 }
+
+                writer.write(program.toString());
+                writer.write("\n");
+                writer.flush();
 
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private static void printParseErrors(BufferedWriter writer, List<String> errors) throws IOException {
+        writer.write(KOSTA);
+        writer.write("Parser tiger can't eat that code chunk!\n");
+        writer.write(" parser errors:\n");
+        for (String error : errors)
+        {
+            writer.write("\t" + error + "\n");
         }
     }
 }
