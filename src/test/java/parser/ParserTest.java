@@ -1,9 +1,6 @@
 package parser;
 
-import org.example.ast.expression.Expression;
-import org.example.ast.expression.Identifier;
-import org.example.ast.expression.IntegerLiteral;
-import org.example.ast.expression.PrefixExpression;
+import org.example.ast.expression.*;
 import org.example.ast.node.Program;
 import org.example.ast.statement.ExpressionStatement;
 import org.example.ast.statement.ReturnStatement;
@@ -191,6 +188,96 @@ class ParserTest {
 
         assertEquals(integerLiteral.tokenLiteral(), String.valueOf(value), String.format("integerLiteral.tokenLiteral() is not %d. got=%s", value, integerLiteral.tokenLiteral()));
     }
+
+
+
+    @Test
+    public void testParsingInfixExpressions() {
+        Object[][] tests = {
+                { "5 + 5;", 5, "+", 5 },
+                { "5 - 5;", 5, "-", 5 },
+                { "5 * 5;", 5, "*", 5 },
+                { "5 / 5;", 5, "/", 5 },
+                { "5 > 5;", 5, ">", 5 },
+                { "5 < 5;", 5, "<", 5 },
+                { "5 == 5;", 5, "==", 5 },
+                { "5 != 5;", 5, "!=", 5 },
+        };
+
+        for (Object[] test : tests) {
+            Lexer lexer = new Lexer((String) test[0]);
+            Parser parser = new Parser(lexer);
+
+            Program program = parser.parseProgram();
+            checkParserErrors(parser);
+
+            assertEquals(program.getStatements().size(), 1, String.format("program.getStatements does not contain %d statements. got=%d\n", 1, program.getStatements().size()));
+
+            Statement statement = program.getStatements().getFirst();
+            assertInstanceOf(ExpressionStatement.class, statement, "program.getStatements().get(0) is not ExpressionStatement. got=" + statement.getClass());
+            ExpressionStatement expressionStatement = (ExpressionStatement) statement;
+
+
+            assertInstanceOf(InfixExpression.class, expressionStatement.getExpression(), String.format("expressionStatement is not InfixExpression. got=" + expressionStatement.getExpression().getClass()));
+            InfixExpression infixExpression = (InfixExpression) expressionStatement.getExpression();
+
+
+            assertEquals(infixExpression.getOperator(), test[2], String.format("infixExpression.getOperator is not %s, got=%s", test[2], infixExpression.getOperator()));
+
+
+            testIntegerLiteral(infixExpression.getRight(), (int) test[3]);
+
+
+
+
+        }
+
+
+
+    }
+
+
+    @Test
+    void testOperatorPrecedenceParsing() {
+        Object[][] tests = {
+                { "-a * b", "((-a) * b) " },
+                {  "!-a", "(!(-a)) " },
+                {  "a + b + c", "((a + b) + c) " },
+                {  "a + b - c", "((a + b) - c) " },
+                { "a * b * c", "((a * b) * c) " },
+                {  "a * b / c", "((a * b) / c) " },
+                {  "a + b / c", "(a + (b / c)) " },
+                {  "a + b * c + d / e- f", "(((a + (b * c)) + (d / e)) - f) " },
+                {  "3 + 4;-5 * 5", "(3 + 4) ((-5) * 5) " },
+                {  "5 > 4 == 3 < 4", "((5 > 4) == (3 < 4)) " },
+                {  "5 < 4 != 3 > 4", "((5 < 4) != (3 > 4)) " },
+                { "3 + 4 * 5 == 3 * 1 + 4 * 5", "((3 + (4 * 5)) == ((3 * 1) + (4 * 5))) " },
+                { "3 + 4 * 5 == 3 * 1 + 4 * 5", "((3 + (4 * 5)) == ((3 * 1) + (4 * 5))) " }
+        };
+
+        for (Object[] test : tests)
+        {
+            Lexer lexer = new Lexer((String) test[0]);
+            Parser parser = new Parser(lexer);
+
+            Program program = parser.parseProgram();
+            checkParserErrors(parser);
+
+
+
+            assertEquals(program.toString(), test[1], String.format("expected=%s, got=%s", test[1], program));
+
+
+        }
+
+
+    }
+
+
+
+
+
+
 
 
 }

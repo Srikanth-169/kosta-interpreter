@@ -33,6 +33,7 @@ public class Program
 
         for (Statement statement : this.statements) {
             sb.append(statement.toString());
+            sb.append(" ");
         }
 
         return sb.toString();

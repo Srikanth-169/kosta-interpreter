@@ -4,17 +4,26 @@ import org.example.ast.expression.Expression;
 import org.example.ast.statement.ExpressionStatement;
 import org.example.token.Token;
 
-public class PrefixExpression implements Expression {
+public class InfixExpression implements Expression {
 
 
     private Token token;
     private String operator;
     private Expression right;
+    private Expression left;
 
-    public PrefixExpression(Token currentToken, String literal) {
+    public InfixExpression(Token currentToken, String literal) {
         this.token = currentToken;
         operator = literal;
     }
+
+    public InfixExpression(Token currentToken, String literal, Expression left) {
+        this.token = currentToken;
+        operator = literal;
+        this.left = left;
+    }
+
+
 
 
     @Override
@@ -31,7 +40,7 @@ public class PrefixExpression implements Expression {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("(").append(operator).append(" ").append(right.toString()).append(" ").append(")");
+        sb.append("(").append(left).append(" ").append(operator).append(" ").append(right.toString()).append(")");
 
         return sb.toString();
     }
@@ -58,5 +67,13 @@ public class PrefixExpression implements Expression {
 
     public void setRight(Expression right) {
         this.right = right;
+    }
+
+    public Expression getLeft() {
+        return left;
+    }
+
+    public void setLeft(Expression left) {
+        this.left = left;
     }
 }

@@ -1,5 +1,11 @@
 package org.example.parser;
 
+import org.example.token.Token;
+import org.example.token.TokenType;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public enum Precedence
 {
     LOWEST(0),
@@ -20,4 +26,8 @@ public enum Precedence
     public int getValue() {
         return value;
     }
+
+
+
+
 }

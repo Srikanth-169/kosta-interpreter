@@ -1,5 +1,9 @@
 package org.example.token;
 
+import org.example.parser.Precedence;
+
+import static org.example.parser.Precedence.*;
+
 public class Token
 {
     private TokenType tokenType;
@@ -22,12 +26,19 @@ public class Token
                 '}';
     }
 
-    public void setTokenType(TokenType tokenType) {
-        this.tokenType = tokenType;
-    }
-
-    public void setLiteral(String literal) {
-        this.literal = literal;
+    /* Determines priority of the expression operation */
+    public Precedence getPrecedence() {
+        return switch (tokenType) {
+            case EQ -> EQUEALS;
+            case NOT_EQ -> EQUEALS;
+            case LT -> LESSG_REATER;
+            case GT -> LESSG_REATER;
+            case PLUS -> SUM;
+            case MINUS -> SUM;
+            case SLASH -> PRODUCT;
+            case ASTERISK -> PRODUCT;
+            default -> LOWEST;
+        };
     }
 
     public TokenType getTokenType() {
