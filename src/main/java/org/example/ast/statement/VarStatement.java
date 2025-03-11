@@ -43,13 +43,13 @@ public class VarStatement
         StringBuilder sb = new StringBuilder();
 
         sb
-                .append(this.tokenLiteral())
+                .append(tokenLiteral())
                 .append(' ')
-                .append(this.name.toString())
+                .append(name.toString())
                 .append(" = ");
 
-        if (this.value != null) {
-            sb.append(this.value);
+        if (value != null) {
+            sb.append(value);
         }
         sb.append(';');
         return sb.toString();

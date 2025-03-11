@@ -33,13 +33,13 @@ public class ReturnStatement
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append(this.tokenLiteral()).append(' ');
-
-        if (this.value != null) {
-            sb.append(this.value);
+        sb.append(tokenLiteral()); // return
+        sb.append(" ");
+        if (value != null) {
+            sb.append(value); // return value
         }
 
-        sb.append(';');
+        sb.append(';'); // return value;
         return sb.toString();
 
     }

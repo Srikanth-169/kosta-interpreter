@@ -1,7 +1,7 @@
 package org.example.parser;
 
 import org.example.ast.expression.*;
-import org.example.ast.expression.Boolean;
+import org.example.ast.expression.BooleanLiteral;
 import org.example.ast.node.Program;
 import org.example.ast.statement.*;
 import org.example.lexer.Lexer;
@@ -18,6 +18,7 @@ import java.util.Map;
  * Pratt Parsing Implementation: A powerful technique for parsing expressions
  * This approach allows for flexible and extensible parsing of complex expressions
  * by using prefix and infix parsing functions dynamically registered for different token types
+ *
  * @author Konstantine Vashalomidze
  */
 public class Parser
@@ -30,17 +31,12 @@ public class Parser
     private Token currentToken;
     private Token peekToken;
     private Map<TokenType, Prefix> prefixParseFns; // functions that parse prefix tokens like ! or - or integer
-    private Map<TokenType, Infix> infixParseFns; // functios to parse infix tokens like == or + and so on..
+    private Map<TokenType, Infix> infixParseFns; // functios to parse infix tokens like == or + and so on.
 
 
     /**
-     * Parser constructor sets up the parsing environment with dynamic parsing strategies.
-     * Uses the Pratt parsing technique to handle prefix and infix expressions flexibly.
-     *
-     * Key design considerations:
-     * - Supports extensible expression parsing
-     * - Allows easy addition of new token types and parsing rules
-     * - Implements precedence-based expression parsing
+     * parser constructor sets up the parsing environment with dynamic parsing strategies.
+     * uses the Pratt parsing technique to handle prefix and infix expressions
      *
      * @param lexer The lexer responsible for breaking input into tokens
      */
@@ -48,13 +44,11 @@ public class Parser
         this.lexer = lexer; // Initialize core parsing components
         this.errors = new ArrayList<>();
 
-        /* Set up parsing strategy maps for different token types */
         this.prefixParseFns = new HashMap<>();
         this.infixParseFns = new HashMap<>();
 
-
-        /* Dynamically register parsing functions for different token types
-           This approach allows for easy extension of the parser's capabilities */
+        /* dynamically register parsing functions for different token types
+           this approach allows for easy extension of the parser's capabilities */
         initializeParsingStrategies();
 
         this.readAndMoveOnNextToken(); // sets peek token
@@ -63,95 +57,93 @@ public class Parser
     }
 
     /**
-     * Initializes parsing strategies for different token types.
-     * This method demonstrates the extensibility of the Pratt parsing approach.
-     *
-     * Registrations include:
-     * - Prefix parsers for identifiers, integers, negation, logical NOT
-     * - Infix parsers for arithmetic and comparison operators
+     * initializes parsing strategies for different token types.
+     * this method demonstrates the extensibility of the Pratt parsing approach.
      */
     private void initializeParsingStrategies() {
-        // Prefix parsing registrations (handle tokens at the start of expressions)
-        this.registerPrefix(TokenType.IDENTIFIER, () -> new Identifier(this.currentToken, currentToken.getLiteral()));
-        this.registerPrefix(TokenType.INTEGER, () -> {
-            IntegerLiteral literal = new IntegerLiteral(this.currentToken);
+        // prefix parsing registrations (handle tokens at the start of expressions)
+        registerPrefix(TokenType.IDENTIFIER, () -> new Identifier(currentToken, currentToken.getLiteral()));
+        registerPrefix(TokenType.INTEGER, () -> {
+            IntegerLiteral literal = new IntegerLiteral(currentToken);
             try {
-                int value = Integer.parseInt(this.currentToken.getLiteral());
+                int value = Integer.parseInt(currentToken.getLiteral());
                 literal.setValue(value);
                 return literal;
             } catch (NumberFormatException ex) {
-                this.errors.add(ex.getMessage());
                 return null;
             }
         });
-        // Shared prefix expression handler for unary operators
+        // shared prefix expression handler for unary operators
         Prefix parsePrefixExpressionFn = () -> {
-            PrefixExpression prefixExpression = new PrefixExpression(this.currentToken, this.currentToken.getLiteral());
-            this.readAndMoveOnNextToken();
-            prefixExpression.setRight(this.parseExpression(Precedence.PREFIX));
+            // >!(
+            PrefixExpression prefixExpression = new PrefixExpression(currentToken, currentToken.getLiteral());
+            readAndMoveOnNextToken();
+            // !>(
+            prefixExpression.setRight(parseExpression(Precedence.PREFIX));
+            // token is ! and right is (
             return prefixExpression;
         };
-        this.registerPrefix(TokenType.BANG, parsePrefixExpressionFn);
-        this.registerPrefix(TokenType.MINUS, parsePrefixExpressionFn);
-        this.registerPrefix(TokenType.TRUE, () -> new Boolean(this.currentToken, currentTokenIs(TokenType.TRUE)));
-        this.registerPrefix(TokenType.FALSE, () -> new Boolean(this.currentToken, currentTokenIs(TokenType.FALSE)));
-        this.registerPrefix(TokenType.LP, () -> {
-           this.readAndMoveOnNextToken();
+        registerPrefix(TokenType.BANG, parsePrefixExpressionFn);
+        registerPrefix(TokenType.MINUS, parsePrefixExpressionFn);
+        registerPrefix(TokenType.TRUE, () -> new BooleanLiteral(currentToken, currentTokenIs(TokenType.TRUE)));
+        registerPrefix(TokenType.FALSE, () -> new BooleanLiteral(currentToken, !currentTokenIs(TokenType.FALSE)));
+        registerPrefix(TokenType.LP, () -> {
+           readAndMoveOnNextToken();
 
-           Expression expression = this.parseExpression(Precedence.LOWEST);
+           Expression expression = parseExpression(Precedence.LOWEST);
 
-           if (!this.expectPeek(TokenType.RP)) {
+           if (!expectPeek(TokenType.RP)) {
                return null;
            }
 
             return expression;
         });
-        this.registerPrefix(TokenType.IF, () -> {
-            IfExpression expression = new IfExpression(this.currentToken);
+        registerPrefix(TokenType.IF, () -> {
+            IfExpression expression = new IfExpression(currentToken);
 
-            if (!this.expectPeek(TokenType.LP)) {
+            if (!expectPeek(TokenType.LP)) {
                 return null;
             }
 
             this.readAndMoveOnNextToken();
-            expression.setCondition(this.parseExpression(Precedence.LOWEST));
+            expression.setCondition(parseExpression(Precedence.LOWEST));
 
-            if (!this.expectPeek(TokenType.RP))
+            if (!expectPeek(TokenType.RP))
                 return null;
 
-            if (!this.expectPeek(TokenType.LB))
+            if (!expectPeek(TokenType.LB))
                 return null;
 
-            expression.setConsequence(this.parseBlockStatement());
+            expression.setConsequence(parseBlockStatement());
 
             return expression;
         });
 
 
-        this.registerPrefix(TokenType.FUNCTION, () -> {
-            FunctionLiteral functionLiteral = new FunctionLiteral(this.currentToken);
+        registerPrefix(TokenType.FUNCTION, () -> {
+            FunctionLiteral functionLiteral = new FunctionLiteral(currentToken);
 
-            if (!this.expectPeek(TokenType.LP))
+            if (!expectPeek(TokenType.LP))
                 return null;
 
             List<Identifier> identifiers = new ArrayList<>();
 
             /* can be extracted as fucntion */
             /* start */
-            if (this.peekTokenIs(TokenType.RP)) {
-                this.readAndMoveOnNextToken();
+            if (peekTokenIs(TokenType.RP)) {
+                readAndMoveOnNextToken();
             }
             else
             {
-                this.readAndMoveOnNextToken();
+                readAndMoveOnNextToken();
 
-                Identifier identifier = new Identifier(this.currentToken, this.currentToken.getLiteral());
+                Identifier identifier = new Identifier(currentToken, currentToken.getLiteral());
                 identifiers.add(identifier);
 
                 while (peekTokenIs(TokenType.COMMA)) {
-                    this.readAndMoveOnNextToken();
-                    this.readAndMoveOnNextToken();
-                    identifier = new Identifier(this.currentToken, this.currentToken.getLiteral());
+                    readAndMoveOnNextToken();
+                    readAndMoveOnNextToken();
+                    identifier = new Identifier(currentToken, currentToken.getLiteral());
                     identifiers.add(identifier);
                 }
 
@@ -173,43 +165,43 @@ public class Parser
         });
 
 
-        // Infix parsing registrations (handle operators between expressions)
-        Infix parseInfixExpressionFn = (left) -> {
-            InfixExpression infixExpression = new InfixExpression(this.currentToken, this.currentToken.getLiteral(), left);
+        Infix parseInfixExpressionFn = (left) -> { // left is already parsed expression
+            /* we create infix expression on current token */
+            InfixExpression infixExpression = new InfixExpression(currentToken, currentToken.getLiteral(), left);
 
-            Precedence precedence = this.curPrecedence();
-            this.readAndMoveOnNextToken();
-            infixExpression.setRight(this.parseExpression(precedence));
-            return infixExpression;
+            Precedence precedence = currentToken.getPrecedence(); // remember the infix operator precedence before advancing
+            readAndMoveOnNextToken();
+            infixExpression.setRight(parseExpression(precedence)); // parse right side, meaning remaining expression
+            return infixExpression; // fully parsed expression
         };
-        this.registerInfix(TokenType.PLUS, parseInfixExpressionFn);
-        this.registerInfix(TokenType.MINUS, parseInfixExpressionFn);
-        this.registerInfix(TokenType.SLASH, parseInfixExpressionFn);
-        this.registerInfix(TokenType.ASTERISK, parseInfixExpressionFn);
-        this.registerInfix(TokenType.EQ, parseInfixExpressionFn);
-        this.registerInfix(TokenType.NOT_EQ, parseInfixExpressionFn);
-        this.registerInfix(TokenType.LT, parseInfixExpressionFn);
-        this.registerInfix(TokenType.GT, parseInfixExpressionFn);
-        this.registerInfix(TokenType.LP, (Expression function) -> {
-            CallExpression callExpression = new CallExpression(this.currentToken, function);
+        registerInfix(TokenType.PLUS, parseInfixExpressionFn);
+        registerInfix(TokenType.MINUS, parseInfixExpressionFn);
+        registerInfix(TokenType.SLASH, parseInfixExpressionFn);
+        registerInfix(TokenType.ASTERISK, parseInfixExpressionFn);
+        registerInfix(TokenType.EQ, parseInfixExpressionFn);
+        registerInfix(TokenType.NOT_EQ, parseInfixExpressionFn);
+        registerInfix(TokenType.LT, parseInfixExpressionFn);
+        registerInfix(TokenType.GT, parseInfixExpressionFn);
+        registerInfix(TokenType.LP, (Expression function) -> {
+            CallExpression callExpression = new CallExpression(currentToken, function);
 
             if (peekTokenIs(TokenType.RP)) {
-                this.readAndMoveOnNextToken();
+                readAndMoveOnNextToken();
                 return callExpression;
             }
 
-            this.readAndMoveOnNextToken();
-            callExpression.getArguments().add(this.parseExpression(Precedence.LOWEST));
+            readAndMoveOnNextToken();
+            callExpression.getArguments().add(parseExpression(Precedence.LOWEST));
 
-            while (this.peekTokenIs(TokenType.COMMA)) {
-                this.readAndMoveOnNextToken();
-                this.readAndMoveOnNextToken();
+            while (peekTokenIs(TokenType.COMMA)) {
+                readAndMoveOnNextToken();
+                readAndMoveOnNextToken();
 
-                callExpression.getArguments().add(this.parseExpression(Precedence.LOWEST));
+                callExpression.getArguments().add(parseExpression(Precedence.LOWEST));
             }
 
 
-            if (!this.expectPeek(TokenType.RP))
+            if (!expectPeek(TokenType.RP))
                 return null;
 
             return callExpression;
@@ -227,29 +219,31 @@ public class Parser
 
     public void readAndMoveOnNextToken() {
         this.currentToken = this.peekToken;
-        this.peekToken = this.lexer.readAndMoveOnNextToken();
+        this.peekToken = lexer.readAndMoveOnNextToken();
     }
 
     /**
-     * Core parsing method that transforms a stream of tokens into an Abstract Syntax Tree (AST).
+     * core parsing method that transforms a stream of tokens into an Abstract Syntax Tree (AST).
      *
-     * Parsing strategy:
-     * 1. Create a program container
-     * 2. Iterate through tokens until EOF
-     * 3. Parse each statement and add to program
+     *
+     * create a program container
+     * iterate through tokens until EOF
+     * parse each statement and add to program
      *
      * @return Fully parsed Program representing the entire input
      */
     public Program parseProgram() {
         Program program = new Program();
 
-        while (currentToken.getTokenType() != TokenType.EOF) // Continue parsing until end of file
+        while (currentToken.getTokenType() != TokenType.EOF) // continue parsing until end of file
         {
-            Statement statement = this.parseStatement();
+            // statement types are var, return, expression, block
+            Statement statement = parseStatement(); // applies parsing strategy
             if (statement != null) {
                 program.getStatements().add(statement);
             }
-            this.readAndMoveOnNextToken();
+            // current token is semicolon so we need to advance current token to the next one
+            readAndMoveOnNextToken();
         }
 
         return program;
@@ -257,62 +251,69 @@ public class Parser
 
     private Statement parseStatement() {
         return switch (currentToken.getTokenType()) {
-            case VARIABLE -> this.parseVarStatement();
-            case RETURN -> this.pareseReturnStatement();
-            default -> this.parseExpressionStatement();
+            case VARIABLE -> parseVarStatement();
+            case RETURN -> pareseReturnStatement();
+            default -> parseExpressionStatement();
         };
     }
 
 
+    /**
+     * parses var statement having the form VARIABLE IDENTIFIER ASSIGN EXPRESSION SEMICOLON
+     * @return VarStatement
+     */
     private VarStatement parseVarStatement() {
         VarStatement varStatement = new VarStatement();
-        varStatement.setToken(this.currentToken);
-        if (!this.expectPeek(TokenType.IDENTIFIER))
+        varStatement.setToken(currentToken); // equip var token
+        /* equip name of the variable */
+        if (!expectPeek(TokenType.IDENTIFIER))
             return null;
         varStatement.setName(new Identifier(currentToken, currentToken.getLiteral()));
-        if (!this.expectPeek(TokenType.ASSIGN))
+        if (!expectPeek(TokenType.ASSIGN))
             return null;
-        this.readAndMoveOnNextToken();
-        varStatement.setValue(this.parseExpression(Precedence.LOWEST));
+        /* we don't need to save assign in var statment since it's obvious and abstracted */
+        readAndMoveOnNextToken();
+        varStatement.setValue(parseExpression(Precedence.LOWEST)); // parse expression after assign operator and equip
 
-        if (this.peekTokenIs(TokenType.SEMICOLON)) {
-            this.readAndMoveOnNextToken();
+        if (peekTokenIs(TokenType.SEMICOLON)) {
+            readAndMoveOnNextToken();
         }
         return varStatement;
     }
 
     private ReturnStatement pareseReturnStatement() {
         ReturnStatement returnStatement = new ReturnStatement();
-        returnStatement.setToken(this.currentToken);
-        this.readAndMoveOnNextToken();
+        returnStatement.setToken(currentToken); // set return as token in return statement
+        readAndMoveOnNextToken();
 
-        returnStatement.setValue(this.parseExpression(Precedence.LOWEST));
 
-        if (this.peekTokenIs(TokenType.SEMICOLON))
-            this.readAndMoveOnNextToken();
+        returnStatement.setValue(parseExpression(Precedence.LOWEST));
+
+        if (peekTokenIs(TokenType.SEMICOLON))
+            readAndMoveOnNextToken();
 
         return returnStatement;
     }
 
 
     private ExpressionStatement parseExpressionStatement() {
-        ExpressionStatement expressionStatement = new ExpressionStatement(this.currentToken, this.parseExpression(Precedence.LOWEST));
+        ExpressionStatement expressionStatement = new ExpressionStatement(currentToken, parseExpression(Precedence.LOWEST));
 
-        if (this.peekTokenIs(TokenType.SEMICOLON)) {
-            this.readAndMoveOnNextToken();
+        if (peekTokenIs(TokenType.SEMICOLON)) {
+            readAndMoveOnNextToken();
         }
 
         return expressionStatement;
     }
 
     private BlockStatement parseBlockStatement() {
-        BlockStatement blockStatement = new BlockStatement(this.currentToken);
+        BlockStatement blockStatement = new BlockStatement(currentToken);
 
         this.readAndMoveOnNextToken();
 
-        while (!this.currentTokenIs(TokenType.RB) && !this.currentTokenIs(TokenType.EOF))
+        while (!currentTokenIs(TokenType.RB) && !currentTokenIs(TokenType.EOF))
         {
-            Statement statement = this.parseStatement();
+            Statement statement = parseStatement();
             if (statement != null) {
                 blockStatement.getStatements().add(statement);
             }
@@ -324,15 +325,13 @@ public class Parser
     }
 
     /**
-     * Expression parsing method implementing Pratt parsing algorithm.
+     * expression parsing method implementing Pratt parsing algorithm.
+     * prefix expressions (like -5, !true)
+     * infix expressions (like 5 + 3, a * b)
+     * precedence-based parsing to resolve complex expressions
      *
-     * Advanced parsing technique that handles:
-     * - Prefix expressions (like -5, !true)
-     * - Infix expressions (like 5 + 3, a * b)
-     * - Precedence-based parsing to resolve complex expressions
-     *
-     * @param precedence Current precedence level to control expression parsing depth
-     * @return Parsed Expression with resolved precedence
+     * @param precedence current precedence level to control expression parsing depth
+     * @return parsed Expression with resolved precedence
      */
     private Expression parseExpression(Precedence precedence) {
         // Attempt to find a prefix parsing function for the current token
@@ -359,11 +358,11 @@ public class Parser
 
 
     private boolean expectPeek(TokenType tokenType) {
-        if (this.peekTokenIs(tokenType)) {
-            this.readAndMoveOnNextToken();
+        if (peekTokenIs(tokenType)) {
+            readAndMoveOnNextToken();
             return true;
         } else {
-            this.peekError(tokenType);
+            peekError(tokenType);
             return false;
         }
     }
@@ -384,9 +383,7 @@ public class Parser
         return this.peekToken.getPrecedence();
     }
 
-    private Precedence curPrecedence() {
-        return this.currentToken.getPrecedence();
-    }
+
 
     private boolean currentTokenIs(TokenType tokenType) {
         return this.currentToken.getTokenType() == tokenType;

@@ -8,6 +8,7 @@ import java.util.function.Function;
 
 
 /**
+ *  Tokenizes the program into tokens. Get that tokens with readAndMoveOnNextToken().
  *
  * @author Konstantine Vashalomidze
  */
@@ -20,21 +21,21 @@ public class Lexer
 
     public Lexer(String input)
     {
-        this.input = input;
-        this.moveOnNextCharacter();
+        this.input = input == null ? "" : input; // if null was provided
+        moveOnNextCharacter();
     }
 
     /**
      * Reads next character from the input, updates 'currentCharacterPosition' to 'nextCharacterPosition' and increments readWholeStringStartingFromCurrentCharacter currentCharacterPosition.
      */
-    public void moveOnNextCharacter() 
+    private void moveOnNextCharacter()
     {
         if (nextCharacterPosition >= input.length()) // EOF input reached
-            this.currentCharacter = '\0';
+            currentCharacter = '\0';
         else
-            this.currentCharacter = this.input.charAt(this.nextCharacterPosition);
-        this.currentCharacterPosition = this.nextCharacterPosition;
-        this.nextCharacterPosition += 1;
+            currentCharacter = input.charAt(nextCharacterPosition);
+        currentCharacterPosition = nextCharacterPosition;
+        nextCharacterPosition += 1;
     }
 
     /**
@@ -43,13 +44,13 @@ public class Lexer
      */
     public Token readAndMoveOnNextToken() {
         Token token;
-        this.skipWhiteSpace();
+        skipWhiteSpace();
         // detect token type by value value and return it
         switch (currentCharacter) {
             case '=' -> { // could be assignment or equals check.
-                switch (this.readNextCharacter()) {
+                switch (readNextCharacter()) {
                     case '=' -> { // equals
-                        this.moveOnNextCharacter();
+                        moveOnNextCharacter();
                         token = new Token(TokenType.EQ, TokenType.EQ.getValue());
                     }
                     default -> token = new Token(TokenType.ASSIGN, TokenType.ASSIGN.getValue()); // assignment
@@ -57,9 +58,9 @@ public class Lexer
             }
             case '-' -> token = new Token(TokenType.MINUS, TokenType.MINUS.getValue());
             case '!' -> { // could be not or not equal
-                switch (this.readNextCharacter()) {
+                switch (readNextCharacter()) {
                     case '=' -> { // not equal case
-                        this.moveOnNextCharacter();
+                        moveOnNextCharacter();
                         token = new Token(TokenType.NOT_EQ, TokenType.NOT_EQ.getValue());
                     }
                     default -> token = new Token(TokenType.BANG, TokenType.BANG.getValue());
@@ -95,14 +96,16 @@ public class Lexer
                     return token; // we return since we don't want to readWholeStringStartingFromCurrentCharacter character, readWholeStringStartingFromCurrentCharacter() method does this itself
                 }
                 else if (Character.isDigit(currentCharacter))
+                {
                     return new Token(TokenType.INTEGER, readWholeStringStartingFromCurrentCharacter(Character::isDigit)); // same here
+                }
                 else // undefined word
                     token = new Token(TokenType.ILLEGAL, String.valueOf(currentCharacter));
             }
 
         }
 
-        this.moveOnNextCharacter(); // indirectly means finding next word in input since we use skip whitespace method most likely
+        moveOnNextCharacter(); // indirectly means finding next word in input since we use skip whitespace method most likely
 
         return token;
     }
@@ -129,7 +132,7 @@ public class Lexer
         if (nextCharacterPosition >= input.length())
             return '\0';
         else
-            return this.input.charAt(nextCharacterPosition);
+            return input.charAt(nextCharacterPosition);
     }
 
     /**
@@ -137,8 +140,8 @@ public class Lexer
      */
     private void skipWhiteSpace()
     {
-        while (this.currentCharacter == ' ' || this.currentCharacter == '\t' || this.currentCharacter == '\n' || this.currentCharacter == '\r')
-            this.moveOnNextCharacter();
+        while (currentCharacter == ' ' || currentCharacter == '\t' || currentCharacter == '\n' || currentCharacter == '\r')
+            moveOnNextCharacter();
     }
 
 }

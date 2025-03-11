@@ -38,8 +38,8 @@ public class ExpressionStatement
 
     @Override
     public String toString() {
-        if (this.expression != null) {
-            return this.expression.toString();
+        if (expression != null) {
+            return expression.toString();
         }
         return "";
     }

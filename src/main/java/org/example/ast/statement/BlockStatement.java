@@ -30,13 +30,20 @@ public class BlockStatement
     @Override
     public String toString() {
         if (statements.isEmpty())
-            return "{ } ";
+            return "{ }";
 
         StringBuilder sb = new StringBuilder();
+        int count = 0;
+        sb.append("{ ");
         for (Statement statement : statements)
         {
-            sb.append(statement.toString());
+            if (count != statements.size() - 1)
+                sb.append(statement.toString()).append(" ");
+            else
+                sb.append(statement.toString());
+            count++;
         }
+        sb.append(" }");
         return sb.toString();
     }
 

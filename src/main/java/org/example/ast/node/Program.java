@@ -1,11 +1,15 @@
 package org.example.ast.node;
 
-import org.example.ast.node.Node;
 import org.example.ast.statement.Statement;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Program is the root node in AST, it consists of statements represented as array list.
+ *
+ * @author Konstantine Vashalomdize
+ */
 public class Program
     implements Node
 {
@@ -31,9 +35,13 @@ public class Program
     {
         StringBuilder sb = new StringBuilder();
 
-        for (Statement statement : this.statements) {
-            sb.append(statement.toString());
-            sb.append(" ");
+        int count = 0;
+        for (Statement statement : statements) {
+            if (count != statements.size() - 1)
+                sb.append(statement.toString()).append(" ");
+            else
+                sb.append(statement.toString());
+            count++;
         }
 
         return sb.toString();

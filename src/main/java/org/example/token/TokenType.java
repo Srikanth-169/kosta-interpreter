@@ -1,5 +1,12 @@
 package org.example.token;
 
+
+/**
+ * ILLEGAL, EOF, IDENTIFIER, INTEGER, ASSIGN, PLUS, MINUS, BANG, ASTERISK, SLASH, LT, GT, EQ, NOT_EQ, COMMA,
+ * SEMICOLON, LP, RP, LB, RB, FUNCTION, VARIABLE, TRUE, FALSE, IF, ELSE, RETURN
+ *
+ * @author Konstantine Vashalomidze
+ */
 public enum TokenType
 {
     ILLEGAL("ILLEGAL"), // for indicating illegal token

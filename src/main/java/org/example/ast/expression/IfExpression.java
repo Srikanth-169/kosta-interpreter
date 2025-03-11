@@ -30,12 +30,10 @@ public class IfExpression
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("if").append(condition.toString()).append(" ").append(consequence.toString());
+        sb.append("if").append(" (").append(condition.toString()).append(") ").append(consequence.toString());
 
         if (alternative != null)
-        {
-            sb.append("else ").append(alternative.toString());
-        }
+            sb.append("else ").append(alternative);
 
         return sb.toString();
     }

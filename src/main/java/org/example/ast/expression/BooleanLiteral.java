@@ -2,14 +2,14 @@ package org.example.ast.expression;
 
 import org.example.token.Token;
 
-public class Boolean
+public class BooleanLiteral
     implements Expression
 {
 
     private Token token;
     private boolean value;
 
-    public Boolean(Token token, boolean value) {
+    public BooleanLiteral(Token token, boolean value) {
         this.token = token;
         this.value = value;
     }
@@ -32,7 +32,7 @@ public class Boolean
         this.token = token;
     }
 
-    public boolean isValue() {
+    public boolean getValue() {
         return value;
     }
 

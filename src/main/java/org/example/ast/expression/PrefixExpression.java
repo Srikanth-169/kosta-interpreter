@@ -31,7 +31,7 @@ public class PrefixExpression implements Expression {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("(").append(operator).append(" ").append(right.toString()).append(" ").append(")");
+        sb.append("(").append(operator).append(right.toString()).append(")");
 
         return sb.toString();
     }
