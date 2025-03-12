@@ -33,7 +33,7 @@ public class IfExpression
         sb.append("if").append(" (").append(condition.toString()).append(") ").append(consequence.toString());
 
         if (alternative != null)
-            sb.append("else ").append(alternative);
+            sb.append(" else ").append(alternative);
 
         return sb.toString();
     }

@@ -116,6 +116,16 @@ public class Parser
 
             expression.setConsequence(parseBlockStatement());
 
+            if (peekTokenIs(TokenType.ELSE))
+            {
+                readAndMoveOnNextToken();
+
+                if (!expectPeek(TokenType.LB))
+                    return null;
+
+                expression.setAlternative(parseBlockStatement());
+            }
+
             return expression;
         });
 
