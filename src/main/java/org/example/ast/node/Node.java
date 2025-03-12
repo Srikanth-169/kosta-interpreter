@@ -4,4 +4,6 @@ package org.example.ast.node;
 public interface Node
 {
     String tokenLiteral();
+
+
 }

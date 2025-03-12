@@ -1,7 +1,9 @@
 package org.example.repl;
 
 import org.example.ast.node.Program;
+import org.example.evaluator.Evaluator;
 import org.example.lexer.Lexer;
+import org.example.object.Object;
 import org.example.parser.Parser;
 import org.example.token.Token;
 import org.example.token.TokenType;
@@ -43,16 +45,20 @@ public class Repl {
                 Parser parser = new Parser(lexer);
 
                 Program program = parser.parseProgram();
+                Evaluator evaluator = new Evaluator();
                 if (!parser.getErrors().isEmpty())
                 {
                     printParseErrors(writer, parser.getErrors());
                     continue;
                 }
 
-                writer.write(program.toString());
-                writer.write("\n");
-                writer.flush();
-
+                Object evaluated = evaluator.evaluate(program);
+                if (evaluated != null)
+                {
+                    writer.write(evaluated.inspect());
+                    writer.write("\n");
+                    writer.flush();
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
