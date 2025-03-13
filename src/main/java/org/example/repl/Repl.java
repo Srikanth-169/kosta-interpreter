@@ -3,6 +3,7 @@ package org.example.repl;
 import org.example.ast.node.Program;
 import org.example.evaluator.Evaluator;
 import org.example.lexer.Lexer;
+import org.example.object.Environment;
 import org.example.object.Object;
 import org.example.parser.Parser;
 import org.example.token.Token;
@@ -31,6 +32,7 @@ public class Repl {
     public static void start(InputStream input, OutputStream output) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(input));
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output));
+        Environment environment = new Environment();
         try {
             while (true) {
                 writer.write(PROMPT);
@@ -45,7 +47,7 @@ public class Repl {
                 Parser parser = new Parser(lexer);
 
                 Program program = parser.parseProgram();
-                Evaluator evaluator = new Evaluator();
+                Evaluator evaluator = new Evaluator(environment);
                 if (!parser.getErrors().isEmpty())
                 {
                     printParseErrors(writer, parser.getErrors());
