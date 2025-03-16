@@ -14,13 +14,13 @@ about complex things and focus more on improving interpreter. The parser uses [p
 technique because its simplicity and how ease of it is to extend operator precedence rules. 
 
 # How to use
-1. Have at least JDK 17 or above. 
+1. Have at least JDK 21 or above. 
 2. Clone this repository. 
 3. Run ```./mvnw exec:java``` in kosta-interpreter.
 
 # Kosta language
 ### Syntax
-_C-style with curly braces ({}) and semicolons (;) to terminate statements._
+_C-style with curly braces ({ }) and semicolons (;) to terminate statements._
 
 Example:
 
