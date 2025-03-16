@@ -1,10 +1,13 @@
 package interperter.evaluator;
 
-import org.kosta.interperter.ast.expression.*;
-import org.kosta.interperter.ast.node.Node;
-import org.kosta.interperter.ast.node.Program;
-import org.kosta.interperter.ast.statement.*;
-import org.kosta.interperter.evaluator.value.*;
+
+import interperter.ast.expression.*;
+import interperter.ast.node.*;
+import interperter.ast.statement.*;
+import interperter.evaluator.value.*;
+import interperter.evaluator.value.Boolean;
+import interperter.evaluator.value.Error;
+import interperter.evaluator.value.Integer;
 
 import java.util.ArrayList;
 import java.util.List;

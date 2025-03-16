@@ -1,7 +1,7 @@
 package interperter.ast.expression;
 
 
-import org.kosta.interperter.token.Token;
+import interperter.token.Token;
 
 import java.util.ArrayList;
 import java.util.List;

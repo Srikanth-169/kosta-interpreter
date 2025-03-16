@@ -1,9 +1,11 @@
 package interperter.token.types;
 
-import org.kosta.interperter.token.Precedence;
-import org.kosta.interperter.token.Token;
 
-import static org.kosta.interperter.token.Precedence.SUM;
+import interperter.token.Precedence;
+import interperter.token.Token;
+
+import static interperter.token.Precedence.SUM;
+
 
 public class MinusInfix implements Token {
 

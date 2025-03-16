@@ -1,9 +1,11 @@
 package interperter.token.types;
 
-import org.kosta.interperter.token.Precedence;
-import org.kosta.interperter.token.Token;
 
-import static org.kosta.interperter.token.Precedence.COMPARE;
+import interperter.token.Precedence;
+import interperter.token.Token;
+
+import static interperter.token.Precedence.COMPARE;
+
 
 public class Lt implements Token {
     @Override

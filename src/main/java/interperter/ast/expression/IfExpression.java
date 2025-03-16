@@ -1,8 +1,8 @@
 package interperter.ast.expression;
 
 
-import org.kosta.interperter.ast.statement.BlockStatement;
-import org.kosta.interperter.token.Token;
+import interperter.ast.statement.BlockStatement;
+import interperter.token.Token;
 
 public class IfExpression
     implements Expression

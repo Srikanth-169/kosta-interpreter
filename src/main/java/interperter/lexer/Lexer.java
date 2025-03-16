@@ -1,9 +1,10 @@
 package interperter.lexer;
 
 
-import org.kosta.interperter.token.Token;
-import org.kosta.interperter.token.TokenManager;
-import org.kosta.interperter.token.types.*;
+import interperter.token.Token;
+import interperter.token.TokenManager;
+import interperter.token.types.*;
+import interperter.token.types.Integer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.function.Function;

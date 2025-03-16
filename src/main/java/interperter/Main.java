@@ -1,7 +1,7 @@
 package interperter;
 
 
-import org.kosta.interperter.repl.Repl;
+import interperter.repl.Repl;
 
 /**
  * This application is written by following the design of the book  'Writing and interpreter in go by Thorsten Ball'.

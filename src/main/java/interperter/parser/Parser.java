@@ -1,15 +1,16 @@
 package interperter.parser;
 
-import org.kosta.interperter.ast.expression.*;
-import org.kosta.interperter.ast.expression.Identifier;
-import org.kosta.interperter.ast.node.Program;
-import org.kosta.interperter.ast.statement.*;
-import org.kosta.interperter.lexer.Lexer;
-import org.kosta.interperter.parser.infix.Infix;
-import org.kosta.interperter.parser.prefix.Prefix;
-import org.kosta.interperter.token.Token;
-import org.kosta.interperter.token.types.*;
+import interperter.ast.expression.*;
+import interperter.ast.expression.Identifier;
+import interperter.ast.node.Program;
+import interperter.ast.statement.*;
+import interperter.lexer.Lexer;
+import interperter.parser.infix.Infix;
+import interperter.parser.prefix.Prefix;
+import interperter.token.Token;
+import interperter.token.types.*;
 
+import java.lang.Integer;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,7 +47,7 @@ public class Parser {
 
     private void initialiseParsingFunctions() {
         /* start by initialising prefix parsing functions */
-        prefixParsingFunctions.put(org.kosta.interperter.token.types.Identifier.class.getSimpleName(), () -> new Identifier(currentToken));
+        prefixParsingFunctions.put(Identifier.class.getSimpleName(), () -> new Identifier(currentToken));
         prefixParsingFunctions.put(Integer.class.getSimpleName(), () -> new IntegerLiteral(currentToken));
         prefixParsingFunctions.put(Bang.class.getSimpleName(), this::parseBangOrMinus);
         prefixParsingFunctions.put(MinusPrefix.class.getSimpleName(), this::parseBangOrMinus);
@@ -227,7 +228,7 @@ public class Parser {
         VarStatement varStatement = new VarStatement(currentToken); // var
 
         // var <identifier>
-        if (!expectNextToken(org.kosta.interperter.token.types.Identifier.class.getSimpleName()))
+        if (!expectNextToken(Identifier.class.getSimpleName()))
             return null;
 
         varStatement.setName(new Identifier(currentToken));

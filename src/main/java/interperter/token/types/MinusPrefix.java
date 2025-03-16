@@ -1,9 +1,11 @@
 package interperter.token.types;
 
-import org.kosta.interperter.token.Precedence;
-import org.kosta.interperter.token.Token;
 
-import static org.kosta.interperter.token.Precedence.PREFIX;
+import interperter.token.Precedence;
+import interperter.token.Token;
+
+import static interperter.token.Precedence.PREFIX;
+
 
 public class MinusPrefix implements Token {
 

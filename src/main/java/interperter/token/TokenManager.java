@@ -1,6 +1,8 @@
 package interperter.token;
 
-import org.kosta.interperter.token.types.*;
+
+import interperter.token.types.*;
+import interperter.token.types.Integer;
 
 import java.util.HashMap;
 import java.util.Map;

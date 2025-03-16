@@ -1,9 +1,9 @@
 package interperter.ast.statement;
 
 
-import org.kosta.interperter.ast.expression.Expression;
-import org.kosta.interperter.ast.expression.Identifier;
-import org.kosta.interperter.token.Token;
+import interperter.ast.expression.Expression;
+import interperter.ast.expression.Identifier;
+import interperter.token.Token;
 
 public class VarStatement
     implements Statement

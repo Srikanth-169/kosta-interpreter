@@ -1,7 +1,8 @@
 package interperter.token.types;
 
-import org.kosta.interperter.token.Precedence;
-import org.kosta.interperter.token.Token;
+
+import interperter.token.Precedence;
+import interperter.token.Token;
 
 public class Bang implements Token {
 

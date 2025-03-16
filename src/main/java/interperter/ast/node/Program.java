@@ -1,7 +1,8 @@
 package interperter.ast.node;
 
 
-import org.kosta.interperter.ast.statement.Statement;
+
+import interperter.ast.statement.Statement;
 
 import java.util.ArrayList;
 import java.util.List;

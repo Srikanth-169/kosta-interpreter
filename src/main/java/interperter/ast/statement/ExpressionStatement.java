@@ -1,8 +1,8 @@
 package interperter.ast.statement;
 
 
-import org.kosta.interperter.ast.expression.Expression;
-import org.kosta.interperter.token.Token;
+import interperter.ast.expression.Expression;
+import interperter.token.Token;
 
 public class ExpressionStatement
     implements Statement

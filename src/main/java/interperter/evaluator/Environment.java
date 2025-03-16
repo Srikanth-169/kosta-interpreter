@@ -1,6 +1,8 @@
 package interperter.evaluator;
 
-import org.kosta.interperter.evaluator.value.Value;
+
+
+import interperter.evaluator.value.Value;
 
 import java.util.HashMap;
 import java.util.Map;

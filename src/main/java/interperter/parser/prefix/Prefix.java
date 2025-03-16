@@ -1,6 +1,7 @@
 package interperter.parser.prefix;
 
-import org.kosta.interperter.ast.expression.Expression;
+
+import interperter.ast.expression.Expression;
 
 import java.lang.reflect.InvocationTargetException;
 

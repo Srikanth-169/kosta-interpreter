@@ -1,12 +1,13 @@
 package interperter.repl;
 
 
-import org.kosta.interperter.ast.node.Program;
-import org.kosta.interperter.evaluator.Environment;
-import org.kosta.interperter.evaluator.Evaluator;
-import org.kosta.interperter.evaluator.value.Value;
-import org.kosta.interperter.lexer.Lexer;
-import org.kosta.interperter.parser.Parser;
+
+import interperter.ast.node.Program;
+import interperter.evaluator.Environment;
+import interperter.evaluator.Evaluator;
+import interperter.evaluator.value.Value;
+import interperter.lexer.Lexer;
+import interperter.parser.Parser;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;

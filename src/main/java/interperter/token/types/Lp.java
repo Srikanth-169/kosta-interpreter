@@ -1,9 +1,11 @@
 package interperter.token.types;
 
-import org.kosta.interperter.token.Precedence;
-import org.kosta.interperter.token.Token;
 
-import static org.kosta.interperter.token.Precedence.CALL;
+import interperter.token.Precedence;
+import interperter.token.Token;
+
+import static interperter.token.Precedence.CALL;
+
 
 public class Lp implements Token {
 
