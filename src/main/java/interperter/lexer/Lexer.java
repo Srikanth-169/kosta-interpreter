@@ -96,18 +96,27 @@ public class Lexer
             InstantiationException,
             IllegalAccessException
     {
+        previousToken = currentToken;
         skipWhiteSpace(); // move to the next currentToken's first character index
         switch (currentCharacter) {
             case '=' -> {
                 if (nextCharacter() == '=')
+                {
                     currentToken = getToken(Eq.class);
-                currentToken = getToken(Assign.class);
+                    moveOnNextCharacter();
+                }
+                else
+                    currentToken = getToken(Assign.class);
             }
             case '*' -> currentToken = getToken(Asterisk.class);
             case '!' -> {
                 if (nextCharacter() == '=')
+                {
                     currentToken = getToken(NotEq.class);
-                currentToken = getToken(Bang.class);
+                    moveOnNextCharacter();
+                }
+                else
+                    currentToken = getToken(Bang.class);
             }
             case ',' -> currentToken = getToken(Comma.class);
             case '\0' -> currentToken = getToken(Eof.class);
@@ -130,23 +139,27 @@ public class Lexer
                     String literal = readCurrentLiteral(Character::isLetter);
                     // if not found in manager that should be the identifier
                     if (TokenManager.getTokenManagerInstance().getTokenWithLiteral(literal).isEmpty())
-                        return new Identifier().setLiteral(literal);
+                    {
+                        currentToken = new Identifier().setLiteral(literal);
+                        return currentToken;
+                    }
                     // This creates new currentToken depending on the literal
                     // for example if literal is fn then new currentToken of Function will be created.
-                    return TokenManager.getTokenManagerInstance().getTokenWithLiteral(literal).get().getClass().getDeclaredConstructor().newInstance().setLiteral(literal);
+                    currentToken = TokenManager.getTokenManagerInstance().getTokenWithLiteral(literal).get().getClass().getDeclaredConstructor().newInstance().setLiteral(literal);
+                    return currentToken;
                 }
                 else if (Character.isDigit(currentCharacter))
                 {
                     // this moves to the next currentToken starting index, so we directly return
                     String literal = readCurrentLiteral(Character::isDigit);
-                    return new Integer().setLiteral(literal);
+                    currentToken = new Integer().setLiteral(literal);
+                    return currentToken;
                 }
                 currentToken = getToken(Illegal.class);
             }
         }
         moveOnNextCharacter();
 
-        previousToken = currentToken;
         return currentToken;
     }
 

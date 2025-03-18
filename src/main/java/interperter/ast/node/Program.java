@@ -40,9 +40,11 @@ public class Program
         int count = 0;
         for (Statement statement : statements) {
             if (count != statements.size() - 1)
+            {
                 sb.append(statement.toString()).append("; ");
+            }
             else
-                sb.append(statement.toString()).append(";");
+                sb.append(statement.toString());
             count++;
         }
 

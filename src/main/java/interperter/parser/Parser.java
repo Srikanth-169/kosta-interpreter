@@ -7,6 +7,7 @@ import interperter.ast.statement.*;
 import interperter.lexer.Lexer;
 import interperter.parser.infix.Infix;
 import interperter.parser.prefix.Prefix;
+import interperter.token.Precedence;
 import interperter.token.Token;
 import interperter.token.types.*;
 
@@ -59,7 +60,7 @@ public class Parser {
 
         /* continue by initialising infix parsing functions */
         infixParsingFunctions.put(Plus.class.getSimpleName(), this::parseInfixOperators);
-        infixParsingFunctions.put(MinusPrefix.class.getSimpleName(), this::parseInfixOperators);
+        infixParsingFunctions.put(MinusInfix.class.getSimpleName(), this::parseInfixOperators);
         infixParsingFunctions.put(Slash.class.getSimpleName(), this::parseInfixOperators);
         infixParsingFunctions.put(Asterisk.class.getSimpleName(), this::parseInfixOperators);
         infixParsingFunctions.put(Eq.class.getSimpleName(), this::parseInfixOperators);
@@ -214,7 +215,7 @@ public class Parser {
     }
 
     private ExpressionStatement parseExpressionStatement() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        ExpressionStatement expressionStatement = new ExpressionStatement(currentToken, parseExpression(0));
+        ExpressionStatement expressionStatement = new ExpressionStatement(currentToken, parseExpression(Precedence.LOWEST.getNumber()));
 
         if (nextToken instanceof Semicolon)
             readAndMoveOnNextToken();
@@ -265,7 +266,7 @@ public class Parser {
         // prefix expression has form <operator><operand>
         PrefixExpression prefixExpression = new PrefixExpression(currentToken); // !<operand>
         readAndMoveOnNextToken(); // move on operand
-        prefixExpression.setRight(parseExpression(5)); // parse operand -> !parsedOperand
+        prefixExpression.setRight(parseExpression(Precedence.PREFIX.getNumber())); // parse operand -> !parsedOperand
         return prefixExpression;
     }
 

@@ -40,7 +40,7 @@ public class ExpressionStatement
     @Override
     public String toString() {
         if (expression != null)
-            return expression + ";";
+            return expression.toString();
         return "";
     }
 
