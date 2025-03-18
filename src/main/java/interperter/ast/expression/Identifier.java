@@ -12,6 +12,10 @@ public class Identifier
         this.token = token;
     }
 
+    public Identifier() {
+
+    }
+
     @Override
     public void expressionNode() {
 
@@ -19,7 +23,7 @@ public class Identifier
 
     @Override
     public String literal() {
-        return this.token.literal();
+        return token.literal();
     }
 
     @Override

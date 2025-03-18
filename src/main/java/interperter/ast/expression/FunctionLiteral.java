@@ -44,7 +44,7 @@ public class FunctionLiteral
             params.add(identifier.toString());
         }
 
-        sb.append(token.literal()).append("(").append(String.join(", ", params)).append(") ").append(body.toString());
+        sb.append(token.literal()).append("(").append(String.join(", ", params)).append(") ").append(body.toString().isEmpty() ? "{}" : body.toString());
         return sb.toString();
     }
 

@@ -31,7 +31,7 @@ public class BlockStatement
     @Override
     public String toString() {
         if (statements.isEmpty())
-            return "{ }";
+            return "";
 
         StringBuilder sb = new StringBuilder();
         int count = 0;
@@ -39,9 +39,9 @@ public class BlockStatement
         for (Statement statement : statements)
         {
             if (count != statements.size() - 1)
-                sb.append(statement.toString()).append(" ");
+                sb.append(statement.toString()).append("; ");
             else
-                sb.append(statement.toString());
+                sb.append(statement.toString()).append(";");
             count++;
         }
         sb.append(" }");

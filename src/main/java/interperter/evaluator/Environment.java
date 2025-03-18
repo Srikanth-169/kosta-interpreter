@@ -25,7 +25,7 @@ public class Environment {
     public Value getValue(String name)
     {
         Value value = store.get(name);
-        if (value == null)
+        if (outer != null && value == null)
             value = outer.getValue(name);
         return value;
     }
