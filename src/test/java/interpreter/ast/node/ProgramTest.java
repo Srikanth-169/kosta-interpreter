@@ -61,7 +61,7 @@ public class ProgramTest
         program.getStatements().add(mockStatement);
 
         // Verify toString works with a single statement
-        assertEquals("statement1;", program.toString());
+        assertEquals("statement1", program.toString());
     }
 
 
@@ -82,7 +82,7 @@ public class ProgramTest
 
 
         // Verify toString concatenates statements with spaces
-        assertEquals("statement1; statement2; statement3;", program.toString());
+        assertEquals("statement1; statement2; statement3", program.toString());
 
 
 

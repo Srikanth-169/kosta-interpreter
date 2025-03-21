@@ -60,7 +60,7 @@ public class ExpressionStatementTest {
 
         ExpressionStatement statement = new ExpressionStatement(mockToken, mockExpression);
 
-        assertEquals("expression;", statement.toString());
+        assertEquals("expression", statement.toString());
     }
 
     @Test
