@@ -84,17 +84,4 @@ public class InfixExpressionTest {
         assertEquals(left, infixExpression.getLeft());
     }
 
-    @Test
-    public void testToString() {
-        Token token = new Plus();
-        InfixExpression infixExpression = new InfixExpression(token);
-
-        Expression left = new IntegerLiteral(new Integer().setLiteral("5"));
-        Expression right = new IntegerLiteral(new Integer().setLiteral("10"));
-
-        infixExpression.setLeft(left);
-        infixExpression.setRight(right);
-
-        assertEquals("(5 + 10)", infixExpression.toString());
-    }
 }

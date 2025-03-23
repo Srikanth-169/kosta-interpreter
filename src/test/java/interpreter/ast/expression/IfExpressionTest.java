@@ -73,34 +73,5 @@ public class IfExpressionTest {
         assertEquals(alternative, ifExpression.getAlternative());
     }
 
-    @Test
-    public void testToStringWithAlternative() {
-        Token token = new If();
-        IfExpression ifExpression = new IfExpression(token);
 
-        Expression condition = new BooleanLiteral(new True());
-        ifExpression.setCondition(condition);
-
-        BlockStatement consequence = new BlockStatement(new Lb());
-        ifExpression.setConsequence(consequence);
-
-        BlockStatement alternative = new BlockStatement(new Lb());
-        ifExpression.setAlternative(alternative);
-
-        assertEquals("if (true) {} else {}", ifExpression.toString());
-    }
-
-    @Test
-    public void testToStringWithoutAlternative() {
-        Token token = new If();
-        IfExpression ifExpression = new IfExpression(token);
-
-        Expression condition = new BooleanLiteral(new True());
-        ifExpression.setCondition(condition);
-
-        BlockStatement consequence = new BlockStatement(new Lb());
-        ifExpression.setConsequence(consequence);
-
-        assertEquals("if (true) {}", ifExpression.toString());
-    }
 }

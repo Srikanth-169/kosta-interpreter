@@ -66,32 +66,4 @@ public class FunctionLiteralTest {
         assertEquals(body, functionLiteral.getBody());
     }
 
-    @Test
-    public void testToString() {
-        Token token = new Function();
-        FunctionLiteral functionLiteral = new FunctionLiteral(token);
-
-        List<Identifier> parameters = new ArrayList<>();
-        parameters.add(new Identifier(new interperter.token.types.Identifier().setLiteral("x")));
-        parameters.add(new Identifier(new interperter.token.types.Identifier().setLiteral("y")));
-        functionLiteral.setParameters(parameters);
-
-        BlockStatement body = new BlockStatement(new Lb());
-        functionLiteral.setBody(body);
-
-        assertEquals("fn(x, y) {}", functionLiteral.toString());
-    }
-
-    @Test
-    public void testToStringWithNoParameters() {
-        Token token = new Function();
-        FunctionLiteral functionLiteral = new FunctionLiteral(token);
-
-        functionLiteral.setParameters(new ArrayList<>());
-
-        BlockStatement body = new BlockStatement(new Lb());
-        functionLiteral.setBody(body);
-
-        assertEquals("fn() {}", functionLiteral.toString());
-    }
 }

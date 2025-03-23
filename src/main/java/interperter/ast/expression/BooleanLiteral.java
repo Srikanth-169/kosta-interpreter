@@ -35,8 +35,4 @@ public class BooleanLiteral
         return token.literal().equals("true");
     }
 
-    @Override
-    public String toString() {
-        return token.literal();
-    }
 }

@@ -28,17 +28,6 @@ public class IfExpression
         return token.literal();
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("if").append(" (").append(condition.toString().isEmpty() ? "{}" : condition.toString()).append(") ").append(consequence.toString().isEmpty() ? "{}" : consequence.toString());
-
-        if (alternative != null)
-            sb.append(" else ").append(alternative.toString().isEmpty() ? "{}" : alternative.toString());
-
-        return sb.toString();
-    }
-
     public Token getToken() {
         return token;
     }

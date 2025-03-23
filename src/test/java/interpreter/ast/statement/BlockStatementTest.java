@@ -46,34 +46,8 @@ public class BlockStatementTest
         // This method is  not yet implemented in class
     }
 
-    @Test
-    public void testToStringWithSingleStatement()
-    {
-        Statement mockStatement = mock(Statement.class);
-        when(mockStatement.toString()).thenReturn("statement1");
 
-        blockStatement.getStatements().add(mockStatement);
 
-        assertEquals("{ statement1; }", blockStatement.toString());
-    }
-
-    @Test
-    public void testToStringWithMultipleStatements()
-    {
-        Statement mockStatement1 = mock(Statement.class);
-        Statement mockStatement2 = mock(Statement.class);
-        Statement mockStatement3 = mock(Statement.class);
-
-        when(mockStatement1.toString()).thenReturn("statement1");
-        when(mockStatement2.toString()).thenReturn("statement2");
-        when(mockStatement3.toString()).thenReturn("statement3");
-
-        blockStatement.getStatements().add(mockStatement1);
-        blockStatement.getStatements().add(mockStatement2);
-        blockStatement.getStatements().add(mockStatement3);
-
-        assertEquals("{ statement1; statement2; statement3; }", blockStatement.toString());
-    }
 
     @Test
     public void testSetStatements()

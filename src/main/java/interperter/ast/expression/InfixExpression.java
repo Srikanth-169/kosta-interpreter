@@ -32,15 +32,6 @@ public class InfixExpression implements Expression {
         return token.literal();
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("(").append(left).append(" ").append(token.literal()).append(" ").append(right.toString()).append(")");
-
-        return sb.toString();
-    }
-
     public String getOperator() {
         return token.literal();
     }

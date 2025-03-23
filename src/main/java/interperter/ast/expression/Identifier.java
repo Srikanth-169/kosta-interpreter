@@ -26,11 +26,6 @@ public class Identifier
         return token.literal();
     }
 
-    @Override
-    public String toString() {
-        return token.literal();
-    }
-
     public Token getToken() {
         return token;
     }

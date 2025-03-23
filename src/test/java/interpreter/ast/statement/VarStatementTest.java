@@ -60,26 +60,7 @@ public class VarStatementTest {
         assertEquals("var", statement.literal());
     }
 
-    @Test
-    public void testToStringWithValue() {
-        when(mockToken.literal()).thenReturn("var");
-        when(mockExpression.toString()).thenReturn("5");
-        Identifier identifier = new Identifier(new interperter.token.types.Identifier().setLiteral("testVar"));
 
-        VarStatement statement = new VarStatement(mockToken, identifier, mockExpression);
-
-        assertEquals("var testVar = 5;", statement.toString());
-    }
-
-    @Test
-    public void testToStringWithoutValue() {
-        when(mockToken.literal()).thenReturn("var");
-        Identifier identifier = new Identifier(new interperter.token.types.Identifier().setLiteral("testVar"));
-
-        VarStatement statement = new VarStatement(mockToken, identifier, null);
-
-        assertEquals("var testVar = ;", statement.toString());
-    }
 
     @Test
     public void testSettersAndGetters() {

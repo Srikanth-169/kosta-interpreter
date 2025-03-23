@@ -37,14 +37,6 @@ public class ExpressionStatement
 
     }
 
-    @Override
-    public String toString() {
-        if (expression != null)
-            return expression.toString();
-        return "";
-    }
-
-
     public Token getToken() {
         return token;
     }

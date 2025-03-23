@@ -34,20 +34,6 @@ public class FunctionLiteral
         return token.literal();
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-
-        List<String> params = new ArrayList<>();
-        for (Identifier identifier : parameters)
-        {
-            params.add(identifier.toString());
-        }
-
-        sb.append(token.literal()).append("(").append(String.join(", ", params)).append(") ").append(body.toString().isEmpty() ? "{}" : body.toString());
-        return sb.toString();
-    }
-
     public Token getToken() {
         return token;
     }

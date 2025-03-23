@@ -34,21 +34,6 @@ public class ReturnStatement
 
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(token.literal()); // return
-        sb.append(" ");
-        if (value != null) {
-            sb.append(value); // return value
-        }
-
-        sb.append(';'); // return value;
-        return sb.toString();
-
-    }
-
     public Token getToken() {
         return token;
     }

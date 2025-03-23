@@ -24,16 +24,6 @@ public class PrefixExpression implements Expression {
         return token.literal();
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-
-        if (right == null)
-            return token.literal();
-        sb.append("(").append(token.literal()).append(right.toString()).append(")");
-
-        return sb.toString();
-    }
 
     public String getOperator() {
         return token.literal();

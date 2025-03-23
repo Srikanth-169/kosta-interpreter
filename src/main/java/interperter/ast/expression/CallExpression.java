@@ -31,20 +31,6 @@ public class CallExpression
         return token.literal();
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        List<String> args = new ArrayList<>();
-
-        for (Expression argument : arguments)
-        {
-            args.add(argument.toString());
-        }
-
-        sb.append(function.toString()).append("(").append(String.join(", ", args)).append(")");
-        return sb.toString();
-    }
-
     public Token getToken() {
         return token;
     }

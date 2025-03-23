@@ -38,24 +38,6 @@ public class VarStatement
 
     }
 
-    @Override
-    public String toString()
-    {
-        StringBuilder sb = new StringBuilder();
-
-        sb
-                .append(token.literal())
-                .append(' ')
-                .append(name.toString())
-                .append(" = ");
-
-        if (value != null) {
-            sb.append(value);
-        }
-        sb.append(';');
-        return sb.toString();
-    }
-
     public void setToken(Token token) {
         this.token = token;
     }

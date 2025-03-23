@@ -52,41 +52,6 @@ public class ProgramTest
     }
 
 
-    @Test
-    public void testToStringWithSingleStatement()
-    {
-        Statement mockStatement = mock(Statement.class);
-        when(mockStatement.toString()).thenReturn("statement1");
-
-        program.getStatements().add(mockStatement);
-
-        // Verify toString works with a single statement
-        assertEquals("statement1", program.toString());
-    }
-
-
-    @Test
-    public void testToStringWithMultipleStatements()
-    {
-        Statement mockStatement1 = mock(Statement.class);
-        Statement mockStatement2 = mock(Statement.class);
-        Statement mockStatement3 = mock(Statement.class);
-
-        when(mockStatement1.toString()).thenReturn("statement1");
-        when(mockStatement2.toString()).thenReturn("statement2");
-        when(mockStatement3.toString()).thenReturn("statement3");
-
-        program.getStatements().add(mockStatement1);
-        program.getStatements().add(mockStatement2);
-        program.getStatements().add(mockStatement3);
-
-
-        // Verify toString concatenates statements with spaces
-        assertEquals("statement1; statement2; statement3", program.toString());
-
-
-
-    }
 
 
 }

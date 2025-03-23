@@ -49,11 +49,5 @@ public class IdentifierTest {
         assertEquals("newVar", identifier.getValue());
     }
 
-    @Test
-    public void testToString() {
-        Token token = new interperter.token.types.Identifier().setLiteral("variable");
-        Identifier identifier = new Identifier(token);
 
-        assertEquals("variable", identifier.toString());
-    }
 }

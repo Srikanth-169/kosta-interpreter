@@ -35,20 +35,7 @@ public class Program
     @Override
     public String toString()
     {
-        StringBuilder sb = new StringBuilder();
 
-        int count = 0;
-        for (Statement statement : statements) {
-            if (count != statements.size() - 1)
-            {
-                sb.append(statement.toString()).append("; ");
-            }
-            else
-                sb.append(statement.toString());
-            count++;
-        }
-
-        return sb.toString();
     }
 
 

@@ -35,10 +35,4 @@ public class IntegerLiteral implements Expression {
         return Integer.parseInt(getToken().literal());
     }
 
-
-    @Override
-    public String toString() {
-        return token.literal();
-    }
-
 }

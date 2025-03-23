@@ -83,29 +83,5 @@ public class CallExpressionTest {
         assertEquals(2, callExpression.getArguments().size());
     }
 
-    @Test
-    public void testToString() {
-        Token token = new Lp();
-        Identifier functionName = new Identifier(new interperter.token.types.Identifier().setLiteral("add"));
 
-        CallExpression callExpression = new CallExpression(token, functionName);
-
-        List<Expression> args = new ArrayList<>();
-        args.add(new IntegerLiteral(new Integer().setLiteral("1")));
-        args.add(new IntegerLiteral(new Integer().setLiteral("2")));
-
-        callExpression.setArguments(args);
-
-        assertEquals("add(1, 2)", callExpression.toString());
-    }
-
-    @Test
-    public void testToStringWithNoArguments() {
-        Token token = new Lp();
-        Identifier functionName = new Identifier(new interperter.token.types.Identifier().setLiteral("add"));
-
-        CallExpression callExpression = new CallExpression(token, functionName);
-
-        assertEquals("add()", callExpression.toString());
-    }
 }

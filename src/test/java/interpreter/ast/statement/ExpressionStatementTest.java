@@ -54,21 +54,6 @@ public class ExpressionStatementTest {
         assertEquals("test", statement.literal());
     }
 
-    @Test
-    public void testToStringWithExpression() {
-        when(mockExpression.toString()).thenReturn("expression");
-
-        ExpressionStatement statement = new ExpressionStatement(mockToken, mockExpression);
-
-        assertEquals("expression", statement.toString());
-    }
-
-    @Test
-    public void testToStringWithoutExpression() {
-        ExpressionStatement statement = new ExpressionStatement(mockToken);
-
-        assertEquals("", statement.toString());
-    }
 
     @Test
     public void testSettersAndGetters() {

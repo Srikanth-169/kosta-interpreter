@@ -49,15 +49,4 @@ public class BooleanLiteralTest {
         assertEquals("false", booleanLiteral.literal());
     }
 
-    @Test
-    public void testToString() {
-        Token trueToken = new True();
-        BooleanLiteral trueLiteral = new BooleanLiteral(trueToken);
-
-        Token falseToken = new False();
-        BooleanLiteral falseLiteral = new BooleanLiteral(falseToken);
-
-        assertEquals("true", trueLiteral.toString());
-        assertEquals("false", falseLiteral.toString());
-    }
 }

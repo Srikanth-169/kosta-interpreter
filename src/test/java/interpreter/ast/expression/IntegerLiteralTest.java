@@ -45,14 +45,6 @@ public class IntegerLiteralTest {
     }
 
     @Test
-    public void testToString() {
-        Token token = new Integer().setLiteral("5");
-        IntegerLiteral integerLiteral = new IntegerLiteral(token);
-
-        assertEquals("5", integerLiteral.toString());
-    }
-
-    @Test
     public void testGetValueWithNegativeNumber() {
         Token token = new Integer().setLiteral("-5");
         IntegerLiteral integerLiteral = new IntegerLiteral(token);

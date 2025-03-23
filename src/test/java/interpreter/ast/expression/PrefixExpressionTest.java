@@ -60,22 +60,7 @@ public class PrefixExpressionTest {
         assertEquals(right, prefixExpression.getRight());
     }
 
-    @Test
-    public void testToStringWithRight() {
-        Token token = new Bang();
-        PrefixExpression prefixExpression = new PrefixExpression(token);
 
-        Expression right = new BooleanLiteral(new True());
-        prefixExpression.setRight(right);
 
-        assertEquals("(!true)", prefixExpression.toString());
-    }
 
-    @Test
-    public void testToStringWithoutRight() {
-        Token token = new Bang();
-        PrefixExpression prefixExpression = new PrefixExpression(token);
-
-        assertEquals("!", prefixExpression.toString());
-    }
 }
