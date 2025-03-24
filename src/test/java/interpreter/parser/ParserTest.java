@@ -1,13 +1,13 @@
 package interpreter.parser;
 
-import com.github.konstantinevashalomidze.interperter.ast.expression.*;
-import com.github.konstantinevashalomidze.interperter.ast.statement.ExpressionStatement;
-import com.github.konstantinevashalomidze.interperter.ast.statement.ReturnStatement;
-import com.github.konstantinevashalomidze.interperter.ast.statement.Statement;
-import com.github.konstantinevashalomidze.interperter.ast.statement.VarStatement;
-import com.github.konstantinevashalomidze.interperter.ast.node.Program;
-import com.github.konstantinevashalomidze.interperter.lexer.Lexer;
-import com.github.konstantinevashalomidze.interperter.parser.Parser;
+import com.github.konstantinevashalomidze.interpreter.ast.expression.*;
+import com.github.konstantinevashalomidze.interpreter.ast.statement.ExpressionStatement;
+import com.github.konstantinevashalomidze.interpreter.ast.statement.ReturnStatement;
+import com.github.konstantinevashalomidze.interpreter.ast.statement.Statement;
+import com.github.konstantinevashalomidze.interpreter.ast.statement.VarStatement;
+import com.github.konstantinevashalomidze.interpreter.ast.node.Program;
+import com.github.konstantinevashalomidze.interpreter.lexer.Lexer;
+import com.github.konstantinevashalomidze.interpreter.parser.Parser;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.InvocationTargetException;

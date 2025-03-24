@@ -1,9 +1,9 @@
 package interpreter.ast.statement;
 
-import com.github.konstantinevashalomidze.interperter.ast.expression.Expression;
-import com.github.konstantinevashalomidze.interperter.ast.expression.Identifier;
-import com.github.konstantinevashalomidze.interperter.ast.statement.VarStatement;
-import com.github.konstantinevashalomidze.interperter.token.Token;
+import com.github.konstantinevashalomidze.interpreter.ast.expression.Expression;
+import com.github.konstantinevashalomidze.interpreter.ast.expression.Identifier;
+import com.github.konstantinevashalomidze.interpreter.ast.statement.VarStatement;
+import com.github.konstantinevashalomidze.interpreter.token.Token;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,7 +25,7 @@ public class VarStatementTest {
 
     @Test
     public void testConstructorWithAllParameters() {
-        Identifier identifier = new Identifier(new com.github.konstantinevashalomidze.interperter.token.types.Identifier());
+        Identifier identifier = new Identifier(new com.github.konstantinevashalomidze.interpreter.token.types.Identifier());
         VarStatement statement = new VarStatement(mockToken, identifier, mockExpression);
 
         assertEquals(mockToken, statement.getToken());
@@ -65,7 +65,7 @@ public class VarStatementTest {
     @Test
     public void testSettersAndGetters() {
         VarStatement statement = new VarStatement();
-        Identifier identifier = new Identifier(new com.github.konstantinevashalomidze.interperter.token.types.Identifier().setLiteral("testVar"));
+        Identifier identifier = new Identifier(new com.github.konstantinevashalomidze.interpreter.token.types.Identifier().setLiteral("testVar"));
 
 
         statement.setToken(mockToken);

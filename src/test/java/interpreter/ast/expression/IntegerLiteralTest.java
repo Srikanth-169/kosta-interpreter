@@ -1,8 +1,8 @@
 package interpreter.ast.expression;
 
-import com.github.konstantinevashalomidze.interperter.ast.expression.IntegerLiteral;
-import com.github.konstantinevashalomidze.interperter.token.Token;
-import com.github.konstantinevashalomidze.interperter.token.types.Integer;
+import com.github.konstantinevashalomidze.interpreter.ast.expression.IntegerLiteral;
+import com.github.konstantinevashalomidze.interpreter.token.Token;
+import com.github.konstantinevashalomidze.interpreter.token.types.Integer;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

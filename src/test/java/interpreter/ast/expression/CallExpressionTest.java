@@ -2,14 +2,14 @@ package interpreter.ast.expression;
 
 
 
-import com.github.konstantinevashalomidze.interperter.ast.expression.CallExpression;
-import com.github.konstantinevashalomidze.interperter.ast.expression.Expression;
-import com.github.konstantinevashalomidze.interperter.ast.expression.Identifier;
-import com.github.konstantinevashalomidze.interperter.ast.expression.IntegerLiteral;
-import com.github.konstantinevashalomidze.interperter.token.Token;
-import com.github.konstantinevashalomidze.interperter.token.types.Integer;
-import com.github.konstantinevashalomidze.interperter.token.types.Lb;
-import com.github.konstantinevashalomidze.interperter.token.types.Lp;
+import com.github.konstantinevashalomidze.interpreter.ast.expression.CallExpression;
+import com.github.konstantinevashalomidze.interpreter.ast.expression.Expression;
+import com.github.konstantinevashalomidze.interpreter.ast.expression.Identifier;
+import com.github.konstantinevashalomidze.interpreter.ast.expression.IntegerLiteral;
+import com.github.konstantinevashalomidze.interpreter.token.Token;
+import com.github.konstantinevashalomidze.interpreter.token.types.Integer;
+import com.github.konstantinevashalomidze.interpreter.token.types.Lb;
+import com.github.konstantinevashalomidze.interpreter.token.types.Lp;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ public class CallExpressionTest {
     @Test
     public void testLiteral() {
         Token token = new Lp();
-        Identifier functionName = new Identifier(new com.github.konstantinevashalomidze.interperter.token.types.Identifier().setLiteral("add"));
+        Identifier functionName = new Identifier(new com.github.konstantinevashalomidze.interpreter.token.types.Identifier().setLiteral("add"));
 
         CallExpression callExpression = new CallExpression(token, functionName);
 
@@ -43,7 +43,7 @@ public class CallExpressionTest {
     @Test
     public void testSetToken() {
         Token token = new Lp();
-        Identifier functionName = new Identifier(new com.github.konstantinevashalomidze.interperter.token.types.Identifier().setLiteral("add"));
+        Identifier functionName = new Identifier(new com.github.konstantinevashalomidze.interpreter.token.types.Identifier().setLiteral("add"));
 
         CallExpression callExpression = new CallExpression(token, functionName);
 
@@ -56,11 +56,11 @@ public class CallExpressionTest {
     @Test
     public void testSetFunction() {
         Token token = new Lb();
-        Identifier functionName = new Identifier(new com.github.konstantinevashalomidze.interperter.token.types.Identifier().setLiteral("add"));
+        Identifier functionName = new Identifier(new com.github.konstantinevashalomidze.interpreter.token.types.Identifier().setLiteral("add"));
 
         CallExpression callExpression = new CallExpression(token, functionName);
 
-        Identifier newFunction = new Identifier(new com.github.konstantinevashalomidze.interperter.token.types.Identifier().setLiteral("subtract"));
+        Identifier newFunction = new Identifier(new com.github.konstantinevashalomidze.interpreter.token.types.Identifier().setLiteral("subtract"));
         callExpression.setFunction(newFunction);
 
         assertEquals(newFunction, callExpression.getFunction());
@@ -69,7 +69,7 @@ public class CallExpressionTest {
     @Test
     public void testSetArguments() {
         Token token = new Lp();
-        Identifier functionName = new Identifier(new com.github.konstantinevashalomidze.interperter.token.types.Identifier().setLiteral("add"));
+        Identifier functionName = new Identifier(new com.github.konstantinevashalomidze.interpreter.token.types.Identifier().setLiteral("add"));
 
         CallExpression callExpression = new CallExpression(token, functionName);
 

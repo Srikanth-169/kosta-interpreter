@@ -1,12 +1,12 @@
 package interpreter.ast.expression;
 
-import com.github.konstantinevashalomidze.interperter.ast.expression.BooleanLiteral;
-import com.github.konstantinevashalomidze.interperter.ast.expression.Expression;
-import com.github.konstantinevashalomidze.interperter.ast.expression.PrefixExpression;
-import com.github.konstantinevashalomidze.interperter.token.Token;
-import com.github.konstantinevashalomidze.interperter.token.types.Bang;
-import com.github.konstantinevashalomidze.interperter.token.types.MinusPrefix;
-import com.github.konstantinevashalomidze.interperter.token.types.True;
+import com.github.konstantinevashalomidze.interpreter.ast.expression.BooleanLiteral;
+import com.github.konstantinevashalomidze.interpreter.ast.expression.Expression;
+import com.github.konstantinevashalomidze.interpreter.ast.expression.PrefixExpression;
+import com.github.konstantinevashalomidze.interpreter.token.Token;
+import com.github.konstantinevashalomidze.interpreter.token.types.Bang;
+import com.github.konstantinevashalomidze.interpreter.token.types.MinusPrefix;
+import com.github.konstantinevashalomidze.interpreter.token.types.True;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

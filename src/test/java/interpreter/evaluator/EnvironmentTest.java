@@ -1,8 +1,8 @@
 package interpreter.evaluator;
 
 
-import com.github.konstantinevashalomidze.interperter.evaluator.Environment;
-import com.github.konstantinevashalomidze.interperter.evaluator.value.Value;
+import com.github.konstantinevashalomidze.interpreter.evaluator.Environment;
+import com.github.konstantinevashalomidze.interpreter.evaluator.value.Value;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

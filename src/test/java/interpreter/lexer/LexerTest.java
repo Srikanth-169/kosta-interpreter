@@ -1,9 +1,9 @@
 package interpreter.lexer;
 
-import com.github.konstantinevashalomidze.interperter.lexer.Lexer;
-import com.github.konstantinevashalomidze.interperter.token.Token;
-import com.github.konstantinevashalomidze.interperter.token.types.*;
-import com.github.konstantinevashalomidze.interperter.token.types.Integer;
+import com.github.konstantinevashalomidze.interpreter.lexer.Lexer;
+import com.github.konstantinevashalomidze.interpreter.token.Token;
+import com.github.konstantinevashalomidze.interpreter.token.types.*;
+import com.github.konstantinevashalomidze.interpreter.token.types.Integer;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
