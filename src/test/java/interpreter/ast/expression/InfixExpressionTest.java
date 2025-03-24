@@ -1,12 +1,12 @@
 package interpreter.ast.expression;
 
-import interperter.ast.expression.Expression;
-import interperter.ast.expression.InfixExpression;
-import interperter.ast.expression.IntegerLiteral;
-import interperter.token.Token;
-import interperter.token.types.Integer;
-import interperter.token.types.MinusInfix;
-import interperter.token.types.Plus;
+import com.github.konstantinevashalomidze.interperter.ast.expression.Expression;
+import com.github.konstantinevashalomidze.interperter.ast.expression.InfixExpression;
+import com.github.konstantinevashalomidze.interperter.ast.expression.IntegerLiteral;
+import com.github.konstantinevashalomidze.interperter.token.Token;
+import com.github.konstantinevashalomidze.interperter.token.types.Integer;
+import com.github.konstantinevashalomidze.interperter.token.types.MinusInfix;
+import com.github.konstantinevashalomidze.interperter.token.types.Plus;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

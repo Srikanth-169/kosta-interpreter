@@ -1,7 +1,7 @@
 package interpreter.ast.node;
 
-import interperter.ast.node.Program;
-import interperter.ast.statement.Statement;
+import com.github.konstantinevashalomidze.interperter.ast.node.Program;
+import com.github.konstantinevashalomidze.interperter.ast.statement.Statement;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

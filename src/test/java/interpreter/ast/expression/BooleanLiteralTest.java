@@ -1,9 +1,9 @@
 package interpreter.ast.expression;
 
-import interperter.ast.expression.BooleanLiteral;
-import interperter.token.Token;
-import interperter.token.types.False;
-import interperter.token.types.True;
+import com.github.konstantinevashalomidze.interperter.ast.expression.BooleanLiteral;
+import com.github.konstantinevashalomidze.interperter.token.Token;
+import com.github.konstantinevashalomidze.interperter.token.types.False;
+import com.github.konstantinevashalomidze.interperter.token.types.True;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

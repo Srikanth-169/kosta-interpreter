@@ -1,8 +1,8 @@
 package interpreter.ast.statement;
 
-import interperter.ast.statement.BlockStatement;
-import interperter.ast.statement.Statement;
-import interperter.token.Token;
+import com.github.konstantinevashalomidze.interperter.ast.statement.BlockStatement;
+import com.github.konstantinevashalomidze.interperter.ast.statement.Statement;
+import com.github.konstantinevashalomidze.interperter.token.Token;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

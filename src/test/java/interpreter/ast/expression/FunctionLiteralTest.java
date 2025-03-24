@@ -1,11 +1,11 @@
 package interpreter.ast.expression;
 
-import interperter.ast.expression.FunctionLiteral;
-import interperter.ast.expression.Identifier;
-import interperter.ast.statement.BlockStatement;
-import interperter.token.Token;
-import interperter.token.types.Function;
-import interperter.token.types.Lb;
+import com.github.konstantinevashalomidze.interperter.ast.expression.FunctionLiteral;
+import com.github.konstantinevashalomidze.interperter.ast.expression.Identifier;
+import com.github.konstantinevashalomidze.interperter.ast.statement.BlockStatement;
+import com.github.konstantinevashalomidze.interperter.token.Token;
+import com.github.konstantinevashalomidze.interperter.token.types.Function;
+import com.github.konstantinevashalomidze.interperter.token.types.Lb;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +46,8 @@ public class FunctionLiteralTest {
         FunctionLiteral functionLiteral = new FunctionLiteral(token);
 
         List<Identifier> parameters = new ArrayList<>();
-        parameters.add(new Identifier(new interperter.token.types.Identifier().setLiteral("x")));
-        parameters.add(new Identifier(new interperter.token.types.Identifier().setLiteral("y")));
+        parameters.add(new Identifier(new com.github.konstantinevashalomidze.interperter.token.types.Identifier().setLiteral("x")));
+        parameters.add(new Identifier(new com.github.konstantinevashalomidze.interperter.token.types.Identifier().setLiteral("y")));
 
         functionLiteral.setParameters(parameters);
 

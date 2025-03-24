@@ -1,8 +1,8 @@
 package interpreter.ast.statement;
 
-import interperter.ast.expression.Expression;
-import interperter.ast.statement.ReturnStatement;
-import interperter.token.Token;
+import com.github.konstantinevashalomidze.interperter.ast.expression.Expression;
+import com.github.konstantinevashalomidze.interperter.ast.statement.ReturnStatement;
+import com.github.konstantinevashalomidze.interperter.token.Token;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
