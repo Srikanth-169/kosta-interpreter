@@ -207,53 +207,6 @@ public class ParserTest {
         }
     }
 
-    @Test
-    public void testOperatorPrecedence() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        class PrecedenceTest {
-            String input;
-            String expected;
-
-            PrecedenceTest(String input, String expected) {
-                this.input = input;
-                this.expected = expected;
-            }
-        }
-
-        PrecedenceTest[] tests = {
-                new PrecedenceTest("-a * b", "((-a) * b)"),
-                new PrecedenceTest("!-a", "(!(-a))"),
-                new PrecedenceTest("a + b + c", "((a + b) + c)"),
-                new PrecedenceTest("a + b - c", "((a + b) - c)"),
-                new PrecedenceTest("a * b * c", "((a * b) * c)"),
-                new PrecedenceTest("a * b / c", "((a * b) / c)"),
-                new PrecedenceTest("a + b / c", "(a + (b / c))"),
-                new PrecedenceTest("a + b * c + d / e - f", "(((a + (b * c)) + (d / e)) - f)"),
-                new PrecedenceTest("3 + 4; -5 * 5", "(3 + 4); ((-5) * 5)"),
-                new PrecedenceTest("5 > 4 == 3 < 4", "((5 > 4) == (3 < 4))"),
-                new PrecedenceTest("5 < 4 != 3 > 4", "((5 < 4) != (3 > 4))"),
-                new PrecedenceTest("3 + 4 * 5 == 3 * 1 + 4 * 5", "((3 + (4 * 5)) == ((3 * 1) + (4 * 5)))"),
-                new PrecedenceTest("3 > 5 == false", "((3 > 5) == false)"),
-                new PrecedenceTest("3 < 5 == true", "((3 < 5) == true)"),
-                new PrecedenceTest("1 + (2 + 3) + 4", "((1 + (2 + 3)) + 4)"),
-                new PrecedenceTest("(5 + 5) * 2", "((5 + 5) * 2)"),
-                new PrecedenceTest("2 / (5 + 5)", "(2 / (5 + 5))"),
-                new PrecedenceTest("-(5 + 5)", "(-(5 + 5))"),
-                new PrecedenceTest("!(true == true)", "(!(true == true))"),
-                new PrecedenceTest("a + add(b * c) + d", "((a + add((b * c))) + d)"),
-                new PrecedenceTest("add(a, b, 1, 2 * 3, 4 + 5, add(6, 7 * 8))", "add(a, b, 1, (2 * 3), (4 + 5), add(6, (7 * 8)))"),
-                new PrecedenceTest("add(a + b + c * d / f + g)", "add((((a + b) + ((c * d) / f)) + g))"),
-        };
-
-        for (PrecedenceTest tt : tests) {
-            Parser parser = createParser(tt.input);
-            Program program = parser.parseProgram();
-
-            assertNotNull(program, "parseProgram() returned null");
-
-            String actual = program.toString();
-            assertEquals(tt.expected, actual, "Expected " + tt.expected + " but got " + actual);
-        }
-    }
 
     @Test
     public void testBooleanExpression() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {

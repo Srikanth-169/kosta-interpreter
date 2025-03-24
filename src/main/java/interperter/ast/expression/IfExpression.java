@@ -28,6 +28,18 @@ public class IfExpression
         return token.literal();
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("IfExpression\n");
+        sb.append("  |- Condition: ").append(condition.toString().replace("\n", "\n  |  ")).append("\n");
+        sb.append("  |- Consequence: ").append(consequence.toString().replace("\n", "\n  |  ")).append("\n");
+        if (alternative != null) {
+            sb.append("  |- Alternative: ").append(alternative.toString().replace("\n", "\n  |  ")).append("\n");
+        }
+        return sb.toString();
+    }
+
     public Token getToken() {
         return token;
     }

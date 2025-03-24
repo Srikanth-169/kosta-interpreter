@@ -28,6 +28,19 @@ public class InfixExpression implements Expression {
     }
 
     @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("InfixExpression (").append(token.literal()).append(")\n"); // Root node with operator
+        if (left != null) {
+            sb.append("  |- Left: ").append(left.toString().replace("\n", "\n  |  ")).append("\n");
+        }
+        if (right != null) {
+            sb.append("  |- Right: ").append(right.toString().replace("\n", "\n  |  ")).append("\n");
+        }
+        return sb.toString();
+    }
+
+    @Override
     public String literal() {
         return token.literal();
     }

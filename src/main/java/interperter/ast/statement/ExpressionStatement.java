@@ -37,6 +37,21 @@ public class ExpressionStatement
 
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("ExpressionStatement");
+        if (token != null) {
+            sb.append(" (").append(token.literal()).append(")");
+        }
+        sb.append("\n");
+        if (expression != null) {
+            // Indent the expression to represent it as a child of the ExpressionStatement node
+            sb.append("  |- ").append(expression.toString().replace("\n", "\n  |  ")).append("\n");
+        }
+        return sb.toString();
+    }
+
     public Token getToken() {
         return token;
     }

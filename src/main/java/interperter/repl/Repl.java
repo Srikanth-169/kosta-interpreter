@@ -31,14 +31,28 @@ public class Repl {
                 writer.flush();
 
                 String line = reader.readLine();
-                if (line == null || line.equals("exit()")) {
+                if (line == null || line.startsWith("exit()")) {
                     return;
+                }
+
+                boolean userWantsTree = false;
+                // if user wants to print AST
+                if (line.startsWith("tree()"))
+                {
+                    line = line.replace("tree()", "");
+                    userWantsTree = true;
                 }
 
                 Lexer lexer = new Lexer(line);
                 Parser parser = new Parser(lexer);
 
                 Program program = parser.parseProgram();
+                if (userWantsTree) { // if user wants to print AST print it and return
+                    writer.write(program.toString());
+                    writer.flush();
+                    return;
+                }
+
                 Evaluator evaluator = new Evaluator(environment);
                 if (!parser.errors().isEmpty())
                 {

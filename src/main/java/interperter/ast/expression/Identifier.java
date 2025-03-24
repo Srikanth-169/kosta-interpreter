@@ -26,6 +26,11 @@ public class Identifier
         return token.literal();
     }
 
+    @Override
+    public String toString() {
+        return "Identifier (" + token.literal() + ")";
+    }
+
     public Token getToken() {
         return token;
     }

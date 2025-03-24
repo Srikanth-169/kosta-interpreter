@@ -42,6 +42,18 @@ public class FunctionLiteral
         this.token = token;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("FunctionLiteral\n");
+        sb.append("  |- Parameters:\n");
+        for (Identifier param : parameters) {
+            sb.append("     |- ").append(param.toString().replace("\n", "\n     |  ")).append("\n");
+        }
+        sb.append("  |- Body: ").append(body.toString().replace("\n", "\n  |  ")).append("\n");
+        return sb.toString();
+    }
+
     public List<Identifier> getParameters() {
         return parameters;
     }

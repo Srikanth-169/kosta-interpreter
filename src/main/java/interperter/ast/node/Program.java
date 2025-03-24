@@ -35,7 +35,13 @@ public class Program
     @Override
     public String toString()
     {
-
+        StringBuilder sb = new StringBuilder();
+        sb.append("Program\n"); // root node
+        for (Statement statement : statements) {
+            // indent each statement to represent it as a child of the Program node
+            sb.append("  |- ").append(statement.toString().replace("\n", "\n  |  ")).append("\n");
+        }
+        return sb.toString();
     }
 
 

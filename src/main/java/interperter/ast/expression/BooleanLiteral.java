@@ -27,6 +27,11 @@ public class BooleanLiteral
         return token;
     }
 
+    @Override
+    public String toString() {
+        return "BooleanLiteral (" + token.literal() + ")";
+    }
+
     public void setToken(Token token) {
         this.token = token;
     }

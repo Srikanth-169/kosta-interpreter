@@ -28,7 +28,16 @@ public class BlockStatement
 
     }
 
-
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("BlockStatement (").append(token.literal()).append(")\n"); // Root node with token
+        for (Statement statement : statements) {
+            // Indent each statement to represent it as a child of the BlockStatement node
+            sb.append("  |- ").append(statement.toString().replace("\n", "\n  |  ")).append("\n");
+        }
+        return sb.toString();
+    }
 
     public Token getToken() {
         return token;

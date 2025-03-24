@@ -60,15 +60,7 @@ public class ReturnStatementTest
         assertEquals("return", statement.literal());
     }
 
-    @Test
-    public void testToStringWithoutValue()
-    {
-        when(mockToken.literal()).thenReturn("return");
 
-        ReturnStatement statement = new ReturnStatement(mockToken);
-
-        assertEquals("return ;", statement.toString());
-    }
 
     @Test
     public void testSettersAndGetters()

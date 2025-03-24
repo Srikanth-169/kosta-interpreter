@@ -37,6 +37,15 @@ public class PrefixExpression implements Expression {
         this.token = token;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("PrefixExpression (").append(token.literal()).append(")\n"); // Root node with operator
+        if (right != null) {
+            sb.append("  |- Right: ").append(right.toString().replace("\n", "\n  |  ")).append("\n");
+        }
+        return sb.toString();
+    }
 
     public Expression getRight() {
         return right;

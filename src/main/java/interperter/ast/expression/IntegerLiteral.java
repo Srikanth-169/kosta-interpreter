@@ -18,6 +18,11 @@ public class IntegerLiteral implements Expression {
     }
 
     @Override
+    public String toString() {
+        return "IntegerLiteral (" + token.literal() + ")";
+    }
+
+    @Override
     public String literal() {
         return token.literal();
     }

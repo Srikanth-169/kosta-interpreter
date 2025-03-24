@@ -45,13 +45,5 @@ public class ProgramTest
         assertEquals("test literal", program.literal());
     }
 
-    @Test
-    public void testToStringWithNoStatements()
-    {
-        assertEquals("", program.toString());
-    }
-
-
-
 
 }

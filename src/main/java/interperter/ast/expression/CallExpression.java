@@ -27,6 +27,18 @@ public class CallExpression
     }
 
     @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("CallExpression\n");
+        sb.append("  |- Function: ").append(function.toString().replace("\n", "\n  |  ")).append("\n");
+        sb.append("  |- Arguments:\n");
+        for (Expression arg : arguments) {
+            sb.append("     |- ").append(arg.toString().replace("\n", "\n     |  ")).append("\n");
+        }
+        return sb.toString();
+    }
+
+    @Override
     public String literal() {
         return token.literal();
     }

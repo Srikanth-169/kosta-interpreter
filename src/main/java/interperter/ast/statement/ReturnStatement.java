@@ -34,6 +34,21 @@ public class ReturnStatement
 
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("ReturnStatement");
+        if (token != null) {
+            sb.append(" (").append(token.literal()).append(")");
+        }
+        sb.append("\n");
+        if (value != null) {
+            // Indent the value to represent it as a child of the ReturnStatement node
+            sb.append("  |- ").append(value.toString().replace("\n", "\n  |  ")).append("\n");
+        }
+        return sb.toString();
+    }
+
     public Token getToken() {
         return token;
     }
