@@ -24,9 +24,6 @@ Thank you for your interest in contributing to kosta-interpreter! This guide wil
 - [Code Review Process](#code-review-process)
     - [Review Lifecycle](#review-lifecycle)
     - [Addressing Feedback](#addressing-feedback)
-- [Common Issues and Solutions](#common-issues-and-solutions)
-- [Additional Resources](#additional-resources)
-- [Code of Conduct](#code-of-conduct)
 
 ---
 
