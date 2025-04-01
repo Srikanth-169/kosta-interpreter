@@ -24,7 +24,6 @@ Thank you for your interest in contributing to kosta-interpreter! This guide wil
 - [Code Review Process](#code-review-process)
     - [Review Lifecycle](#review-lifecycle)
     - [Addressing Feedback](#addressing-feedback)
-- [Project Structure](#project-structure)
 - [Common Issues and Solutions](#common-issues-and-solutions)
 - [Additional Resources](#additional-resources)
 - [Code of Conduct](#code-of-conduct)
@@ -239,7 +238,7 @@ public class Example {
 - Use `//` for single-line comments
 - Format multi-line comments with appropriate indentation:
   ```java
-  /*
+  /**
    * This is a multi-line comment.
    * It describes complex logic.
    */
@@ -258,7 +257,7 @@ mvn test
 
 Run specific tests:
 ```bash
-mvn test -Dtest=TokenizerTest
+mvn test -Dtest=LexerTest
 ```
 
 ### Writing Tests
@@ -269,24 +268,6 @@ mvn test -Dtest=TokenizerTest
 - Test cases should be independent and repeatable
 - Name test methods descriptively: `shouldReturnNullWhenInputIsEmpty()`
 - Include tests for edge cases and error conditions
-- Mock external dependencies
-
-Example test structure:
-```java
-@Test
-void shouldParseValidExpression() {
-    // Arrange
-    String input = "2 + 2";
-    Parser parser = new Parser(input);
-    
-    // Act
-    Expression result = parser.parseExpression();
-    
-    // Assert
-    assertEquals(BinaryExpression.class, result.getClass());
-    assertEquals(4, result.evaluate());
-}
-```
 
 ---
 
@@ -306,48 +287,6 @@ void shouldParseValidExpression() {
 
 - Address all review comments before requesting re-review
 - Use fixup commits during the review process
-- Maintainers will squash commits upon merging
-- For substantive changes requested, discuss in the PR comments
 
 ---
 
-## Project Structure
-
-```
-kosta-interpreter/
-├── src/
-│   ├── main/
-│   │   └── java/
-│   │       └── com/
-│   │           └── github/
-│   │               └── konstantinevashalomidze/
-│   │                   └── interpreter/
-│   │                       ├── lexer/       # Tokenization
-│   │                       ├── parser/      # Parsing tokens into AST
-│   │                       ├── ast/         # Abstract Syntax Tree nodes
-│   │                       ├── evaluator/   # Expression evaluation
-│   │                       └── Main.java    # Entry point
-│   └── test/
-│       └── java/
-│           └── com/
-│               └── github/
-│                   └── konstantinevashalomidze/
-│                       └── interpreter/
-│                           ├── lexer/       # Lexer tests
-│                           ├── parser/      # Parser tests
-│                           └── evaluator/   # Evaluator tests
-├── pom.xml                                  # Maven configuration
-└── README.md                                # Project documentation
-```
-
----
-
-## Common Issues and Solutions
-
-### Build Failures
-
-- **Problem**: Maven build fails with compilation errors
-    - **Solution**: Ensure Java 21 is properly configured in your environment and Maven compiler plugin is set to Java 21
-
-- **Problem**: Test failures
-    - **Solution**: Run `mvn test -DskipTests=false -Dtest=FailingTestName` to debug
