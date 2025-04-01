@@ -6,8 +6,7 @@ import com.github.konstantinevashalomidze.interpreter.ast.expression.Identifier;
 import com.github.konstantinevashalomidze.interpreter.token.Token;
 
 public class VarStatement
-    implements Statement
-{
+        implements Statement {
     Token token;
     Identifier name;
     Expression value;
@@ -55,27 +54,27 @@ public class VarStatement
         return sb.toString();
     }
 
-    public void setToken(Token token) {
-        this.token = token;
-    }
-
-    public void setName(Identifier name) {
-        this.name = name;
-    }
-
-    public void setValue(Expression value) {
-        this.value = value;
-    }
-
     public Token getToken() {
         return token;
+    }
+
+    public void setToken(Token token) {
+        this.token = token;
     }
 
     public Identifier getName() {
         return name;
     }
 
+    public void setName(Identifier name) {
+        this.name = name;
+    }
+
     public Expression getValue() {
         return value;
+    }
+
+    public void setValue(Expression value) {
+        this.value = value;
     }
 }

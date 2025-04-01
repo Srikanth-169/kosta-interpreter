@@ -8,8 +8,7 @@ import java.util.List;
 
 
 public class FunctionLiteral
-    implements Expression
-{
+        implements Expression {
 
     private Token token;
     private List<Identifier> parameters;

@@ -1,11 +1,11 @@
 package interpreter.parser;
 
 import com.github.konstantinevashalomidze.interpreter.ast.expression.*;
+import com.github.konstantinevashalomidze.interpreter.ast.node.Program;
 import com.github.konstantinevashalomidze.interpreter.ast.statement.ExpressionStatement;
 import com.github.konstantinevashalomidze.interpreter.ast.statement.ReturnStatement;
 import com.github.konstantinevashalomidze.interpreter.ast.statement.Statement;
 import com.github.konstantinevashalomidze.interpreter.ast.statement.VarStatement;
-import com.github.konstantinevashalomidze.interpreter.ast.node.Program;
 import com.github.konstantinevashalomidze.interpreter.lexer.Lexer;
 import com.github.konstantinevashalomidze.interpreter.parser.Parser;
 import org.junit.jupiter.api.Test;
@@ -129,9 +129,9 @@ public class ParserTest {
     @Test
     public void testPrefixExpressions() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         class PrefixTest {
-            String input;
-            String operator;
-            int integerValue;
+            final String input;
+            final String operator;
+            final int integerValue;
 
             PrefixTest(String input, String operator, int integerValue) {
                 this.input = input;
@@ -169,10 +169,10 @@ public class ParserTest {
     @Test
     public void testInfixExpressions() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         class InfixTest {
-            String input;
-            int leftValue;
-            String operator;
-            int rightValue;
+            final String input;
+            final int leftValue;
+            final String operator;
+            final int rightValue;
 
             InfixTest(String input, int leftValue, String operator, int rightValue) {
                 this.input = input;
@@ -340,8 +340,8 @@ public class ParserTest {
     @Test
     public void testFunctionParameterParsing() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         class ParameterTest {
-            String input;
-            String[] expectedParams;
+            final String input;
+            final String[] expectedParams;
 
             ParameterTest(String input, String[] expectedParams) {
                 this.input = input;

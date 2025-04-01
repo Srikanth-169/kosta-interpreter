@@ -5,8 +5,7 @@ import com.github.konstantinevashalomidze.interpreter.ast.expression.Expression;
 import com.github.konstantinevashalomidze.interpreter.token.Token;
 
 public class ReturnStatement
-    implements Statement
-{
+        implements Statement {
     Token token;
     Expression value;
 
@@ -15,6 +14,7 @@ public class ReturnStatement
         this.token = token;
         this.value = value;
     }
+
     public ReturnStatement() {
 
     }

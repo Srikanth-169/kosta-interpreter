@@ -1,8 +1,6 @@
 package interpreter.ast.node;
 
-public class NodeTest
-{
-
+public class NodeTest {
 
 
 }

@@ -8,8 +8,7 @@ import static com.github.konstantinevashalomidze.interpreter.token.Precedence.AN
 
 
 public class And
-    implements Token
-{
+        implements Token {
 
     @Override
     public Precedence precedence() {

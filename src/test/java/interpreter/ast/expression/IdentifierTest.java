@@ -3,7 +3,9 @@ package interpreter.ast.expression;
 import com.github.konstantinevashalomidze.interpreter.ast.expression.Identifier;
 import com.github.konstantinevashalomidze.interpreter.token.Token;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class IdentifierTest {
 

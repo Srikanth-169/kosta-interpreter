@@ -8,7 +8,9 @@ import com.github.konstantinevashalomidze.interpreter.token.types.Bang;
 import com.github.konstantinevashalomidze.interpreter.token.types.MinusPrefix;
 import com.github.konstantinevashalomidze.interpreter.token.types.True;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class PrefixExpressionTest {
 
@@ -59,8 +61,6 @@ public class PrefixExpressionTest {
 
         assertEquals(right, prefixExpression.getRight());
     }
-
-
 
 
 }

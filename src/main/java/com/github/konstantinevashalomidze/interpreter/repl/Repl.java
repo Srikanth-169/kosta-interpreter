@@ -1,7 +1,6 @@
 package com.github.konstantinevashalomidze.interpreter.repl;
 
 
-
 import com.github.konstantinevashalomidze.interpreter.ast.node.Program;
 import com.github.konstantinevashalomidze.interpreter.evaluator.Environment;
 import com.github.konstantinevashalomidze.interpreter.evaluator.Evaluator;
@@ -18,7 +17,8 @@ public class Repl {
 
     /**
      * Starts readWholeStringStartingFromCurrentCharacter eval print loop. which continuously reads user input, evaluates it and prints the output.
-     * @param input user provided input
+     *
+     * @param input  user provided input
      * @param output evaluation result
      */
     public static void start(InputStream input, OutputStream output) {
@@ -37,8 +37,7 @@ public class Repl {
 
                 boolean userWantsTree = false;
                 // if user wants to print AST
-                if (line.startsWith("tree()"))
-                {
+                if (line.startsWith("tree()")) {
                     line = line.replace("tree()", "");
                     userWantsTree = true;
                 }
@@ -50,20 +49,18 @@ public class Repl {
                 if (userWantsTree) { // if user wants to print AST print it and return
                     writer.write(program.toString());
                     writer.flush();
-                    return;
+                    continue;
                 }
 
                 Evaluator evaluator = new Evaluator(environment);
-                if (!parser.errors().isEmpty())
-                {
+                if (!parser.errors().isEmpty()) {
                     printParseErrors(writer, parser.errors());
                     continue;
                 }
 
 
                 Value evaluated = evaluator.evaluate(program);
-                if (evaluated != null)
-                {
+                if (evaluated != null) {
                     writer.write(evaluated.inspect());
                     writer.write("\n");
                     writer.flush();

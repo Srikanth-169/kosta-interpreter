@@ -4,8 +4,7 @@ package com.github.konstantinevashalomidze.interpreter.ast.expression;
 import com.github.konstantinevashalomidze.interpreter.token.Token;
 
 public class Identifier
-    implements Expression
-{
+        implements Expression {
     private Token token;
 
     public Identifier(Token token) {
@@ -35,12 +34,12 @@ public class Identifier
         return token;
     }
 
-    public String getValue() {
-        return token.literal();
-    }
-
     public void setToken(Token token) {
         this.token = token;
+    }
+
+    public String getValue() {
+        return token.literal();
     }
 
 }

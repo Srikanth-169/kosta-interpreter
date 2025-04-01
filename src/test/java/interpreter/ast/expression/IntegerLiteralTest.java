@@ -4,7 +4,8 @@ import com.github.konstantinevashalomidze.interpreter.ast.expression.IntegerLite
 import com.github.konstantinevashalomidze.interpreter.token.Token;
 import com.github.konstantinevashalomidze.interpreter.token.types.Integer;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class IntegerLiteralTest {
 

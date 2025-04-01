@@ -10,13 +10,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.function.Function;
 
 /**
- *  Tokenizes the program into tokens. Get that tokens with readAndMoveOnNextToken().
+ * Tokenizes the program into tokens. Get that tokens with readAndMoveOnNextToken().
  *
  * @author Konstantine Vashalomidze
  */
-public class Lexer
-{
-    private String input;
+public class Lexer {
+    private final String input;
     private char currentCharacter;
     private int nextCharacterIndex;
     private Token currentToken;
@@ -51,6 +50,7 @@ public class Lexer
 
     /**
      * Check what is the next character in the input.
+     *
      * @return next character after current character in the input.
      */
     private char nextCharacter() {
@@ -61,11 +61,11 @@ public class Lexer
 
     /**
      * Supply class and get corresponding currentToken.
+     *
      * @param classz class to extract simple name from.
      * @return currentToken in currentToken manager with provided class simple name.
      */
-    private Token getToken(Class<?> classz)
-    {
+    private Token getToken(Class<?> classz) {
         return TokenManager.getTokenManagerInstance().getToken(classz.getSimpleName());
     }
 
@@ -74,17 +74,12 @@ public class Lexer
      */
     private String readCurrentLiteral(Function<Character, Boolean> function) {
         StringBuilder literal = new StringBuilder();
-        while (function.apply(currentCharacter))
-        {
+        while (function.apply(currentCharacter)) {
             literal.append(currentCharacter);
             moveOnNextCharacter();
         }
         return literal.toString();
     }
-
-
-
-
 
 
     /**
@@ -94,28 +89,23 @@ public class Lexer
             throws NoSuchMethodException,
             InvocationTargetException,
             InstantiationException,
-            IllegalAccessException
-    {
+            IllegalAccessException {
         previousToken = currentToken;
         skipWhiteSpace(); // move to the next currentToken's first character index
         switch (currentCharacter) {
             case '=' -> {
-                if (nextCharacter() == '=')
-                {
+                if (nextCharacter() == '=') {
                     currentToken = getToken(Eq.class);
                     moveOnNextCharacter();
-                }
-                else
+                } else
                     currentToken = getToken(Assign.class);
             }
             case '*' -> currentToken = getToken(Asterisk.class);
             case '!' -> {
-                if (nextCharacter() == '=')
-                {
+                if (nextCharacter() == '=') {
                     currentToken = getToken(NotEq.class);
                     moveOnNextCharacter();
-                }
-                else
+                } else
                     currentToken = getToken(Bang.class);
             }
             case ',' -> currentToken = getToken(Comma.class);
@@ -133,13 +123,11 @@ public class Lexer
             case '&' -> currentToken = getToken(And.class);
             case '|' -> currentToken = getToken(Or.class);
             default -> {
-                if (Character.isLetter(currentCharacter))
-                {
+                if (Character.isLetter(currentCharacter)) {
                     // this moves to the next currentToken starting index, so we directly return
                     String literal = readCurrentLiteral(Character::isLetter);
                     // if not found in manager that should be the identifier
-                    if (TokenManager.getTokenManagerInstance().getTokenWithLiteral(literal).isEmpty())
-                    {
+                    if (TokenManager.getTokenManagerInstance().getTokenWithLiteral(literal).isEmpty()) {
                         currentToken = new Identifier().setLiteral(literal);
                         return currentToken;
                     }
@@ -147,9 +135,7 @@ public class Lexer
                     // for example if literal is fn then new currentToken of Function will be created.
                     currentToken = TokenManager.getTokenManagerInstance().getTokenWithLiteral(literal).get().getClass().getDeclaredConstructor().newInstance().setLiteral(literal);
                     return currentToken;
-                }
-                else if (Character.isDigit(currentCharacter))
-                {
+                } else if (Character.isDigit(currentCharacter)) {
                     // this moves to the next currentToken starting index, so we directly return
                     String literal = readCurrentLiteral(Character::isDigit);
                     currentToken = new Integer().setLiteral(literal);
@@ -192,9 +178,6 @@ public class Lexer
         // Note: The non-prefix case would be after identifiers, integers,
         // or closing brackets/parentheses
     }
-
-
-
 
 
 }

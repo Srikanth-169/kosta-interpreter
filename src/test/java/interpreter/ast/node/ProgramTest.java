@@ -10,32 +10,27 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ProgramTest
-{
+public class ProgramTest {
     private Program program;
 
     @BeforeEach
-    public void setup()
-    {
+    public void setup() {
         program = new Program();
     }
 
     @Test
-    public void testNewProgramHasEmptyStatements()
-    {
+    public void testNewProgramHasEmptyStatements() {
         assertTrue(program.getStatements().isEmpty());
     }
 
     @Test
-    public void testLiteralWithEmptyStatements()
-    {
+    public void testLiteralWithEmptyStatements() {
         assertEquals("", program.literal());
     }
 
 
     @Test
-    public void testLiteralWithStatements()
-    {
+    public void testLiteralWithStatements() {
         Statement mockStatement = mock(Statement.class);
         when(mockStatement.literal()).thenReturn("test literal");
 

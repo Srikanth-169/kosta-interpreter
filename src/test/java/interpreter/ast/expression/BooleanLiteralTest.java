@@ -5,6 +5,7 @@ import com.github.konstantinevashalomidze.interpreter.token.Token;
 import com.github.konstantinevashalomidze.interpreter.token.types.False;
 import com.github.konstantinevashalomidze.interpreter.token.types.True;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BooleanLiteralTest {

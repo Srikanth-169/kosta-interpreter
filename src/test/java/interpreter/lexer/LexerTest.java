@@ -5,7 +5,9 @@ import com.github.konstantinevashalomidze.interpreter.token.Token;
 import com.github.konstantinevashalomidze.interpreter.token.types.*;
 import com.github.konstantinevashalomidze.interpreter.token.types.Integer;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 class LexerTest {
 
@@ -35,15 +37,15 @@ class LexerTest {
     @Test
     void testComplexProgram() throws Exception {
         String input = """
-            var five = 5;
-            var ten = 10;
-            var add = fn(x, y) {
-                x + y;
-            };
-            var result = add(five, ten);
-            !-/*5;
-            5 < 10 > 5;
-            """;
+                var five = 5;
+                var ten = 10;
+                var add = fn(x, y) {
+                    x + y;
+                };
+                var result = add(five, ten);
+                !-/*5;
+                5 < 10 > 5;
+                """;
 
         Lexer lexer = new Lexer(input);
         Class<?>[] expectedTokenTypes = {

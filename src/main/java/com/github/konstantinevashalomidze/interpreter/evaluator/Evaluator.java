@@ -10,16 +10,15 @@ import com.github.konstantinevashalomidze.interpreter.evaluator.value.Boolean;
 import com.github.konstantinevashalomidze.interpreter.evaluator.value.Error;
 import com.github.konstantinevashalomidze.interpreter.evaluator.value.Integer;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class Evaluator {
 
-    private Boolean TRUE = new Boolean(true);
-    private Boolean FALSE = new Boolean(false);
+    private final Boolean TRUE = new Boolean(true);
+    private final Boolean FALSE = new Boolean(false);
 
-    private Null aNull = new Null("null");
+    private final Null aNull = new Null("null");
 
     private Environment environment;
 
@@ -30,23 +29,16 @@ public class Evaluator {
     }
 
     public Value evaluate(Node node) {
-        if (node instanceof Program program)
-        {
+        if (node instanceof Program program) {
             return evaluateProgram(program.getStatements());
-        }
-        else if (node instanceof ExpressionStatement expressionStatement)
-        {
+        } else if (node instanceof ExpressionStatement expressionStatement) {
             return evaluate(expressionStatement.getExpression());
-        }
-        else if (node instanceof PrefixExpression prefixExpression)
-        {
+        } else if (node instanceof PrefixExpression prefixExpression) {
             Value right = evaluate(prefixExpression.getRight());
             if (isError(right))
                 return right;
             return evaluatePrefixExpression(prefixExpression.getOperator(), right);
-        }
-        else if (node instanceof InfixExpression infixExpression)
-        {
+        } else if (node instanceof InfixExpression infixExpression) {
             Value left = evaluate(infixExpression.getLeft());
             if (isError(left))
                 return left;
@@ -56,53 +48,38 @@ public class Evaluator {
                 return right;
 
             return evaluateInfixExpression(infixExpression.getOperator(), left, right);
-        }
-        else if (node instanceof BlockStatement blockStatement)
-        {
+        } else if (node instanceof BlockStatement blockStatement) {
             return evaluateBlockStatement(blockStatement.getStatements());
-        }
-        else if (node instanceof IfExpression ifExpression)
-        {
+        } else if (node instanceof IfExpression ifExpression) {
             return evaluateIfExpression(ifExpression);
-        }
-        else if (node instanceof ReturnStatement returnStatement)
-        {
+        } else if (node instanceof ReturnStatement returnStatement) {
             Value value = evaluate(returnStatement.getValue());
             if (isError(value))
                 return value;
             return new Return(value);
-        }
-        else if (node instanceof VarStatement varStatement) {
+        } else if (node instanceof VarStatement varStatement) {
             Value value = evaluate(varStatement.getValue());
             if (isError(value))
                 return value;
             return environment.putValue(varStatement.getName().getValue(), value);
-        }
-        else if (node instanceof Identifier identifier) {
+        } else if (node instanceof Identifier identifier) {
             return evaluateIdentifier(identifier);
-        }
-        else if (node instanceof CallExpression callExpression) {
+        } else if (node instanceof CallExpression callExpression) {
             Value function = evaluate(callExpression.getFunction());
             if (isError(function))
                 return function;
             List<Value> args = evaluateExpressions(callExpression.getArguments());
-            if (args.size() == 1 && isError(args.getFirst()))
-            {
+            if (args.size() == 1 && isError(args.getFirst())) {
                 return args.getFirst();
             }
             return applyFunction(function, args);
-        }
-        else if (node instanceof FunctionLiteral functionLiteral) {
+        } else if (node instanceof FunctionLiteral functionLiteral) {
             List<Identifier> params = functionLiteral.getParameters();
             BlockStatement body = functionLiteral.getBody();
             return new Function(params, body, environment);
-        }
-        else if (node instanceof IntegerLiteral integerLiteral)
-        {
+        } else if (node instanceof IntegerLiteral integerLiteral) {
             return new Integer(integerLiteral.getValue());
-        }
-        else if (node instanceof BooleanLiteral booleanLiteral)
-        {
+        } else if (node instanceof BooleanLiteral booleanLiteral) {
             return booleanLiteral.getValue() ? TRUE : FALSE;
         }
 
@@ -113,21 +90,15 @@ public class Evaluator {
     private Value evaluateIfExpression(IfExpression ifExpression) {
         Value condition = evaluate(ifExpression.getCondition());
 
-        if (isError(condition))
-        {
+        if (isError(condition)) {
             return condition;
         }
 
-        if (isNotFalseAndNull(condition))
-        {
+        if (isNotFalseAndNull(condition)) {
             return evaluate(ifExpression.getConsequence());
-        }
-        else if (ifExpression.getAlternative() != null)
-        {
+        } else if (ifExpression.getAlternative() != null) {
             return evaluate(ifExpression.getAlternative());
-        }
-        else
-        {
+        } else {
             return aNull;
         }
     }
@@ -142,8 +113,9 @@ public class Evaluator {
 
     /**
      * Evaluates function with provided arguments and returns value
+     *
      * @param function function to evaluate
-     * @param args passed arguments
+     * @param args     passed arguments
      * @return evaluated value
      */
     private Value applyFunction(Value function, List<Value> args) {
@@ -183,8 +155,7 @@ public class Evaluator {
     private List<Value> evaluateExpressions(List<Expression> arguments) {
         List<Value> result = new ArrayList<>();
 
-        for (Expression expression : arguments)
-        {
+        for (Expression expression : arguments) {
             Value evaluated = evaluate(expression);
             if (isError(evaluated))
                 return List.of(evaluated);
@@ -204,20 +175,18 @@ public class Evaluator {
     }
 
 
-
     /**
      * Evaluates block statements and gives back value of the last evaluated statement
+     *
      * @param statements statements that are in block statement
      * @return value of last evaluated statement
      */
     private Value evaluateBlockStatement(List<Statement> statements) {
         Value evaluated = null;
-        for (Statement statement : statements)
-        {
+        for (Statement statement : statements) {
             evaluated = evaluate(statement);
 
-            if (evaluated != null)
-            {
+            if (evaluated != null) {
                 if (evaluated instanceof Return || isError(evaluated))
                     return evaluated;
             }
@@ -230,8 +199,8 @@ public class Evaluator {
      * Evaluates infix expressions like 'true | false'
      *
      * @param operator operator like: +, -, & ...
-     * @param left left value operand
-     * @param right right value operand
+     * @param left     left value operand
+     * @param right    right value operand
      * @return applies infix operation to operands left and right and evaluates
      */
     private Value evaluateInfixExpression(String operator, Value left, Value right) {
@@ -256,7 +225,8 @@ public class Evaluator {
         return switch (operator) {
             case "|" -> new Boolean(((Boolean) left).getValue() || ((Boolean) right).getValue());
             case "&" -> new Boolean(((Boolean) left).getValue() && ((Boolean) right).getValue());
-            default -> new Error(String.format("Unknown operation: %s %s %s", left.getClass().getSimpleName(), operator, right.getClass().getSimpleName()));
+            default ->
+                    new Error(String.format("Unknown operation: %s %s %s", left.getClass().getSimpleName(), operator, right.getClass().getSimpleName()));
         };
     }
 
@@ -270,7 +240,8 @@ public class Evaluator {
             case ">" -> ((Integer) left).getValue() > ((Integer) right).getValue() ? TRUE : FALSE;
             case "==" -> ((Integer) left).getValue() == ((Integer) right).getValue() ? TRUE : FALSE;
             case "!=" -> ((Integer) left).getValue() != ((Integer) right).getValue() ? TRUE : FALSE;
-            default -> new Error(String.format("Unknown operation: %s %s %s", left.getClass().getSimpleName(), operator, right.getClass().getSimpleName()));
+            default ->
+                    new Error(String.format("Unknown operation: %s %s %s", left.getClass().getSimpleName(), operator, right.getClass().getSimpleName()));
         };
     }
 
@@ -289,7 +260,7 @@ public class Evaluator {
      * Evaluates and returns value of the prefix expression.
      *
      * @param operator "+" or "-"
-     * @param right operand to apply operator
+     * @param right    operand to apply operator
      * @return evaluated result for example if operand was 5 and operator - this evaluates to -5
      */
     private Value evaluatePrefixExpression(String operator, Value right) {
@@ -309,8 +280,7 @@ public class Evaluator {
     }
 
     private Value evaluateBangOperatorExpression(Value right) {
-        return switch (right.inspect())
-        {
+        return switch (right.inspect()) {
             case "false", "null" -> TRUE;
             default -> FALSE;
         };
@@ -319,11 +289,10 @@ public class Evaluator {
 
     private Value evaluateProgram(List<Statement> statements) {
         Value evaluated = null;
-        for (Statement statement : statements)
-        {
+        for (Statement statement : statements) {
             evaluated = evaluate(statement);
 
-            if(evaluated instanceof Return returnValue) // Terminate execution of statements upon after seeing return
+            if (evaluated instanceof Return returnValue) // Terminate execution of statements upon after seeing return
                 return returnValue;
         }
         return evaluated;

@@ -1,7 +1,6 @@
 package com.github.konstantinevashalomidze.interpreter.token;
 
-public enum Precedence
-{
+public enum Precedence {
     LOWEST(0),
     OR(1),
     AND(2),
@@ -16,7 +15,7 @@ public enum Precedence
 
     CALL(8);
 
-    private int number;
+    private final int number;
 
     Precedence(int number) {
         this.number = number;

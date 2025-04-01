@@ -7,8 +7,7 @@ import static com.github.konstantinevashalomidze.interpreter.token.Precedence.LO
 
 
 public class Variable
-    implements Token
-{
+        implements Token {
 
     @Override
     public Precedence precedence() {

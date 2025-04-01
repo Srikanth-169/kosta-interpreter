@@ -1,7 +1,6 @@
 package interpreter.ast.expression;
 
 
-
 import com.github.konstantinevashalomidze.interpreter.ast.expression.CallExpression;
 import com.github.konstantinevashalomidze.interpreter.ast.expression.Expression;
 import com.github.konstantinevashalomidze.interpreter.ast.expression.Identifier;
@@ -11,10 +10,12 @@ import com.github.konstantinevashalomidze.interpreter.token.types.Integer;
 import com.github.konstantinevashalomidze.interpreter.token.types.Lb;
 import com.github.konstantinevashalomidze.interpreter.token.types.Lp;
 import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CallExpressionTest {
 

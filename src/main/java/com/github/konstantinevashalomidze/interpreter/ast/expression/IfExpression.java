@@ -5,8 +5,7 @@ import com.github.konstantinevashalomidze.interpreter.ast.statement.BlockStateme
 import com.github.konstantinevashalomidze.interpreter.token.Token;
 
 public class IfExpression
-    implements Expression
-{
+        implements Expression {
 
     private Token token;
     private Expression condition;

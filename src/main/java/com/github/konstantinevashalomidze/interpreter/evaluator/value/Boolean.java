@@ -1,12 +1,10 @@
 package com.github.konstantinevashalomidze.interpreter.evaluator.value;
 
 public class Boolean
-    implements Value
-{
-    private boolean value;
+        implements Value {
+    private final boolean value;
 
-    public Boolean(boolean value)
-    {
+    public Boolean(boolean value) {
         this.value = value;
     }
 

@@ -8,8 +8,7 @@ import static com.github.konstantinevashalomidze.interpreter.token.Precedence.LO
 
 
 public class Identifier
-    implements Token
-{
+        implements Token {
     private String literal;
 
 

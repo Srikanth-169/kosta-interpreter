@@ -5,8 +5,7 @@ import com.github.konstantinevashalomidze.interpreter.ast.expression.Expression;
 import com.github.konstantinevashalomidze.interpreter.token.Token;
 
 public class ExpressionStatement
-    implements Statement
-{
+        implements Statement {
     private Token token;
     private Expression expression;
 
@@ -23,8 +22,6 @@ public class ExpressionStatement
     public ExpressionStatement() {
 
     }
-
-
 
 
     @Override

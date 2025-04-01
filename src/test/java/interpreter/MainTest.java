@@ -12,8 +12,7 @@ import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class MainTest
-{
+public class MainTest {
     private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
     private final InputStream originalIn = System.in;
@@ -21,14 +20,12 @@ public class MainTest
 
 
     @BeforeEach
-    public void setUpStreams()
-    {
+    public void setUpStreams() {
         System.setOut(new PrintStream(outputStream));
     }
 
     @AfterEach
-    public void restoreStreams()
-    {
+    public void restoreStreams() {
         System.setOut(originalOut);
         System.setIn(originalIn);
         if (originalUsername != null)
@@ -38,10 +35,8 @@ public class MainTest
     }
 
 
-
     @Test
-    public void testMainWithValidUsername()
-    {
+    public void testMainWithValidUsername() {
         String testUsername = "TestUser";
         System.setProperty("user.name", testUsername);
 
@@ -50,7 +45,7 @@ public class MainTest
         System.setIn(inputStream);
 
         // Act
-        Main.main(new String[] {});
+        Main.main(new String[]{});
 
         // Assert
         String output = outputStream.toString();
@@ -60,8 +55,7 @@ public class MainTest
 
 
     @Test
-    public void testMainWithNullUsername()
-    {
+    public void testMainWithNullUsername() {
         System.clearProperty("user.name");
 
         // Terminate Repl after execution
@@ -69,17 +63,14 @@ public class MainTest
         System.setIn(inputStream);
 
         // Act
-        Main.main(new String[] {});
+        Main.main(new String[]{});
 
         // Assert
         String output = outputStream.toString();
         assertTrue(output.contains("Hello Guest"));
 
 
-
     }
-
-
 
 
 }

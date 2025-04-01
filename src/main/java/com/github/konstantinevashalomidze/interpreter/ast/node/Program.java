@@ -1,7 +1,6 @@
 package com.github.konstantinevashalomidze.interpreter.ast.node;
 
 
-
 import com.github.konstantinevashalomidze.interpreter.ast.statement.Statement;
 
 import java.util.ArrayList;
@@ -13,16 +12,15 @@ import java.util.List;
  * @author Konstantine Vashalomdize
  */
 public class Program
-    implements Node
-{
-    private List<Statement> statements;
+        implements Node {
+    private final List<Statement> statements;
+
     public Program() {
         statements = new ArrayList<>();
     }
 
     @Override
-    public String literal()
-    {
+    public String literal() {
         if (!statements.isEmpty())
             return statements.getFirst().literal();
         else return "";
@@ -33,8 +31,7 @@ public class Program
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Program\n"); // root node
         for (Statement statement : statements) {

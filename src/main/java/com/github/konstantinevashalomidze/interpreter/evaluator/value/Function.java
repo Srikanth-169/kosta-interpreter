@@ -1,7 +1,6 @@
 package com.github.konstantinevashalomidze.interpreter.evaluator.value;
 
 
-
 import com.github.konstantinevashalomidze.interpreter.ast.expression.Identifier;
 import com.github.konstantinevashalomidze.interpreter.ast.statement.BlockStatement;
 import com.github.konstantinevashalomidze.interpreter.evaluator.Environment;
@@ -10,15 +9,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Function
-    implements Value
-{
-    private List<Identifier> parameters;
-    private BlockStatement body;
+        implements Value {
+    private final List<Identifier> parameters;
+    private final BlockStatement body;
 
-    private Environment environment;
+    private final Environment environment;
 
-    public Function(List<Identifier> parameters, BlockStatement body, Environment environment)
-    {
+    public Function(List<Identifier> parameters, BlockStatement body, Environment environment) {
         this.parameters = parameters;
         this.body = body;
         this.environment = environment;

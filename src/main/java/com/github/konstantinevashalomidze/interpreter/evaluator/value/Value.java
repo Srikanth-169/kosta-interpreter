@@ -1,7 +1,6 @@
 package com.github.konstantinevashalomidze.interpreter.evaluator.value;
 
-public interface Value
-{
+public interface Value {
 
 
     String inspect();

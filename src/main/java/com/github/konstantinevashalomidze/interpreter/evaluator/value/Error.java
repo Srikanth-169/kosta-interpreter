@@ -1,8 +1,7 @@
 package com.github.konstantinevashalomidze.interpreter.evaluator.value;
 
 public class Error
-    implements Value
-{
+        implements Value {
 
     private final String message;
 

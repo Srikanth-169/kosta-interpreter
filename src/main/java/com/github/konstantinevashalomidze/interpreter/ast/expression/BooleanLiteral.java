@@ -4,8 +4,7 @@ package com.github.konstantinevashalomidze.interpreter.ast.expression;
 import com.github.konstantinevashalomidze.interpreter.token.Token;
 
 public class BooleanLiteral
-    implements Expression
-{
+        implements Expression {
 
     private Token token;
 
@@ -27,13 +26,13 @@ public class BooleanLiteral
         return token;
     }
 
+    public void setToken(Token token) {
+        this.token = token;
+    }
+
     @Override
     public String toString() {
         return "BooleanLiteral (" + token.literal() + ")";
-    }
-
-    public void setToken(Token token) {
-        this.token = token;
     }
 
     public boolean getValue() {

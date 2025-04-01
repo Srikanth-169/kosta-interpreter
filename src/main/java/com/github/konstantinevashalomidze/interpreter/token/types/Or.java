@@ -8,8 +8,7 @@ import static com.github.konstantinevashalomidze.interpreter.token.Precedence.OR
 
 
 public class Or
-    implements Token
-{
+        implements Token {
 
     @Override
     public Precedence precedence() {

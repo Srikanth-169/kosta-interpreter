@@ -8,8 +8,7 @@ import static com.github.konstantinevashalomidze.interpreter.token.Precedence.LO
 
 
 public class Eof
-    implements Token
-{
+        implements Token {
     @Override
     public Precedence precedence() {
         return LOWEST;

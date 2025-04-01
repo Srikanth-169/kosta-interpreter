@@ -5,16 +5,11 @@ import com.github.konstantinevashalomidze.interpreter.evaluator.Environment;
 import com.github.konstantinevashalomidze.interpreter.evaluator.value.Value;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class EnvironmentTest {
-
-    private record MockValue(String data) implements Value {
-        public String inspect() {
-            return data;
-        }
-    }
-
 
     private Environment env;
     private Value testValue1;
@@ -81,5 +76,11 @@ class EnvironmentTest {
     void testReturnValueOfPutValue() {
         Value returned = env.putValue("x", testValue1);
         assertEquals(testValue1, returned);
+    }
+
+    private record MockValue(String data) implements Value {
+        public String inspect() {
+            return data;
+        }
     }
 }

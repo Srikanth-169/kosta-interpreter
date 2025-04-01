@@ -13,45 +13,37 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class BlockStatementTest
-{
+public class BlockStatementTest {
     private BlockStatement blockStatement;
     private Token mockToken;
 
     @BeforeEach
-    public void setUp()
-    {
+    public void setUp() {
         mockToken = mock(Token.class);
         when(mockToken.literal()).thenReturn("{");
         blockStatement = new BlockStatement(mockToken);
     }
 
     @Test
-    public void testConstructorInitialization()
-    {
+    public void testConstructorInitialization() {
         assertEquals(mockToken, blockStatement.getToken());
         assertTrue(blockStatement.getStatements().isEmpty());
     }
 
 
     @Test
-    public void testLiteral()
-    {
+    public void testLiteral() {
         assertEquals("{", blockStatement.literal());
     }
 
     @Test
-    public void testStatementNode()
-    {
+    public void testStatementNode() {
         // This method is  not yet implemented in class
     }
 
 
-
-
     @Test
-    public void testSetStatements()
-    {
+    public void testSetStatements() {
         List<Statement> newStatements = new ArrayList<>();
         Statement mockStatement = mock(Statement.class);
         newStatements.add(mockStatement);

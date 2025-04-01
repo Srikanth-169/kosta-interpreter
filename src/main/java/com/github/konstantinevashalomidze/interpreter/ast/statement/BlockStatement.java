@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BlockStatement
-    implements Statement
-{
+        implements Statement {
 
     private Token token;
     private List<Statement> statements;

@@ -2,14 +2,14 @@ package com.github.konstantinevashalomidze.interpreter.parser;
 
 import com.github.konstantinevashalomidze.interpreter.ast.expression.*;
 import com.github.konstantinevashalomidze.interpreter.ast.expression.Identifier;
-import com.github.konstantinevashalomidze.interpreter.ast.statement.*;
-import com.github.konstantinevashalomidze.interpreter.token.types.*;
 import com.github.konstantinevashalomidze.interpreter.ast.node.Program;
+import com.github.konstantinevashalomidze.interpreter.ast.statement.*;
 import com.github.konstantinevashalomidze.interpreter.lexer.Lexer;
 import com.github.konstantinevashalomidze.interpreter.parser.infix.Infix;
 import com.github.konstantinevashalomidze.interpreter.parser.prefix.Prefix;
 import com.github.konstantinevashalomidze.interpreter.token.Precedence;
 import com.github.konstantinevashalomidze.interpreter.token.Token;
+import com.github.konstantinevashalomidze.interpreter.token.types.*;
 
 import java.lang.Integer;
 import java.lang.reflect.InvocationTargetException;
@@ -20,18 +20,19 @@ import java.util.Map;
 
 /**
  * Takes lexer and produced Abstract Syntax Tree via Pratt Parsing Algorithm.
+ *
  * @author Konstantine Vashalomidze
  */
 
 public class Parser {
-    private Lexer lexer;
-    private List<String> errors;
+    private final Lexer lexer;
+    private final List<String> errors;
 
     private Token currentToken;
     private Token nextToken;
 
-    private Map<String, Prefix> prefixParsingFunctions;
-    private Map<String, Infix> infixParsingFunctions;
+    private final Map<String, Prefix> prefixParsingFunctions;
+    private final Map<String, Infix> infixParsingFunctions;
 
 
     public Parser(Lexer lexer) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
@@ -75,8 +76,7 @@ public class Parser {
     private Expression parseFunctionCall(Expression left) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         CallExpression callExpression = new CallExpression(currentToken, left); // <identifier>(
 
-        if (nextToken instanceof Rp)
-        {
+        if (nextToken instanceof Rp) {
             readAndMoveOnNextToken(); // <identifier>()
             return callExpression;
         }
@@ -84,8 +84,7 @@ public class Parser {
         readAndMoveOnNextToken(); // <identifier>(<arguments>
         callExpression.getArguments().add(parseExpression(0)); // parses argument
 
-        while (nextToken instanceof Comma)
-        {
+        while (nextToken instanceof Comma) {
             readAndMoveOnNextToken(); // move to comma
             readAndMoveOnNextToken(); // move to argument
 
@@ -109,7 +108,6 @@ public class Parser {
         return infixExpression;
 
 
-
     }
 
 
@@ -123,15 +121,13 @@ public class Parser {
         List<Identifier> identifiers = new ArrayList<>();
         if (nextToken instanceof Rp)
             readAndMoveOnNextToken(); // fn()
-        else
-        {
+        else {
             // fn (<arguments>
             readAndMoveOnNextToken();
             Identifier identifier = new Identifier(currentToken);
             identifiers.add(identifier);
 
-            while (nextToken instanceof Comma)
-            {
+            while (nextToken instanceof Comma) {
                 readAndMoveOnNextToken(); // moves on comma
                 readAndMoveOnNextToken(); // moves on argument identifier
                 identifier = new Identifier(currentToken);
@@ -170,8 +166,7 @@ public class Parser {
         ifExpression.setConsequence(parseBlockStatement()); // if (<condition>) { <consequence> }
 
         // evaluate else block if present at all
-        if (nextToken instanceof Else)
-        {
+        if (nextToken instanceof Else) {
             readAndMoveOnNextToken(); // if (<condition>) { <consequence> } else
 
             if (!expectNextToken(Lb.class.getSimpleName())) // if (<condition>) { <consequence> } else {
@@ -183,7 +178,6 @@ public class Parser {
         return ifExpression;
 
 
-
     }
 
     private BlockStatement parseBlockStatement() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
@@ -192,8 +186,7 @@ public class Parser {
         readAndMoveOnNextToken(); // { <first statement>
 
         // while current token is not '}' and there are still tokens left to read
-        while (!(currentToken instanceof Rb) && !(currentToken instanceof Eof))
-        {
+        while (!(currentToken instanceof Rb) && !(currentToken instanceof Eof)) {
             Statement statement = parseStatement();
             if (statement != null)
                 blockStatement.getStatements().add(statement);
@@ -204,8 +197,7 @@ public class Parser {
     }
 
     private Statement parseStatement() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        return switch (currentToken.getClass().getSimpleName())
-        {
+        return switch (currentToken.getClass().getSimpleName()) {
             case "Return" -> parseReturnStatement();
             case "Variable" -> parseVarStatement();
             default -> parseExpressionStatement();
@@ -280,8 +272,7 @@ public class Parser {
 
     private boolean expectNextToken(String expectedName) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         String actualName = nextToken.getClass().getSimpleName();
-        if (!actualName.equals(expectedName))
-        {
+        if (!actualName.equals(expectedName)) {
             errors.add(String.format("Expected '%s', got '%s'", expectedName, actualName));
             return false;
         }
@@ -301,8 +292,7 @@ public class Parser {
 
 
         // continue parsing till next token suggests a higher precedence infix expression
-        while (!(nextToken instanceof Semicolon) && precedence < nextToken.precedence().getNumber())
-        {
+        while (!(nextToken instanceof Semicolon) && precedence < nextToken.precedence().getNumber()) {
             Infix infixParsingFn = infixParsingFunctions.get(nextToken.getClass().getSimpleName());
             if (infixParsingFn == null)
                 return leftExpression;
@@ -325,8 +315,7 @@ public class Parser {
         Program program = new Program();
 
         // current token is not end of the file token
-        while (!(currentToken instanceof Eof))
-        {
+        while (!(currentToken instanceof Eof)) {
             Statement statement = parseStatement();
             if (statement != null)
                 program.getStatements().add(statement);

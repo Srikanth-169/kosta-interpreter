@@ -1,12 +1,10 @@
 package com.github.konstantinevashalomidze.interpreter.evaluator.value;
 
 public class Integer
-    implements Value
-{
-    private int value;
+        implements Value {
+    private final int value;
 
-    public Integer(int value)
-    {
+    public Integer(int value) {
         this.value = value;
     }
 

@@ -5,8 +5,7 @@ import com.github.konstantinevashalomidze.interpreter.token.Precedence;
 import com.github.konstantinevashalomidze.interpreter.token.Token;
 
 public class Assign
-    implements Token
-{
+        implements Token {
 
 
     @Override

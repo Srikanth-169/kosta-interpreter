@@ -8,10 +8,8 @@ import static com.github.konstantinevashalomidze.interpreter.token.Precedence.LO
 
 
 public class Integer
-    implements Token
-{
+        implements Token {
     private String literal;
-
 
 
     @Override

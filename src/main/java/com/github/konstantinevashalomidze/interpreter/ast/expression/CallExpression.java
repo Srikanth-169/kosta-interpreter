@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CallExpression
-    implements Expression
-{
+        implements Expression {
 
     private Token token;
     private Expression function;

@@ -8,8 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class TokenManager
-{
+public class TokenManager {
     private static TokenManager tokenManagerInstance;
 
     private final Map<String, Token> tokenTypeTokenMap;
@@ -49,19 +48,17 @@ public class TokenManager
         tokenTypeTokenMap.put(Variable.class.getSimpleName(), new Variable());
     }
 
-    public Token getToken(String token)
-    {
-        return tokenTypeTokenMap.get(token);
-    }
-
-
-    public Optional<Token> getTokenWithLiteral(String literal) {
-        return tokenTypeTokenMap.values().stream().filter(val -> val.literal() != null && val.literal().equals(literal)).findFirst();
-    }
-
     public static TokenManager getTokenManagerInstance() {
         if (tokenManagerInstance == null)
             tokenManagerInstance = new TokenManager();
         return tokenManagerInstance;
+    }
+
+    public Token getToken(String token) {
+        return tokenTypeTokenMap.get(token);
+    }
+
+    public Optional<Token> getTokenWithLiteral(String literal) {
+        return tokenTypeTokenMap.values().stream().filter(val -> val.literal() != null && val.literal().equals(literal)).findFirst();
     }
 }

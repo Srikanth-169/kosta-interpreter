@@ -20,8 +20,6 @@ public class InfixExpression implements Expression {
     }
 
 
-
-
     @Override
     public void expressionNode() {
 

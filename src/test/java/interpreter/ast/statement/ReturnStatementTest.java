@@ -8,24 +8,22 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-public class ReturnStatementTest
-{
+public class ReturnStatementTest {
 
     private Token mockToken;
     private Expression mockExpression;
 
     @BeforeEach
-    public void setUp()
-    {
+    public void setUp() {
         mockToken = mock(Token.class);
         mockExpression = mock(Expression.class);
     }
 
     @Test
-    public void testConstructorWithTokenAndValue()
-    {
+    public void testConstructorWithTokenAndValue() {
         ReturnStatement statement = new ReturnStatement(mockToken, mockExpression);
 
         assertEquals(mockToken, statement.getToken());
@@ -33,8 +31,7 @@ public class ReturnStatementTest
     }
 
     @Test
-    public void testConstructorWithToken()
-    {
+    public void testConstructorWithToken() {
         ReturnStatement statement = new ReturnStatement(mockToken);
 
         assertEquals(mockToken, statement.getToken());
@@ -42,8 +39,7 @@ public class ReturnStatementTest
     }
 
     @Test
-    public void testDefaultConstructor()
-    {
+    public void testDefaultConstructor() {
         ReturnStatement statement = new ReturnStatement();
 
         assertNull(statement.getToken());
@@ -51,8 +47,7 @@ public class ReturnStatementTest
     }
 
     @Test
-    public void testLiteral()
-    {
+    public void testLiteral() {
         when(mockToken.literal()).thenReturn("return");
 
         ReturnStatement statement = new ReturnStatement(mockToken);
@@ -61,10 +56,8 @@ public class ReturnStatementTest
     }
 
 
-
     @Test
-    public void testSettersAndGetters()
-    {
+    public void testSettersAndGetters() {
         ReturnStatement statement = new ReturnStatement();
 
         statement.setToken(mockToken);

@@ -10,7 +10,6 @@ import static com.github.konstantinevashalomidze.interpreter.token.Precedence.LO
 public class Function implements Token {
 
 
-
     @Override
     public Precedence precedence() {
         return LOWEST;  // Keywords typically don't have operator precedence

@@ -1,9 +1,8 @@
 package com.github.konstantinevashalomidze.interpreter.evaluator.value;
 
 public class Null
-    implements Value
-{
-    private String aNull;
+        implements Value {
+    private final String aNull;
 
     public Null(String aNull) {
         this.aNull = aNull;

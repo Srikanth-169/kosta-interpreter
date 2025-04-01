@@ -8,7 +8,9 @@ import com.github.konstantinevashalomidze.interpreter.token.types.Integer;
 import com.github.konstantinevashalomidze.interpreter.token.types.MinusInfix;
 import com.github.konstantinevashalomidze.interpreter.token.types.Plus;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class InfixExpressionTest {
 
