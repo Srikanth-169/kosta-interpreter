@@ -1,7 +1,8 @@
 # Table of Contents
 1. [Introduction](#introduction)
 2. [Overview](#overview)
-3. [Kosta-language](#kosta-language)
+3. [Setup and installation](#setup-and-installation)
+4. [Kosta-language](#kosta-language)
    - [Variables and Data types](#1-variables-and-data-types)
    - [Expressions and Operators](#2-expressions-and-operators)
    - [Functions](#3-functions)
@@ -9,7 +10,6 @@
    - [Arrays and Hashmaps](#5-arrays-and-hashmaps)
    - [Scopes and Closures](#6-scopes-and-closures)
    - [Function Literals and Immediate Invocation](#7-function-literals-and-immediate-invocation)
-4. [Setup and installation](#setup-and-installation)
 5. [Code structure](#code-structure)
    - [repl](#repl)
    - [Lexer](#lexer)
@@ -17,8 +17,7 @@
    - [AST (Abstract Syntax Tree)](#ast-abstract-syntax-tree)
    - [Environment](#environment)
    - [Evaluator](#evaluator)
-6. [Examples](#examples)
-7. [References](#references)
+6. [References](#references)
 
 ---
 
@@ -28,7 +27,12 @@ This project is a Java implementation of a Monkey-like interpreter, inspired by 
 ---
 
 ## Overview
-*(overview content.)*
+![sum](sum.png)
+
+---
+
+## Setup and installation
+see [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ---
 
@@ -132,40 +136,120 @@ fn(x) { return factorial(x); }(3); // Evaluates to 6
 
 ---
 
-## Setup and installation
-*(setup and installation.)*
-
----
-
 ## Code structure
 
-### repl
-*(REPL.)*
+### Repl
+[Repl](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop) stands for 'Read-eval-print-loop' which simply is an interactive programming environment that:
+1. Reads user input
+2. Evaluates code
+3. Prints the result 
+4. And repeats
+
+For this time this is the only implementation provided for the main interface for users to interact with the interpreter. String is displayed in the java's standard output stream indicating program being ready to read the user input. Repl contains one ```start()``` method that runs it with specified input and output streams.
+
+> **_NOTE:_** There are two special methods: exit() and tree() which we can pass through the terminal. exit() - stops the loop and tree() prints the formatted AST (abstract syntax tree) of the program. For example ```tree() var x = 54;```
 
 ### Lexer
-*(Lexer content.)*
+
+[Lexer](https://en.wikipedia.org/wiki/Lexical_analysis) transforms raw source code into a sequence of tokens that can be processed by the __parser__. It's first stage in interpreter pipeline that converts Kosta's language into something that computer can *begin* to understand. In reality what it does it simple:
+1. Takes your source code as a string input
+2. Breaks down into meaningful tokens
+3. *Parser* consumes those tokens
+
+For example, when it sees ```var x = 10 + 5;```, it identifiers:
+* ```var``` as ```Variable```
+* ```=``` as ```Assign```
+* ```10``` and ```5``` as ```Integer```-s 
+* ```+``` as ```Plus```
+* ```;``` as ```Semicolon```
+
+Each of those token have literal (```Semicolon``` has ```;```) and precedence (For the parser to properly parse) value.
+
+The lexer parses the input character by character, making decisions about token boundaries. Identifies and distinguishes different kinds of tokens such as: 
+* Operators (```+```, ```-```, ```*```, ```/```, ```==```, ```!=```, ```!``` etc.)
+* Delimiters (Parenthesis, Braces, commas, semicolons etc.)
+* Keywords (fn, return etc.)
+* Identifiers (variable names, functions names etc.)
+* Integer literals
+
+It skips whitespace characters, tabs, and newlines between tokens and also distinguishes between prefix and infix operators (e.g. distinguishing between negative number ```-3``` and subtraction ```x - 5```)
+
+To use lexer we need to construct object of lexer:
+
+```java
+import com.github.konstantinevashalomidze.interpreter.lexer.Lexer;
+
+Lexer lexer = new Lexer("var x = 5; a + 7;");
+```
+
+And then we repeatedly call ```readAndMoveOnNextToken()``` to get each token in sequence (Which exactly does what the name suggests). 
 
 ### Parser
-*(Parser.)*
+[Parser](https://en.wikipedia.org/wiki/Parsing) is responsible for transforming the stream of tokens from Lexer into a structured [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) (AST) that represents the programs meaning. This implementation uses [Pratt Parsing](https://en.wikipedia.org/wiki/Operator-precedence_parser#Pratt_parsing) algorithm.
+
+The parser consumes tokens from the Lexer and organizes them into a AST. For example, when it sees tokens for ```var x = 1 - 2 * 3;```, it builds a tree that correctly represents that. This means ```5 * 2``` should be represented in a tree such that it will be evaluated first by the __evaluator__.
+
+For more about Pratt Parsing see [article](https://matklad.github.io/2020/04/13/simple-but-powerful-pratt-parsing.html).
+
+Now, the usage of our parser is as simple as:
+```java
+Lexer lexer = new Lexer("var x = 10;");
+Parser parser = new Parser(lexer);
+
+// And if needed, parse the program
+Program program = parser.parseProgram(); // Root of AST
+```
+
+
 
 ### AST (Abstract Syntax Tree)
-*(AST.)*
+__AST__ represents the set of instructions for the __evaluator__ in different from compared to raw string input, so that __evaluator__ will more easily evaluate it.
+
+Every node of the AST implements Node interface forcing all the nodes to have literal values:
+![Node](NodeInterface.png)
+* The program node is the root of the AST 
+* The statements are nodes and usually are comma separated for example `var x = 5`
+  ![Statement](StatementInterface.png)
+* The expressions are nodes as well and we have several of them like `InfixExpression` or `FunctionLiteral`
+![Expression](ExpressionInterface.png)
+
 
 ### Environment
-*(Environment.)*
+The environment class is responsible for memory management. It tracks all the variables and their values during program execution. Basically it is a scoped symbol table that maintains the relationship between variable names and their current values.
+
+When code declares a variable like `var x = 10;`, the environment stores this name-value mapping. When the program later references to x, the environment is responsible for retrieving the correct value.
+
+It supports nested scopes by maintaining outer environments, which allows the variables to be looked up in the correct scope. 
+
+The environment class has really simple design:
+* It is a wrapper around `HashMap`
+* It has reference to outer environment 
+* When looked up for value it checks up current scope, otherwise recursively checks outer environments.
+
+To use it:
+
+```java
+
+Environment global = new Environment();
+Environment local = new Environment(global);
+
+// Store values:
+local.putValue("x",new False);
+
+// Retrieve value:
+Value value = local.getValue("x");
+```
 
 ### Evaluator
-*(Evaluator.)*
-
----
-
-## Examples
-*(examples.)*
+Evaluator evaluates the `Program`, It walks through the AST and executes code, calculating values, managing variables, and controlling flow. It does all of this differently for example:
+* A variable declaration, it stores the value into the environment
+* A function call, calculates the function on given input
+* etc.
 
 ---
 
 ## References
-*(references.)*
+The only reference you need to get started: [Writing Interpreter In Go](https://interpreterbook.com/)
 
 ---
 
