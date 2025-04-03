@@ -7,24 +7,12 @@ import com.github.konstantinevashalomidze.interpreter.token.Token;
 import static com.github.konstantinevashalomidze.interpreter.token.Precedence.LOWEST;
 
 
-public class Identifier
+public record Identifier(String literal)
         implements Token {
-    private String literal;
-
 
     @Override
     public Precedence precedence() {
         return LOWEST;
     }
 
-    @Override
-    public String literal() {
-        return literal;
-    }
-
-
-    public Token setLiteral(String literal) {
-        this.literal = literal;
-        return this;
-    }
 }

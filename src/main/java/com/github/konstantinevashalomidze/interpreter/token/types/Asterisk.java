@@ -4,7 +4,8 @@ package com.github.konstantinevashalomidze.interpreter.token.types;
 import com.github.konstantinevashalomidze.interpreter.token.Precedence;
 import com.github.konstantinevashalomidze.interpreter.token.Token;
 
-public class Asterisk implements Token {
+public enum Asterisk implements Token {
+    INSTANCE;
 
     @Override
     public Precedence precedence() {
@@ -16,8 +17,4 @@ public class Asterisk implements Token {
         return "*";
     }
 
-    @Override
-    public Token setLiteral(String string) {
-        return this;
-    }
 }

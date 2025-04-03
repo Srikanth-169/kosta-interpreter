@@ -7,7 +7,8 @@ import com.github.konstantinevashalomidze.interpreter.token.Token;
 import static com.github.konstantinevashalomidze.interpreter.token.Precedence.PREFIX;
 
 
-public class MinusPrefix implements Token {
+public enum MinusPrefix implements Token {
+    INSTANCE;
 
     @Override
     public Precedence precedence() {
@@ -19,8 +20,4 @@ public class MinusPrefix implements Token {
         return "-";
     }
 
-    @Override
-    public Token setLiteral(String string) {
-        return this;
-    }
 }

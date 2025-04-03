@@ -7,10 +7,8 @@ import com.github.konstantinevashalomidze.interpreter.token.Token;
 import static com.github.konstantinevashalomidze.interpreter.token.Precedence.LOWEST;
 
 
-public class Integer
+public record Integer(String literal)
         implements Token {
-    private String literal;
-
 
     @Override
     public Precedence precedence() {
@@ -18,14 +16,4 @@ public class Integer
     }
 
 
-    @Override
-    public String literal() {
-        return literal;
-    }
-
-    @Override
-    public Token setLiteral(String literal) {
-        this.literal = literal;
-        return this;
-    }
 }

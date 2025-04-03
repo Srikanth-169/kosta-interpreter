@@ -7,8 +7,8 @@ import com.github.konstantinevashalomidze.interpreter.token.Token;
 import static com.github.konstantinevashalomidze.interpreter.token.Precedence.SUM;
 
 
-public class MinusInfix implements Token {
-
+public enum MinusInfix implements Token {
+    INSTANCE;
     @Override
     public Precedence precedence() {
         return SUM;  // Same precedence as plus
@@ -19,8 +19,4 @@ public class MinusInfix implements Token {
         return "-";
     }
 
-    @Override
-    public Token setLiteral(String string) {
-        return this;
-    }
 }

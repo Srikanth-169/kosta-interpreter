@@ -7,7 +7,8 @@ import com.github.konstantinevashalomidze.interpreter.token.Token;
 import static com.github.konstantinevashalomidze.interpreter.token.Precedence.CALL;
 
 
-public class Lp implements Token {
+public enum Lp implements Token {
+    INSTANCE;
 
 
     @Override
@@ -20,8 +21,4 @@ public class Lp implements Token {
         return "(";
     }
 
-    @Override
-    public Token setLiteral(String string) {
-        return this;
-    }
 }

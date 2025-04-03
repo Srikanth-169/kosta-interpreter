@@ -7,7 +7,8 @@ import com.github.konstantinevashalomidze.interpreter.token.Token;
 import static com.github.konstantinevashalomidze.interpreter.token.Precedence.EQUALS;
 
 
-public class NotEq implements Token {
+public enum NotEq implements Token {
+    INSTANCE;
 
     @Override
     public Precedence precedence() {
@@ -19,8 +20,4 @@ public class NotEq implements Token {
         return "!=";
     }
 
-    @Override
-    public Token setLiteral(String string) {
-        return this;
-    }
 }

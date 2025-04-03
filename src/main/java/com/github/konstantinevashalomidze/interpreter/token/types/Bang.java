@@ -4,7 +4,9 @@ package com.github.konstantinevashalomidze.interpreter.token.types;
 import com.github.konstantinevashalomidze.interpreter.token.Precedence;
 import com.github.konstantinevashalomidze.interpreter.token.Token;
 
-public class Bang implements Token {
+public enum Bang implements Token {
+
+    INSTANCE;
 
     @Override
     public Precedence precedence() {
@@ -16,8 +18,4 @@ public class Bang implements Token {
         return "!";
     }
 
-    @Override
-    public Token setLiteral(String string) {
-        return this;
-    }
 }

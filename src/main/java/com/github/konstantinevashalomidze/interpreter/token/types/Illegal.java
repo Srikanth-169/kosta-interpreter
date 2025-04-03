@@ -7,8 +7,10 @@ import com.github.konstantinevashalomidze.interpreter.token.Token;
 import static com.github.konstantinevashalomidze.interpreter.token.Precedence.LOWEST;
 
 
-public class Illegal
+public enum Illegal
         implements Token {
+
+    INSTANCE;
 
     @Override
     public Precedence precedence() {
@@ -21,8 +23,4 @@ public class Illegal
         return "I";
     }
 
-    @Override
-    public Token setLiteral(String string) {
-        return this;
-    }
 }

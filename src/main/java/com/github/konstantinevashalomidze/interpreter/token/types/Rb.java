@@ -7,7 +7,8 @@ import com.github.konstantinevashalomidze.interpreter.token.Token;
 import static com.github.konstantinevashalomidze.interpreter.token.Precedence.LOWEST;
 
 
-public class Rb implements Token {
+public enum Rb implements Token {
+    INSTANCE;
 
     @Override
     public Precedence precedence() {
@@ -20,8 +21,4 @@ public class Rb implements Token {
         return "}";
     }
 
-    @Override
-    public Token setLiteral(String string) {
-        return this;
-    }
 }

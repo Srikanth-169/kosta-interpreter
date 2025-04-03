@@ -6,15 +6,10 @@ public enum Precedence {
     AND(2),
     EQUALS(3),
     COMPARE(4),
-
     SUM(5),
-
     PRODUCT(6),
-
     PREFIX(7),
-
     CALL(8);
-
     private final int number;
 
     Precedence(int number) {

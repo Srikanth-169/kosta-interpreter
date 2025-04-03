@@ -4,9 +4,9 @@ package com.github.konstantinevashalomidze.interpreter.token.types;
 import com.github.konstantinevashalomidze.interpreter.token.Precedence;
 import com.github.konstantinevashalomidze.interpreter.token.Token;
 
-public class Assign
+public enum Assign
         implements Token {
-
+    INSTANCE;
 
     @Override
     public Precedence precedence() {
@@ -18,10 +18,6 @@ public class Assign
         return "=";
     }
 
-    @Override
-    public Token setLiteral(String string) {
-        return this;
-    }
 }
 
 

@@ -7,9 +7,9 @@ import com.github.konstantinevashalomidze.interpreter.token.Token;
 import static com.github.konstantinevashalomidze.interpreter.token.Precedence.OR;
 
 
-public class Or
+public enum Or
         implements Token {
-
+    INSTANCE;
     @Override
     public Precedence precedence() {
         return OR;
@@ -21,8 +21,4 @@ public class Or
         return "|";
     }
 
-    @Override
-    public Token setLiteral(String string) {
-        return this;
-    }
 }

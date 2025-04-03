@@ -2,11 +2,12 @@ package com.github.konstantinevashalomidze.interpreter.lexer;
 
 
 import com.github.konstantinevashalomidze.interpreter.token.Token;
-import com.github.konstantinevashalomidze.interpreter.token.TokenManager;
+import com.github.konstantinevashalomidze.interpreter.token.TokenRegistry;
 import com.github.konstantinevashalomidze.interpreter.token.types.*;
 import com.github.konstantinevashalomidze.interpreter.token.types.Integer;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Optional;
 import java.util.function.Function;
 
 /**
@@ -47,7 +48,6 @@ public class Lexer {
             moveOnNextCharacter();
     }
 
-
     /**
      * Check what is the next character in the input.
      *
@@ -57,16 +57,6 @@ public class Lexer {
         if (nextCharacterIndex >= input.length())
             return '\0';
         return input.charAt(nextCharacterIndex);
-    }
-
-    /**
-     * Supply class and get corresponding currentToken.
-     *
-     * @param classz class to extract simple name from.
-     * @return currentToken in currentToken manager with provided class simple name.
-     */
-    private Token getToken(Class<?> classz) {
-        return TokenManager.getTokenManagerInstance().getToken(classz.getSimpleName());
     }
 
     /**
@@ -95,53 +85,53 @@ public class Lexer {
         switch (currentCharacter) {
             case '=' -> {
                 if (nextCharacter() == '=') {
-                    currentToken = getToken(Eq.class);
+                    currentToken = Eq.INSTANCE;
                     moveOnNextCharacter();
                 } else
-                    currentToken = getToken(Assign.class);
+                    currentToken = Assign.INSTANCE;
             }
-            case '*' -> currentToken = getToken(Asterisk.class);
+            case '*' -> currentToken = Asterisk.INSTANCE;
             case '!' -> {
                 if (nextCharacter() == '=') {
-                    currentToken = getToken(NotEq.class);
+                    currentToken = NotEq.INSTANCE;
                     moveOnNextCharacter();
                 } else
-                    currentToken = getToken(Bang.class);
+                    currentToken = Bang.INSTANCE;
             }
-            case ',' -> currentToken = getToken(Comma.class);
-            case '\0' -> currentToken = getToken(Eof.class);
-            case '>' -> currentToken = getToken(Gt.class);
-            case ')' -> currentToken = getToken(Rp.class);
-            case '}' -> currentToken = getToken(Rb.class);
-            case '<' -> currentToken = getToken(Lt.class);
-            case '-' -> currentToken = isPrefix() ? getToken(MinusPrefix.class) : getToken(MinusInfix.class);
-            case '+' -> currentToken = getToken(Plus.class);
-            case '{' -> currentToken = getToken(Lb.class);
-            case '(' -> currentToken = getToken(Lp.class);
-            case ';' -> currentToken = getToken(Semicolon.class);
-            case '/' -> currentToken = getToken(Slash.class);
-            case '&' -> currentToken = getToken(And.class);
-            case '|' -> currentToken = getToken(Or.class);
+            case ',' -> currentToken = Comma.INSTANCE;
+            case '\0' -> currentToken = Eof.INSTANCE;
+            case '>' -> currentToken = Gt.INSTANCE;
+            case ')' -> currentToken = Rp.INSTANCE;
+            case '}' -> currentToken = Rb.INSTANCE;
+            case '<' -> currentToken = Lt.INSTANCE;
+            case '-' -> currentToken = isPrefix() ? MinusPrefix.INSTANCE : MinusInfix.INSTANCE;
+            case '+' -> currentToken = Plus.INSTANCE;
+            case '{' -> currentToken = Lb.INSTANCE;
+            case '(' -> currentToken = Lp.INSTANCE;
+            case ';' -> currentToken = Semicolon.INSTANCE;
+            case '/' -> currentToken = Slash.INSTANCE;
+            case '&' -> currentToken = And.INSTANCE;
+            case '|' -> currentToken = Or.INSTANCE;
             default -> {
                 if (Character.isLetter(currentCharacter)) {
-                    // this moves to the next currentToken starting index, so we directly return
+                    // Moves to the next currentToken starting index, so we directly return
                     String literal = readCurrentLiteral(Character::isLetter);
-                    // if not found in manager that should be the identifier
-                    if (TokenManager.getTokenManagerInstance().getTokenWithLiteral(literal).isEmpty()) {
-                        currentToken = new Identifier().setLiteral(literal);
+                    // Not found in manager means token is identifier.
+                    if (TokenRegistry.INSTANCE.getToken(literal).isEmpty()) {
+                        currentToken = new Identifier(literal);
                         return currentToken;
                     }
                     // This creates new currentToken depending on the literal
-                    // for example if literal is fn then new currentToken of Function will be created.
-                    currentToken = TokenManager.getTokenManagerInstance().getTokenWithLiteral(literal).get().getClass().getDeclaredConstructor().newInstance().setLiteral(literal);
+                    // for example if literal is 'fn' then new currentToken of Function will be created.
+                    currentToken = TokenRegistry.INSTANCE.getToken(literal).get();
                     return currentToken;
                 } else if (Character.isDigit(currentCharacter)) {
                     // this moves to the next currentToken starting index, so we directly return
                     String literal = readCurrentLiteral(Character::isDigit);
-                    currentToken = new Integer().setLiteral(literal);
+                    currentToken = new Integer(literal);
                     return currentToken;
                 }
-                currentToken = getToken(Illegal.class);
+                currentToken = Illegal.INSTANCE;
             }
         }
         moveOnNextCharacter();

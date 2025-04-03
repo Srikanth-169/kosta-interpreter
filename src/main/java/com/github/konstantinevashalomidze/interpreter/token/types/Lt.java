@@ -7,7 +7,8 @@ import com.github.konstantinevashalomidze.interpreter.token.Token;
 import static com.github.konstantinevashalomidze.interpreter.token.Precedence.COMPARE;
 
 
-public class Lt implements Token {
+public enum Lt implements Token {
+    INSTANCE;
     @Override
     public Precedence precedence() {
         return COMPARE;  // Comparison operators
@@ -18,8 +19,4 @@ public class Lt implements Token {
         return "<";
     }
 
-    @Override
-    public Token setLiteral(String string) {
-        return this;
-    }
 }

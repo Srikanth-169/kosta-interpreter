@@ -5,7 +5,8 @@ import com.github.konstantinevashalomidze.interpreter.token.Token;
 
 import static com.github.konstantinevashalomidze.interpreter.token.Precedence.LOWEST;
 
-public class Comma implements Token {
+public enum Comma implements Token {
+    INSTANCE;
 
     @Override
     public Precedence precedence() {
@@ -17,8 +18,4 @@ public class Comma implements Token {
         return ",";
     }
 
-    @Override
-    public Token setLiteral(String string) {
-        return this;
-    }
 }

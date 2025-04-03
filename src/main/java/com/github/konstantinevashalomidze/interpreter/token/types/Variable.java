@@ -6,9 +6,9 @@ import com.github.konstantinevashalomidze.interpreter.token.Token;
 import static com.github.konstantinevashalomidze.interpreter.token.Precedence.LOWEST;
 
 
-public class Variable
+public enum Variable
         implements Token {
-
+    INSTANCE;
     @Override
     public Precedence precedence() {
         return LOWEST;
@@ -20,8 +20,4 @@ public class Variable
         return "var";
     }
 
-    @Override
-    public Token setLiteral(String string) {
-        return this;
-    }
 }

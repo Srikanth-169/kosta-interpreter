@@ -12,6 +12,4 @@ public interface Token {
 
     String literal();
 
-    Token setLiteral(String string);
-
 }

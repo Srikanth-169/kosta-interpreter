@@ -7,8 +7,11 @@ import com.github.konstantinevashalomidze.interpreter.token.Token;
 import static com.github.konstantinevashalomidze.interpreter.token.Precedence.AND;
 
 
-public class And
+public enum And
         implements Token {
+    INSTANCE;
+
+
 
     @Override
     public Precedence precedence() {
@@ -20,8 +23,4 @@ public class And
         return "&";
     }
 
-    @Override
-    public Token setLiteral(String string) {
-        return this;
-    }
 }

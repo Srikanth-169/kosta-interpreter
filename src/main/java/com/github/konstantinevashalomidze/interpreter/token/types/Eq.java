@@ -6,8 +6,8 @@ import com.github.konstantinevashalomidze.interpreter.token.Token;
 
 import static com.github.konstantinevashalomidze.interpreter.token.Precedence.EQUALS;
 
-public class Eq implements Token {
-
+public enum Eq implements Token {
+    INSTANCE;
 
     @Override
     public Precedence precedence() {
@@ -19,8 +19,4 @@ public class Eq implements Token {
         return "==";
     }
 
-    @Override
-    public Token setLiteral(String string) {
-        return this;
-    }
 }

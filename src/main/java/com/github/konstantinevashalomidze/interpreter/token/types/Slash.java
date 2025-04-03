@@ -6,7 +6,8 @@ import com.github.konstantinevashalomidze.interpreter.token.Token;
 import static com.github.konstantinevashalomidze.interpreter.token.Precedence.PRODUCT;
 
 
-public class Slash implements Token {
+public enum Slash implements Token {
+    INSTANCE;
 
     @Override
     public Precedence precedence() {
@@ -18,8 +19,4 @@ public class Slash implements Token {
         return "/";
     }
 
-    @Override
-    public Token setLiteral(String string) {
-        return this;
-    }
 }
