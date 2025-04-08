@@ -29,7 +29,7 @@ class ReturnStatementTest {
     }
 
     @Test
-    void testConstructorWithTokenAndValue() {
+    void shouldCreateReturnStatementWithTokenAndValue() {
         // Act
         ReturnStatement returnStatement = new ReturnStatement(token, value);
 
@@ -39,7 +39,7 @@ class ReturnStatementTest {
     }
 
     @Test
-    void testConstructorWithTokenOnly() {
+    void shouldCreateReturnStatementWithTokenOnly() {
         // Act
         ReturnStatement returnStatement = new ReturnStatement(token);
 
@@ -49,7 +49,7 @@ class ReturnStatementTest {
     }
 
     @Test
-    void testDefaultConstructor() {
+    void shouldCreateDefaultReturnStatement() {
         // Act
         ReturnStatement returnStatement = new ReturnStatement();
 
@@ -59,7 +59,7 @@ class ReturnStatementTest {
     }
 
     @Test
-    void testSetToken() {
+    void shouldSetTokenSuccessfully() {
         // Arrange
         ReturnStatement returnStatement = new ReturnStatement();
 
@@ -71,7 +71,7 @@ class ReturnStatementTest {
     }
 
     @Test
-    void testSetValue() {
+    void shouldSetValueSuccessfully() {
         // Arrange
         ReturnStatement returnStatement = new ReturnStatement();
 
@@ -83,7 +83,7 @@ class ReturnStatementTest {
     }
 
     @Test
-    void testLiteral() {
+    void shouldReturnLiteralFromToken() {
         // Act
         when(token.literal()).thenReturn("return");
         ReturnStatement returnStatement = new ReturnStatement(token);
@@ -93,7 +93,7 @@ class ReturnStatementTest {
     }
 
     @Test
-    void testToStringWithTokenAndValue() {
+    void shouldReturnStringRepresentationWithTokenAndValue() {
         // Arrange
         when(token.literal()).thenReturn("return");
         when(value.toString()).thenReturn("MockExpression");
@@ -108,7 +108,7 @@ class ReturnStatementTest {
     }
 
     @Test
-    void testToStringWithTokenOnly() {
+    void shouldReturnStringRepresentationWithTokenOnly() {
         // Act
         when(token.literal()).thenReturn("return");
         ReturnStatement returnStatement = new ReturnStatement(token);
@@ -119,7 +119,7 @@ class ReturnStatementTest {
     }
 
     @Test
-    void testToStringWithNoTokenOrValue() {
+    void shouldReturnStringRepresentationWithNoTokenOrValue() {
         // Act
         ReturnStatement returnStatement = new ReturnStatement();
 
@@ -129,7 +129,7 @@ class ReturnStatementTest {
     }
 
     @Test
-    void testToStringWithValueOnly() {
+    void shouldReturnStringRepresentationWithValueOnly() {
     // Arrange
     when(value.toString()).thenReturn("MockExpression");
 
