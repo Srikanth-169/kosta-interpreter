@@ -167,7 +167,13 @@ public class Evaluator {
 
 
     private Value evaluateIdentifier(Identifier identifier) {
-        Value value = environment.getValue(identifier.getValue());
+        Value value;
+        if (identifier.getValue().equals("null")) {
+            value = aNull;
+        } else {
+            value = environment.getValue(identifier.getValue());
+        }
+
         if (value == null) {
             return newError("Identifier not found " + identifier.getValue());
         }
