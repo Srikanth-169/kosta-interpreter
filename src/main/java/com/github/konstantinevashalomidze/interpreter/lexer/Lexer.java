@@ -90,11 +90,7 @@ public class Lexer {
     /**
      * sets currentToken by reading set of characters together.
      */
-    public Token readAndMoveOnNextToken()
-            throws NoSuchMethodException,
-            InvocationTargetException,
-            InstantiationException,
-            IllegalAccessException {
+    public Token readAndMoveOnNextToken() {
         previousToken = currentToken;
         skipWhiteSpace(); // move to the next currentToken's first character index
         switch (currentCharacter) {

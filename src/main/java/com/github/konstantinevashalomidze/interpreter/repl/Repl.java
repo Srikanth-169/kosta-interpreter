@@ -66,8 +66,7 @@ public class Repl {
                     writer.flush();
                 }
             }
-        } catch (IOException | InvocationTargetException | NoSuchMethodException | InstantiationException |
-                 IllegalAccessException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

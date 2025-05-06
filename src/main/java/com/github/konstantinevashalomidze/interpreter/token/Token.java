@@ -12,4 +12,5 @@ public interface Token {
 
     String literal();
 
+
 }
