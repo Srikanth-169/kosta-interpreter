@@ -2,12 +2,12 @@ package com.github.konstantinevashalomidze.interpreter.lexer;
 
 
 import com.github.konstantinevashalomidze.interpreter.token.Token;
-import com.github.konstantinevashalomidze.interpreter.token.TokenRegistry;
 import com.github.konstantinevashalomidze.interpreter.token.types.*;
 import com.github.konstantinevashalomidze.interpreter.token.types.Integer;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 /**
@@ -22,6 +22,21 @@ public class Lexer {
     private Token currentToken;
 
     private Token previousToken;
+
+    private final Map<String, Token> keywords;
+
+     {
+        keywords = new HashMap<>();
+        // Map all keywords to their corresponding token instances
+        keywords.put("fn", com.github.konstantinevashalomidze.interpreter.token.types.Function.INSTANCE);
+        keywords.put("if", If.INSTANCE);
+        keywords.put("else", Else.INSTANCE);
+        keywords.put("return", Return.INSTANCE);
+        keywords.put("true", True.INSTANCE);
+        keywords.put("false", False.INSTANCE);
+        keywords.put("def", Definition.INSTANCE);
+        keywords.put("var", Variable.INSTANCE);
+    }
 
 
     public Lexer(String input) {
@@ -116,14 +131,8 @@ public class Lexer {
                 if (Character.isLetter(currentCharacter)) {
                     // Moves to the next currentToken starting index, so we directly return
                     String literal = readCurrentLiteral(Character::isLetter);
-                    // Not found in manager means token is identifier.
-                    if (TokenRegistry.INSTANCE.getToken(literal).isEmpty()) {
-                        currentToken = new Identifier(literal);
-                        return currentToken;
-                    }
-                    // This creates new currentToken depending on the literal
-                    // for example if literal is 'fn' then new currentToken of Function will be created.
-                    currentToken = TokenRegistry.INSTANCE.getToken(literal).get();
+                    // Check if it's a keyword or an identifier
+                    currentToken = lookupIdentifier(literal);
                     return currentToken;
                 } else if (Character.isDigit(currentCharacter)) {
                     // this moves to the next currentToken starting index, so we directly return
@@ -139,6 +148,10 @@ public class Lexer {
         return currentToken;
     }
 
+    private Token lookupIdentifier(String literal) {
+        return keywords.getOrDefault(literal, new Identifier(literal));
+    }
+
     private boolean isPrefix() {
         // If there's no previous token (beginning of input or expression),
         // then it's definitely a prefix
@@ -147,23 +160,23 @@ public class Lexer {
 
         // Check if the previous token is an operator, opening bracket, or similar token
         // that would indicate this minus is a prefix
-        return previousToken instanceof Assign ||
-                previousToken instanceof Eq ||
-                previousToken instanceof NotEq ||
-                previousToken instanceof Bang ||
-                previousToken instanceof Comma ||
-                previousToken instanceof Rp || // Opening parenthesis
-                previousToken instanceof Rb || // Opening brace
-                previousToken instanceof Lt ||
-                previousToken instanceof Gt ||
-                previousToken instanceof Plus ||
-                previousToken instanceof MinusInfix ||
-                previousToken instanceof MinusPrefix ||
-                previousToken instanceof Asterisk ||
-                previousToken instanceof Slash ||
-                previousToken instanceof And ||
-                previousToken instanceof Or ||
-                previousToken instanceof Semicolon;
+        return previousToken == Assign.INSTANCE ||
+                previousToken == Eq.INSTANCE ||
+                previousToken == NotEq.INSTANCE ||
+                previousToken == Bang.INSTANCE ||
+                previousToken == Comma.INSTANCE ||
+                previousToken == Rp.INSTANCE || // Opening parenthesis
+                previousToken == Rb.INSTANCE || // Opening brace
+                previousToken == Lt.INSTANCE ||
+                previousToken == Gt.INSTANCE ||
+                previousToken == Plus.INSTANCE ||
+                previousToken == MinusInfix.INSTANCE ||
+                previousToken == MinusPrefix.INSTANCE ||
+                previousToken == Asterisk.INSTANCE ||
+                previousToken == Slash.INSTANCE ||
+                previousToken == And.INSTANCE ||
+                previousToken == Or.INSTANCE ||
+                previousToken == Semicolon.INSTANCE;
 
         // Note: The non-prefix case would be after identifiers, integers,
         // or closing brackets/parentheses
