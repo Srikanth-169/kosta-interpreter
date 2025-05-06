@@ -23,6 +23,9 @@ public class Lexer {
 
     private Token previousToken;
 
+    private int currentLine = 0, currentColumn = 0;
+
+
     private final Map<String, Token> keywords;
 
      {
@@ -50,8 +53,17 @@ public class Lexer {
     private void moveOnNextCharacter() {
         if (nextCharacterIndex >= input.length())
             currentCharacter = '\0';
-        else
+        else {
             currentCharacter = input.charAt(nextCharacterIndex);
+
+            // Update column (and line if we hit a newline)
+            if (currentCharacter == '\n') {
+                currentLine++;
+                currentColumn = 0;
+            } else {
+                currentColumn++;
+            }
+        }
         nextCharacterIndex++;
     }
 
@@ -178,5 +190,11 @@ public class Lexer {
         // or closing brackets/parentheses
     }
 
+    public int getCurrentLine() {
+        return currentLine;
+    }
 
+    public int getCurrentColumn() {
+        return currentColumn;
+    }
 }

@@ -83,7 +83,8 @@ public class Evaluator {
             return booleanLiteral.getValue() ? TRUE : FALSE;
         }
 
-        return aNull;
+        return newError("EVALUATION_ERROR: Unsupported node type: %s",
+                node != null ? node.getClass().getSimpleName() : "null");
     }
 
 
@@ -123,7 +124,14 @@ public class Evaluator {
         try {
             fn = (Function) function;
         } catch (ClassCastException ex) {
-            return newError("Not a function: %s", function.getClass().getSimpleName());
+            return newError("TYPE_ERROR: Cannot call non-function value. Expected Function but got: %s",
+                    getTypeName(function));
+        }
+
+        // Check if number of arguments matches number of parameters
+        if (fn.getParameters().size() != args.size()) {
+            return newError("ARGUMENT_ERROR: Wrong number of arguments: expected %d, got %d",
+                    fn.getParameters().size(), args.size());
         }
 
         Environment extendedEnv = extendFunctionEnv(function, args);
@@ -175,7 +183,7 @@ public class Evaluator {
         }
 
         if (value == null) {
-            return newError("Identifier not found " + identifier.getValue());
+            return newError("REFERENCE_ERROR: Undefined variable '%s'", identifier.getValue());
         }
         return value;
     }
@@ -210,8 +218,15 @@ public class Evaluator {
      * @return applies infix operation to operands left and right and evaluates
      */
     private Value evaluateInfixExpression(String operator, Value left, Value right) {
-        if (!left.getClass().getSimpleName().equals(right.getClass().getSimpleName()))
-            return newError("Type mismatch: %s %s %s", left.getClass().getSimpleName(), operator, right.getClass().getSimpleName());
+        // Check for null values first
+        if (left == null || right == null) {
+            return newError("EVALUATION_ERROR: Cannot perform operation on null value");
+        }
+
+        // Use direct class comparison instead of string comparison of class names
+        if (left.getClass() != right.getClass())
+            return newError("TYPE_ERROR: Cannot apply operator '%s' to different types: %s and %s",
+                    operator, getTypeName(left), getTypeName(right));
         else if (left instanceof Integer && right instanceof Integer)
             return evaluateIntegerInfixExpression(operator, left, right);
         else if (left instanceof Boolean && right instanceof Boolean)
@@ -221,33 +236,43 @@ public class Evaluator {
         else if (operator.equals("!="))
             return right != left ? TRUE : FALSE;
         else
-            return newError("Unknown operation: %s %s %s",
-                    left.getClass().getSimpleName(), operator, right.getClass().getSimpleName());
-
-
+            return newError("OPERATOR_ERROR: Unsupported operation: %s %s %s",
+                    getTypeName(left), operator, getTypeName(right));
     }
 
     private Value evaluateBooleanInfixExpression(String operator, Value left, Value right) {
         return switch (operator) {
             case "|" -> new Boolean(((Boolean) left).getValue() || ((Boolean) right).getValue());
             case "&" -> new Boolean(((Boolean) left).getValue() && ((Boolean) right).getValue());
+            case "==" -> ((Boolean) left).getValue() == ((Boolean) right).getValue() ? TRUE : FALSE;
+            case "!=" -> ((Boolean) left).getValue() != ((Boolean) right).getValue() ? TRUE : FALSE;
             default ->
-                    new Error(String.format("Unknown operation: %s %s %s", left.getClass().getSimpleName(), operator, right.getClass().getSimpleName()));
+                    newError("OPERATOR_ERROR: Unsupported boolean operator: '%s'", operator);
         };
     }
 
     private Value evaluateIntegerInfixExpression(String operator, Value left, Value right) {
+        int leftVal = ((Integer) left).getValue();
+        int rightVal = ((Integer) right).getValue();
+
         return switch (operator) {
-            case "+" -> new Integer(((Integer) left).getValue() + ((Integer) right).getValue());
-            case "-" -> new Integer(((Integer) left).getValue() - ((Integer) right).getValue());
-            case "*" -> new Integer(((Integer) left).getValue() * ((Integer) right).getValue());
-            case "/" -> new Integer(((Integer) left).getValue() / ((Integer) right).getValue());
-            case "<" -> ((Integer) left).getValue() < ((Integer) right).getValue() ? TRUE : FALSE;
-            case ">" -> ((Integer) left).getValue() > ((Integer) right).getValue() ? TRUE : FALSE;
-            case "==" -> ((Integer) left).getValue() == ((Integer) right).getValue() ? TRUE : FALSE;
-            case "!=" -> ((Integer) left).getValue() != ((Integer) right).getValue() ? TRUE : FALSE;
+            case "+" -> new Integer(leftVal + rightVal);
+            case "-" -> new Integer(leftVal - rightVal);
+            case "*" -> new Integer(leftVal * rightVal);
+            case "/" -> {
+                if (rightVal == 0) {
+                    yield newError("ARITHMETIC_ERROR: Division by zero");
+                }
+                yield new Integer(leftVal / rightVal);
+            }
+            case "<" -> leftVal < rightVal ? TRUE : FALSE;
+            case ">" -> leftVal > rightVal ? TRUE : FALSE;
+            case "==" -> leftVal == rightVal ? TRUE : FALSE;
+            case "!=" -> leftVal != rightVal ? TRUE : FALSE;
+            case "<=" -> leftVal <= rightVal ? TRUE : FALSE;
+            case ">=" -> leftVal >= rightVal ? TRUE : FALSE;
             default ->
-                    new Error(String.format("Unknown operation: %s %s %s", left.getClass().getSimpleName(), operator, right.getClass().getSimpleName()));
+                    newError("OPERATOR_ERROR: Unsupported integer operator: '%s'", operator);
         };
     }
 
@@ -273,16 +298,27 @@ public class Evaluator {
         return switch (operator) {
             case "!" -> evaluateBangOperatorExpression(right);
             case "-" -> evaluateMinusPrefixExpression(right);
-            default -> newError("Unknown operator: %s%s", operator, right.getClass().getSimpleName());
+            case "+" -> evaluatePlusPrefixExpression(right);
+            default -> newError("SYNTAX_ERROR: Unknown prefix operator: '%s'", operator);
         };
     }
 
     private Value evaluateMinusPrefixExpression(Value right) {
         if (!(right instanceof Integer))
-            return newError("Unknown operator: -%s", right.getClass().getSimpleName());
+            return newError("TYPE_ERROR: Cannot negate non-integer value. Got: %s",
+                    getTypeName(right));
 
         int value = ((Integer) right).getValue();
         return new Integer(-value);
+    }
+
+    private Value evaluatePlusPrefixExpression(Value right) {
+        if (!(right instanceof Integer))
+            return newError("TYPE_ERROR: Cannot apply unary plus to non-integer value. Got: %s",
+                    getTypeName(right));
+
+        // Unary plus doesn't change the value, but it's here for completeness
+        return right;
     }
 
     private Value evaluateBangOperatorExpression(Value right) {
@@ -299,17 +335,47 @@ public class Evaluator {
             evaluated = evaluate(statement);
 
             if (evaluated instanceof Return returnValue) // Terminate execution of statements upon after seeing return
-                return returnValue;
+                return returnValue.getValue(); // Unwrap return value at program level
+
+            if (isError(evaluated)) // Terminate execution when encountering an error
+                return evaluated;
         }
-        return evaluated;
+        return evaluated != null ? evaluated : aNull; // Return null if no statements or if last statement returned null
     }
 
 
     /**
-     * Wraps around String.format(format, args) and returns Error value.
+     * Creates a new Error value with a formatted message and error type prefix.
+     *
+     * @param message The error message format string
+     * @param args Arguments for the format string
+     * @return An Error value with the formatted message
      */
-    private Error newError(String message, Object... a) {
-        return new Error(String.format(message, a));
+    /**
+     * Creates a new Error value with a formatted message and error type prefix.
+     *
+     * @param message The error message format string
+     * @param args Arguments for the format string
+     * @return An Error value with the formatted message
+     */
+    private Error newError(String message, Object... args) {
+        return new Error(String.format(message, args));
     }
 
+    /**
+     * Returns a user-friendly type name for a Value object.
+     * This is more consistent and readable than using getClass().getSimpleName().
+     *
+     * @param value The Value object to get type name for
+     * @return A string representing the type name
+     */
+    private String getTypeName(Value value) {
+        if (value instanceof Integer) return "Integer";
+        if (value instanceof Boolean) return "Boolean";
+        if (value instanceof Function) return "Function";
+        if (value instanceof Null) return "Null";
+        if (value instanceof Return) return "Return";
+        if (value instanceof Error) return "Error";
+        return value.getClass().getSimpleName(); // Fallback
+    }
 }

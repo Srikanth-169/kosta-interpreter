@@ -25,7 +25,7 @@ public class StatementParser {
         ReturnStatement returnStatement = new ReturnStatement(parser.getCurrentToken()); // return
         parser.readAndMoveOnNextToken();
 
-        returnStatement.setValue(parser.getExpressionParser().parseExpression(0)); // return <expression | value>
+        returnStatement.setValue(parser.getExpressionParser().parseExpression(Precedence.LOWEST.getNumber())); // return <expression | value>
 
         if (parser.getNextToken() == Semicolon.INSTANCE) // return <expression | value>;
             parser.readAndMoveOnNextToken();
@@ -68,7 +68,7 @@ public class StatementParser {
             return null;
 
         parser.readAndMoveOnNextToken();
-        varStatement.setValue(parser.getExpressionParser().parseExpression(0)); // var <identifier> = <expression | value>
+        varStatement.setValue(parser.getExpressionParser().parseExpression(Precedence.LOWEST.getNumber())); // var <identifier> = <expression | value>
 
         // var <identifier> = <expression | value>;
         if (parser.getNextToken() == Semicolon.INSTANCE)

@@ -19,7 +19,8 @@ import java.util.Map;
 
 public class Parser {
     private final Lexer lexer;
-    private final List<String> errors;
+    private final List<String> parsingErrors;
+
 
     private Token currentToken;
     private Token nextToken;
@@ -31,7 +32,7 @@ public class Parser {
 
     public Parser(Lexer lexer) {
         this.lexer = lexer;
-        errors = new ArrayList<>();
+        parsingErrors = new ArrayList<>();
 
         statementParser = new StatementParser(this);
         prefixParser = new PrefixParser(this);
@@ -44,15 +45,12 @@ public class Parser {
 
     public boolean expectNextToken(Token expectedToken) {
         if (!(nextToken == expectedToken)) {
+            addParsingError("Expected token %s, but got %s", expectedToken.literal(), nextToken.literal());
             return false;
         }
         readAndMoveOnNextToken();
         return true;
     }
-
-
-
-
 
     public void readAndMoveOnNextToken() {
         currentToken = nextToken;
@@ -72,9 +70,23 @@ public class Parser {
         return program;
     }
 
+    public void addParsingError(String format, Object... args) {
+        String errorMessage = String.format(format, args);
+
+        // Add position information if available
+        if (lexer.getCurrentLine() >= 0) {
+            errorMessage = String.format("SYNTAX_ERROR at line %d, column %d: %s",
+                    lexer.getCurrentLine(), lexer.getCurrentColumn(), errorMessage);
+        } else {
+            errorMessage = "SYNTAX_ERROR: " + errorMessage;
+        }
+
+        parsingErrors.add(errorMessage);
+    }
+
 
     public List<String> errors() {
-        return errors;
+        return parsingErrors;
     }
 
     public Lexer getLexer() {
@@ -82,7 +94,7 @@ public class Parser {
     }
 
     public List<String> getErrors() {
-        return errors;
+        return parsingErrors;
     }
 
     public Token getCurrentToken() {
