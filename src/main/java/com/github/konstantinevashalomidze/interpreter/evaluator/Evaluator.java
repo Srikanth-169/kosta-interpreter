@@ -7,6 +7,7 @@ import com.github.konstantinevashalomidze.interpreter.ast.node.Program;
 import com.github.konstantinevashalomidze.interpreter.ast.statement.*;
 import com.github.konstantinevashalomidze.interpreter.evaluator.value.*;
 import com.github.konstantinevashalomidze.interpreter.evaluator.value.Boolean;
+import com.github.konstantinevashalomidze.interpreter.evaluator.value.Character;
 import com.github.konstantinevashalomidze.interpreter.evaluator.value.Error;
 import com.github.konstantinevashalomidze.interpreter.evaluator.value.Integer;
 
@@ -79,7 +80,10 @@ public class Evaluator {
             return new Function(params, body, environment);
         } else if (node instanceof IntegerLiteral integerLiteral) {
             return new Integer(integerLiteral.getValue());
-        } else if (node instanceof BooleanLiteral booleanLiteral) {
+            } else if (node instanceof CharacterLiteral characterLiteral) {
+                return new Character(characterLiteral.getValue());
+            }
+        else if (node instanceof BooleanLiteral booleanLiteral) {
             return booleanLiteral.getValue() ? TRUE : FALSE;
         }
 
@@ -343,14 +347,6 @@ public class Evaluator {
         return evaluated != null ? evaluated : aNull; // Return null if no statements or if last statement returned null
     }
 
-
-    /**
-     * Creates a new Error value with a formatted message and error type prefix.
-     *
-     * @param message The error message format string
-     * @param args Arguments for the format string
-     * @return An Error value with the formatted message
-     */
     /**
      * Creates a new Error value with a formatted message and error type prefix.
      *
@@ -371,6 +367,7 @@ public class Evaluator {
      */
     private String getTypeName(Value value) {
         if (value instanceof Integer) return "Integer";
+        if (value instanceof Character) return "Character";
         if (value instanceof Boolean) return "Boolean";
         if (value instanceof Function) return "Function";
         if (value instanceof Null) return "Null";

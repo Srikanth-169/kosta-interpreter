@@ -3,7 +3,9 @@ package com.github.konstantinevashalomidze.interpreter.parser;
 import com.github.konstantinevashalomidze.interpreter.ast.expression.*;
 import com.github.konstantinevashalomidze.interpreter.ast.expression.Identifier;
 import com.github.konstantinevashalomidze.interpreter.token.Precedence;
+import com.github.konstantinevashalomidze.interpreter.token.Token;
 import com.github.konstantinevashalomidze.interpreter.token.types.*;
+import com.github.konstantinevashalomidze.interpreter.token.types.Character;
 import com.github.konstantinevashalomidze.interpreter.token.types.Integer;
 
 import java.lang.reflect.InvocationTargetException;
@@ -21,23 +23,26 @@ public class PrefixParser {
 
 
     public Expression parse() {
-        if (parser.getCurrentToken() instanceof com.github.konstantinevashalomidze.interpreter.token.types.Identifier) {
-            return new Identifier(parser.getCurrentToken());
-        } else if (parser.getCurrentToken() instanceof Integer) {
-            return new IntegerLiteral(parser.getCurrentToken());
-        } else if (parser.getCurrentToken() instanceof Bang) {
+        Token currentToken = parser.getCurrentToken();
+        if (currentToken instanceof com.github.konstantinevashalomidze.interpreter.token.types.Identifier) {
+            return new Identifier(currentToken);
+        } else if (currentToken instanceof Integer) {
+            return new IntegerLiteral(currentToken);
+        } else if (currentToken instanceof Character) {
+          return new CharacterLiteral(currentToken);
+        } else if (currentToken instanceof Bang) {
             return parseBangOrMinus();
-        } else if (parser.getCurrentToken() instanceof MinusPrefix) {
+        } else if (currentToken instanceof MinusPrefix) {
             return parseBangOrMinus();
-        } else if (parser.getCurrentToken() instanceof True) {
-            return new BooleanLiteral(parser.getCurrentToken());
-        } else if (parser.getCurrentToken() instanceof False) {
-            return new BooleanLiteral(parser.getCurrentToken());
-        } else if (parser.getCurrentToken() instanceof Lp) {
+        } else if (currentToken instanceof True) {
+            return new BooleanLiteral(currentToken);
+        } else if (currentToken instanceof False) {
+            return new BooleanLiteral(currentToken);
+        } else if (currentToken instanceof Lp) {
             return parseLp();
-        } else if (parser.getCurrentToken() instanceof If) {
+        } else if (currentToken instanceof If) {
             return parseIf();
-        } else if (parser.getCurrentToken() instanceof Function) {
+        } else if (currentToken instanceof Function) {
             return parseFunction();
         }
         return null;

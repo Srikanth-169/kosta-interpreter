@@ -21,7 +21,6 @@ public class Parser {
     private final Lexer lexer;
     private final List<String> parsingErrors;
 
-
     private Token currentToken;
     private Token nextToken;
 

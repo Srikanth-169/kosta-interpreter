@@ -5,7 +5,7 @@ import com.github.konstantinevashalomidze.interpreter.token.Token;
 import com.github.konstantinevashalomidze.interpreter.token.types.*;
 import com.github.konstantinevashalomidze.interpreter.token.types.Integer;
 
-import java.lang.reflect.InvocationTargetException;
+import java.lang.Character;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -98,6 +98,17 @@ public class Lexer {
         return literal.toString();
     }
 
+    /**
+     * reads character starting from ' trough '
+     */
+    private String readCharacterLiteral() {
+        moveOnNextCharacter(); // Move past the opening quote to the actual character
+        char characterValue = currentCharacter; // Save the actual character
+        moveOnNextCharacter(); // Move to the closing quote
+
+        return String.valueOf(characterValue);
+    }
+
 
     /**
      * sets currentToken by reading set of characters together.
@@ -135,6 +146,8 @@ public class Lexer {
             case '/' -> currentToken = Slash.INSTANCE;
             case '&' -> currentToken = And.INSTANCE;
             case '|' -> currentToken = Or.INSTANCE;
+            case '\'' ->
+                currentToken = new com.github.konstantinevashalomidze.interpreter.token.types.Character(readCharacterLiteral());
             default -> {
                 if (Character.isLetter(currentCharacter)) {
                     // Moves to the next currentToken starting index, so we directly return
@@ -159,6 +172,7 @@ public class Lexer {
     private Token lookupIdentifier(String literal) {
         return keywords.getOrDefault(literal, new Identifier(literal));
     }
+
 
     private boolean isPrefix() {
         // If there's no previous token (beginning of input or expression),
