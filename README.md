@@ -22,7 +22,7 @@
 ---
 
 ## Introduction
-This project is a Java implementation of a Monkey-like interpreter, inspired by [Writing An Interpreter In Go](https://interpreterbook.com/). This interpreter supports variable bindings, integers, booleans, characters(*coming soon*), arrays(*coming soon*), hash structures(*coming soon*), arithmetic and boolean operations like +, -, *, /, &, |, built-in functions(*coming soon*), first-class and higher order functions, closures.
+This project is a Java implementation of a Monkey-like interpreter, inspired by [Writing An Interpreter In Go](https://interpreterbook.com/). This interpreter supports variable bindings, integers, booleans, characters(*coming soon*), arrays(*coming soon*), hash structures (*coming soon*), arithmetic and boolean operations like +, -, *, /, &, |, built-in functions(*coming soon*), first-class and higher order functions, closures.
 
 ---
 
@@ -242,7 +242,7 @@ Value value = local.getValue("x");
 
 ### Evaluator
 Evaluator evaluates the `Program`, It walks through the AST and executes code, calculating values, managing variables, and controlling flow. It does all of this differently for example:
-* A variable declaration, it stores the value into the environment
+* A variable declaration, it stores the values into the environment
 * A function call, calculates the function on given input
 * etc.
 
